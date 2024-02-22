@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <title>Pregled jedne nekretnine</title>
+</head>
+
+<body>
+    <!--navbar-->
+    <nav class="navbar navbar-expand-lg black-bg">
+        <img class="img" src="images/keyToTheCastleLogoOrangeWhiteWithTitle.png">
+        <!-- add above logo -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link white-font" href="#">Home<span class="sr-only"></span></a>
+                <a class="nav-item nav-link white-font" href="#">Register</a>
+                <a class="nav-item nav-link white-font" href="#">Log in</a>
+                <a class="nav-item nav-link white-font" href="#"><img class="small" src="images/cart.png"></img></a>
+
+            </div>
+        </div>
+    </nav>
+
+
+
+
+    <!-- main content start here-->
+    <div class="main-content">
+
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+
+        <div class="row">
+            <div class="col-md-4">
+                <!--Slide show, add functionality to it later so that it can slide!!!-->
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                            class="active custom-indicator" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                            class="custom-indicator" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                            class="custom-indicator" aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="images/nekretnina.jpeg" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="images/cart.png" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="images/heart.png" class="d-block w-100" alt="...">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+                </div>
+
+
+            </div>
+            <div class="col-md-8">
+                <!--Information about real estate-->
+                <div class="card">
+                    <h3 class="card-header bolder text-orange">Lokacija: </h3>
+                    <div class="card-body">
+                        <h5 class="card-title bolder">Opis:</h5>
+                        <p class="card-text"></p>
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="card-title bolder">Tip:</h5>
+                        <p class="card-text"></p>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title bolder">Cena:</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <!--Buttons for buyers-->
+                <div class="col-md-3">
+
+                    <button type="button" class="btn btn-bigger">Zakazi obilazak</button>
+                </div>
+                <div class="col-md-3">
+
+                    <button type="button" class="btn btn-bigger">Kupi nekretninu</button>
+                </div>
+
+            <div id="map"></div>
+            <script>(g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })
+                    ({ key: "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg", v: "weekly" });
+            </script>
+            <script src="js/map_functionality.js"></script>
+
+
+            <div class="container rating-container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="comment" class="form-label bolder">Ostavite komentar i ocenu agentu:</label>
+                            <textarea class="form-control" id="comment" rows="4"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="rating" class="form-label">Ocena:</label>
+                            <select class="form-select" id="rating">
+                                <option value="5">5 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="3">3 Stars</option>
+                                <option value="2">2 Stars</option>
+                                <option value="1">1 Star</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 text-center">
+                        <button type="button" class="btn ">Sacuvaj</button>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+</div>
+
+
+        <!--Footer -->
+        <div>
+            <nav class="navbar ">
+                <a class="navbar-brand" href="#">
+                    <form class="form-inline red">
+                        <p>some information about agency such as mail phone number..etc</p>
+                    </form>
+                </a>
+            </nav>
+        </div>
+
+
+
+
+</body>
+
+</html>

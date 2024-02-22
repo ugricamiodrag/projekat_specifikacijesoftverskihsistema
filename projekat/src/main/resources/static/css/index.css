@@ -1,0 +1,350 @@
+.main-content{
+    margin: 10%;
+}
+.margin-left{
+    margin-left: 10%;
+    margin-right: 0;
+}
+.container{
+    margin: 0;
+    margin-bottom: 10%;
+}
+.smaller{
+    height: 200px;
+    width: auto;
+}
+
+.small{
+    height: 30px;
+    width: auto;
+}
+.tables{
+    margin: 10%;
+
+}
+
+body{
+   /* background-color: #E6E6EA; */
+     background-color: #F3F3F4;
+     color: #2A2B2E;
+
+}
+
+.form{
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 10%;
+    margin-bottom:5%
+}
+
+.hidden {
+    display: none;
+}
+
+.addBtn{
+    color: white;
+}
+
+.add{
+    margin-left: 0%;
+    margin-right: 20%;
+}
+
+
+.search-bar{
+    margin-top: 5%;
+    margin-left: 5%;
+    margin-bottom: 3%;
+    margin-right: 5%;
+
+}
+
+.form-inline{
+    max-width: 100%;
+
+}
+
+.shadow{
+    min-width: 80%;
+    width: auto;
+
+}
+
+.shadow:hover{
+    box-shadow: #E98A15;
+    min-width: 80%;
+    width: auto;
+
+}
+
+
+.btn{
+    min-width: 15%;
+    width: auto;
+    background-color: #E98A15;
+    color: white;
+}
+
+.btn:hover{
+    
+    background-color: white;
+    color: #274C77;
+    border: 1px solid #E98A15;
+}
+
+
+.overlay-container {
+    position: relative;
+    display: inline-block;
+}
+
+.text-container{
+    margin-left: 20px;
+}
+
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 15%; 
+    height: auto;
+    opacity: 1; 
+    margin: 2%;
+    transition: opacity 0.3s ease-in-out; 
+}
+
+*{
+    font-size: 100%;
+    font-family:Arial, Helvetica, sans-serif
+   }
+
+.bolder{
+    font-weight: bolder;
+}
+
+.card{
+    background-color: #FFFBFA;
+    padding: 1%;
+    border: none;
+    margin-top: 3%;
+    margin-bottom: 2%;
+
+}
+
+
+.form-control{
+    margin-bottom: 4%;
+}
+
+.form-control:focus{
+    box-shadow: #E98A15;
+
+}
+
+
+.form-inline button{
+    margin-top: 2%;
+    background-color: #E98A15;
+    color: white;
+}
+
+.form-inline button:hover{
+    background-color: white;
+    color: #E98A15;
+    border: 1px solid #E98A15;
+}
+
+
+
+.form-inline input:focus{
+    color: white;
+    box-shadow: 0 0 10px #E98A15;
+    border: solid 1px #E98A15;
+}
+
+.text-orange{
+    color: #FE7F2D;
+}
+
+
+
+.link{
+    color: #2A2B2E;
+}
+
+.link:hover{
+    text-decoration: none;
+    color: #FE7F2D;
+}
+
+.btn a{
+    color: white;
+}
+.btn a:hover{
+    color: #FE7F2D;
+    text-decoration: none;
+}
+
+.full-height {
+    width: 100%; 
+}
+
+.card-body {
+    display: flex; 
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+
+
+.btn{
+    background-color: #E98A15;
+    color: white;
+    min-width: 97%;
+    width: 5%;
+}
+
+
+.btn:focus{
+    color: white;
+    box-shadow: 0 0 10px #E98A15;
+    border: solid 1px #E98A15;
+}
+
+
+
+.btn-bigger{
+    height: 8vb;
+    margin-top: 1%;
+}
+
+
+
+.btn:hover{
+    background-color: white;
+    color: #E98A15;
+    border: 1px solid #E98A15;
+}
+
+.navbar {
+    background-color: #2A2B2E;
+    height: 100px;
+}
+
+.black-bg{
+    background-color: #2A2B2E;
+}
+
+.white-font{
+    color: #E6E6EA;
+}
+
+.white-font:hover{
+    color: #E98A15;
+}
+
+.red{
+    color: #E98A15;
+}
+
+
+.sidebar {
+    width: 270px;
+    background-color: #FFFBFA;
+    padding: 20px;
+}
+
+.sidebar h3 {
+    margin-bottom: 15px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar label {
+    display: block;
+}
+
+.sidebar input[type="checkbox"] {
+    margin-right: 5px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #999;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+}
+
+.sidebar input[type="checkbox"]:checked {
+    background-color: #E98A15; 
+    border-color: #999; 
+}
+
+
+.card-header {
+    background-color: #FFFBFA;
+    border-color: #E98A15;
+}
+
+.carousel-control-prev{
+    border: none;
+
+}
+.carousel-control-prev, .carousel-control-next {
+    background-color: blanchedalmond;
+}
+
+.custom-indicator {
+    background-color: #E98A15;
+    border: none;
+    margin: 1%;
+}
+
+
+.carousel-control-next{
+    border: none;
+    
+}
+
+
+#map {
+    margin-top: 3%;
+    height: 400px; 
+    width: 100%; 
+}
+
+.table{
+    background-color: #FFFBFA;
+    padding: 5%;
+}
+
+.rating-container{
+    margin-top: 5%;
+}
+
+
+#comment:focus{
+    box-shadow: 0 0 5px #E98A15;
+    border: solid 1px #E98A15;
+}
+
+.img{
+    width: 9%;
+    margin: 0.5%;
+
+}
+
+
+
+
+
