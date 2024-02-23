@@ -40,6 +40,7 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 			int index = 1;
 			Long id = resultSet.getLong(index++);
 			RealEstateType type = RealEstateType.valueOf(resultSet.getString(index++));
+			
 			String location = resultSet.getString(index++);
 			String picture = resultSet.getString(index++);
 			Double price = resultSet.getDouble(index++);
@@ -47,11 +48,13 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 			boolean isActive = resultSet.getBoolean(index++);
 			
 			RealEstate estate = estates.get(id);
-			if (estate == null) {
+		/*	if (estate == null) {
 				estate = new RealEstate(id, type, location, picture, price, rentOrBuy, isActive);
 				estates.put(estate.getId(), estate); // dodavanje u kolekciju
 			}
 			
+			TODO Kada uradimo bazu
+			*/
 		}
 
 		public List<RealEstate> getRealEstates() {

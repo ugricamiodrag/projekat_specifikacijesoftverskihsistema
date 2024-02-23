@@ -11,6 +11,15 @@ public class Person {
 	public Person() {
 	}
 	
+	public Person(String name, String surname, String phoneNumber, String email, String address) {
+		super();
+		this.name = name;
+		this.surname = surname;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.address = address;
+	}
+
 	public Person(Long id, String name, String surname, String phoneNumber, String email, String address) {
 		super();
 		this.id = id;

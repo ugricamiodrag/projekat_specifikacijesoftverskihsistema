@@ -5,27 +5,50 @@ import java.util.List;
 public class RealEstate {
 	private Long id;
 	private RealEstateType type;
+	private Agent agent;
 	private String location;
 	private String picture;
 	private Double price;
 	private RentOrBuy rentOrBuy;
+	private Popularity popularity;
 	private Boolean isActive;
 	
 	public RealEstate() {
 	}
 	
-	public RealEstate(Long id, RealEstateType type, String location, String picture, Double price, RentOrBuy rentOrBuy,
-			Boolean isActive) {
+
+
+	public RealEstate(RealEstateType type, Agent agent, String location, String picture, Double price,
+			RentOrBuy rentOrBuy, Popularity popularity, Boolean isActive) {
 		super();
-		this.id = id;
 		this.type = type;
+		this.agent = agent;
 		this.location = location;
 		this.picture = picture;
 		this.price = price;
 		this.rentOrBuy = rentOrBuy;
+		this.popularity = popularity;
 		this.isActive = isActive;
 	}
-	
+
+
+
+	public RealEstate(Long id, RealEstateType type, Agent agent, String location, String picture, Double price,
+			RentOrBuy rentOrBuy, Popularity popularity, Boolean isActive) {
+		super();
+		this.id = id;
+		this.type = type;
+		this.agent = agent;
+		this.location = location;
+		this.picture = picture;
+		this.price = price;
+		this.rentOrBuy = rentOrBuy;
+		this.popularity = popularity;
+		this.isActive = isActive;
+	}
+
+
+
 	public Long getId() {
 		return id;
 	}
@@ -73,5 +96,29 @@ public class RealEstate {
 	public String toString() {
 		return "RealEstate [id=" + id + ", type=" + type + ", location=" + location + ", picture=" + picture
 				+ ", price=" + price + ", rentOrBuy=" + rentOrBuy + ", isActive=" + isActive + "]";
+	}
+
+
+
+	public Agent getAgent() {
+		return agent;
+	}
+
+
+
+	public void setAgent(Agent agent) {
+		this.agent = agent;
+	}
+
+
+
+	public Popularity getPopularity() {
+		return popularity;
+	}
+
+
+
+	public void setPopularity(Popularity popularity) {
+		this.popularity = popularity;
 	}
 }

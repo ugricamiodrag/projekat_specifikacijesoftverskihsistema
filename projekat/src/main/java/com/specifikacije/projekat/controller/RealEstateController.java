@@ -20,7 +20,7 @@ public class RealEstateController {
 	@Autowired
 	private RealEstateService realEstateService;
 	
-	@GetMapping()
+	@GetMapping
 	public String showRealEstate(HttpServletRequest request, Model model) {
 		
 		List<RealEstate> realEstateList = realEstateService.findAll();

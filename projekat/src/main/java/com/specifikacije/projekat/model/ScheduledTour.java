@@ -5,21 +5,65 @@ import java.time.LocalDateTime;
 public class ScheduledTour {
 	private Long id;
 	private LocalDateTime dateTime;
+	private User user;
+	private RealEstate realEstate;
 	private Boolean isApproved = false;
 	
 	public ScheduledTour() {
 	}
 	
-	public ScheduledTour(Long id, LocalDateTime dateTime, Boolean isApproved) {
-		super();
-		this.id = id;
-		this.dateTime = dateTime;
-		this.isApproved = isApproved;
-	}
+	
 	
 	public Long getId() {
 		return id;
 	}
+	
+
+	public ScheduledTour(LocalDateTime dateTime, User user, RealEstate realEstate, Boolean isApproved) {
+		super();
+		this.dateTime = dateTime;
+		this.user = user;
+		this.realEstate = realEstate;
+		this.isApproved = isApproved;
+	}
+
+
+
+	public User getUser() {
+		return user;
+	}
+
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
+
+	public RealEstate getRealEstate() {
+		return realEstate;
+	}
+
+
+
+	public void setRealEstate(RealEstate realEstate) {
+		this.realEstate = realEstate;
+	}
+
+
+
+	public ScheduledTour(Long id, LocalDateTime dateTime, User user, RealEstate realEstate, Boolean isApproved) {
+		super();
+		this.id = id;
+		this.dateTime = dateTime;
+		this.user = user;
+		this.realEstate = realEstate;
+		this.isApproved = isApproved;
+	}
+
+
+
 	public void setId(Long id) {
 		this.id = id;
 	}
