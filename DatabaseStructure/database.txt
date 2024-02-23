@@ -1,0 +1,19 @@
+USE realestate
+CREATE TABLE estate(
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    type VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+    location VARCHAR(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+    picture VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+    price DOUBLE NOT NULL,
+    rentOrBuy VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+    isActive TINYINT(1) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+Test data :
+
+INSERT INTO estate (type, location, picture, price, rentOrBuy, isActive)
+VALUES
+    ('Apartment', 'Novi Sad, Novo Naselje', 'nekretnina.jpg', 2000.00, 'Rent', 1),
+    ('House', 'Novi Sad, Liman 1', 'nekretnine.jpg', 500000.00, 'Buy', 1),
+    
