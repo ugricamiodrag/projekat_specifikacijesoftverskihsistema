@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <title>Agencija za Nekretnine</title>
+</head>
+
+<body>
+    <!--navbar-->
+    <nav class="navbar navbar-expand-lg black-bg">
+        <img class="img" src="images/keyToTheCastleLogoOrangeWhiteWithTitle.png">
+        <!-- add above logo -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link white-font" href="#">Home<span class="sr-only"></span></a>
+                <a class="nav-item nav-link white-font" href="#">Register</a>
+                <a class="nav-item nav-link white-font" href="#">Log in</a>
+                <a class="nav-item nav-link white-font" href="/realestate/adminPage">Admin</a>
+                <a class="nav-item nav-link white-font" href="#"><img class="small" src="/images/cart.png"></img></a>
+
+            </div>
+        </div>
+    </nav>
+
+
+    <!--Filters-->
+
+    <div class="container">
+        <div class="row full-height">
+            <div class="col-md-3">
+                <!--Sidebar - filters -->
+                <div class="sidebar">
+                    <h3 class="bolder text-orange">Filter Options</h3>
+                    <form action="" method="get"> <!--Add action and method here -->
+                        <p><span class="bolder">Lokacija:</span></p>
+
+                        <div class="form-inline" >
+                            <input class="shadow form-control mr-sm-2" type="search">
+
+                        </div>
+
+                        <p><span class="bolder">Povrsina:</span></p>
+                        <p>Min.</p>
+                        <div class="form-inline">
+
+                            <input class=" form-control mr-sm-2" min="0" type="number" id="cenaOd" name="cenaOd">
+                        </div>
+                        <p>Max.</p>
+                        <div class="form-inline">
+
+                            <input class="form-control mr-sm-2" type="number" id="cenaDo" name="cenaDo">
+                        </div>
+
+                        <p><span class="bolder">Cena:</span></p>
+
+                        <p>Min.</p>
+                        <div class="form-inline">
+
+                            <input class="form-control mr-sm-2" min="0" type="number" id="cenaOd" name="cenaOd">
+                        </div>
+                        <p>Max.</p>
+                        <div class="form-inline">
+
+                            <input class="form-control mr-sm-2" type="number" id="cenaDo" name="cenaDo">
+                        </div>
+
+                        <p><span class="bolder">Prodaja/Izdavanje:</span></p>
+
+                        <ul>
+                            <li><label><input type="checkbox" id="prodajaCheckbox" value="PRODAJA"> Prodaja</label></li>
+                            <li><label><input type="checkbox" id="izdavanjeCheckbox" value="IZDAVANJE">
+                                    Izdavanje</label></li>
+                        </ul>
+                        <p><span class="bolder">Tip:</span></p>
+
+                        <ul>
+                            <li><label><input type="checkbox" class="checkbox-color" value="KUCA"> Kuca</label></li>
+                            <li><label><input type="checkbox" value="STAN"> Stan</label></li>
+                            <li><label><input type="checkbox" value="ZEMLJISTE"> Zemljiste</label></li>
+                            <li><label><input type="checkbox" value="KANCELARIJA"> Kancelarija</label></li>
+
+                        </ul>
+                        <!--Search button for filtering-->
+                        <div class="form-inline">
+                            <button class="my-2 my-sm-0 btn" type="submit">Pretrazi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!--For selecting and deselecting prodaja/izdavanje, when one is selected deselect other-->
+            <script>
+                // Get references to the checkboxes
+                const prodajaCheckbox = document.getElementById('prodajaCheckbox');
+                const izdavanjeCheckbox = document.getElementById('izdavanjeCheckbox');
+
+                // Add event listeners to checkboxes
+                prodajaCheckbox.addEventListener('change', function () {
+                    // If Prodaja checkbox is checked, uncheck Izdavanje checkbox
+                    if (this.checked) {
+                        izdavanjeCheckbox.checked = false;
+                    }
+                });
+
+                izdavanjeCheckbox.addEventListener('change', function () {
+                    // If Izdavanje checkbox is checked, uncheck Prodaja checkbox
+                    if (this.checked) {
+                        prodajaCheckbox.checked = false;
+                    }
+                });
+            </script>
+
+
+
+            <!--Main content - nekretnine 0 -->
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-body d-flex flex-column">
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                <!--Images here-->
+                                <div class="overlay-container">
+                                    <a href="realestate/viewOne">
+                                        <img class="card-img-top smaller" src="images/nekretnina.jpeg"
+                                            alt="Card image cap">
+                                    </a>
+                                    <a href="">
+                                        <!--Like/Dislike heart here-->
+                                        <img class="card-img-top small overlay" src="images/heart_broken.png"
+                                            alt="Card image cap">
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!--Information about nekretnina-->
+                            <div class="col-md-8">
+                                <div class="text-container">
+                                    <a class="link" href="realestate/viewOne">
+                                        <h5 class="card-title bolder text-orange">Novi Sad, Novo Naselje</h5>
+                                    </a>
+                                    <p class="card-text"><span class="bolder">Opis: </span>This card has supporting text             
+                                        below as a
+                                        natural lead-in to additional content.</p>
+                                    <p class="card-text"><span class="bolder">Cena: </span>400 000</p>
+                                    <p class="card-text"><span class="bolder">Povrsina: </span>400m2</p>
+                                    <p class="card-text"><span class="bolder">Tip: </span>STAN</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!--Main content - nekretnine 1 -->
+                <div class="card">
+                    <div class="card-body d-flex flex-column">
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                <div class="overlay-container">
+                                    <a href="">
+                                        <img class="card-img-top smaller" src="images/nekretnina.jpeg"
+                                            alt="Card image cap">
+                                    </a>
+                                    <a href="">
+                                        <img class="card-img-top small overlay" src="images/heart_filled.png"
+                                            alt="Card image cap">
+                                    </a>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-8">
+                                <div class="text-container">
+                                    <h5 class="card-title bolder">Novi Sad, Novo Naselje</h5>
+                                    <p class="card-text"><span class="bolder">Opis: </span>This card has supporting text
+                                        below as a
+                                        natural lead-in to additional content.</p>
+                                    <p class="card-text"><span class="bolder">Cena: </span>400 000</p>
+                                    <p class="card-text"><span class="bolder">Povrsina: </span>400m2</p>
+                                    <p class="card-text"><span class="bolder">Tip: </span>STAN</p>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!--Main content - nekretnine 2 -->
+                <div class="card">
+                    <div class="card-body d-flex flex-column">
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                <div class="overlay-container">
+                                    <a href="">
+                                        <img class="card-img-top smaller" src="images/nekretnina.jpeg"
+                                            alt="Card image cap">
+                                    </a>
+                                    <a href="">
+                                        <img class="card-img-top small overlay" src="images/heart.png"
+                                            alt="Card image cap">
+                                    </a>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-8">
+                                <div class="text-container">
+                                    <h5 class="card-title bolder">Novi Sad, Novo Naselje</h5>
+                                    <p class="card-text"><span class="bolder">Opis: </span>This card has supporting text
+                                        below as a
+                                        natural lead-in to additional content.</p>
+                                    <p class="card-text"><span class="bolder">Cena: </span>400 000</p>
+                                    <p class="card-text"><span class="bolder">Povrsina: </span>400m2</p>
+                                    <p class="card-text"><span class="bolder">Tip: </span>STAN</p>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--Footer -->
+    <div>
+        <nav class="navbar ">
+            <a class="navbar-brand" href="#">
+                <form class="form-inline red">
+                    <p>some information about agency such as mail phone number..etc</p>
+                </form>
+            </a>
+        </nav>
+    </div>
+
+          
+
+
+
+</body>
+
+</html>
