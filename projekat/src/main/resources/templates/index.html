@@ -41,7 +41,7 @@
                 <div class="sidebar">
                     <h3 class="bolder text-orange">Filter Options</h3>
                     <form action="" method="get"> <!--Add action and method here -->
-                        <p><span class="bolder">Lokacija:</span></p>
+                        <p><span class="bolder">Lokacija:</span></span></p>
 
                         <div class="form-inline" >
                             <input class="shadow form-control mr-sm-2" type="search">
@@ -123,15 +123,15 @@
 
             <!--Main content - nekretnine 0 -->
             <div class="col-md-9">
-                <div class="card">
-                    <div class="card-body d-flex flex-column">
-                        <div class="row">
-                            <div class="col-md-4">
+                <div class="card" th:each="estate : ${realEstate}">
+                    <div class="card-body d-flex flex-column" >
+                        <div class="row" >
+                            <div class="col-md-4" >
 
                                 <!--Images here-->
                                 <div class="overlay-container">
                                     <a href="realestate/viewOne">
-                                        <img class="card-img-top smaller" src="images/nekretnina.jpeg"
+                                        <img class="card-img-top smaller" src="/images/nekretnina.jpeg"
                                             alt="Card image cap">
                                     </a>
                                     <a href="">
@@ -145,13 +145,10 @@
                             <!--Information about nekretnina-->
                             <div class="col-md-8">
                                 <div class="text-container">
-                                    <a class="link" href="realestate/viewOne">
-                                        <h5 class="card-title bolder text-orange">Novi Sad, Novo Naselje</h5>
+                                    <a class="link" th:href="@{'/realestate/viewOne'}">
+                                        <h5 class="card-title bolder text-orange">Novi Sad</h5>
                                     </a>
-                                    <p class="card-text"><span class="bolder">Opis: </span>This card has supporting text             
-                                        below as a
-                                        natural lead-in to additional content.</p>
-                                    <p class="card-text"><span class="bolder">Cena: </span>400 000</p>
+                                    <p class="card-text"><span class="bolder">Cena: </span></p>
                                     <p class="card-text"><span class="bolder">Povrsina: </span>400m2</p>
                                     <p class="card-text"><span class="bolder">Tip: </span>STAN</p>
                                 </div>
