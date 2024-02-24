@@ -4,7 +4,7 @@ import java.util.List;
 
 public class RealEstate {
 	private Long id;
-	private RealEstateType type;
+	private RealEstateType estateType;
 	private Agent agent;
 	private String location;
 	private String picture;
@@ -21,7 +21,7 @@ public class RealEstate {
 	public RealEstate(RealEstateType type, Agent agent, String location, String picture, Double price,
 			RentOrBuy rentOrBuy, Popularity popularity, Boolean isActive) {
 		super();
-		this.type = type;
+		this.estateType = type;
 		this.agent = agent;
 		this.location = location;
 		this.picture = picture;
@@ -37,7 +37,7 @@ public class RealEstate {
 			RentOrBuy rentOrBuy, Popularity popularity, Boolean isActive) {
 		super();
 		this.id = id;
-		this.type = type;
+		this.estateType = type;
 		this.agent = agent;
 		this.location = location;
 		this.picture = picture;
@@ -55,11 +55,11 @@ public class RealEstate {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public RealEstateType getType() {
-		return type;
+	public RealEstateType getEstateType() {
+		return estateType;
 	}
 	public void setType(RealEstateType type) {
-		this.type = type;
+		this.estateType = type;
 	}
 	public String getLocation() {
 		return location;
@@ -94,7 +94,7 @@ public class RealEstate {
 
 	@Override
 	public String toString() {
-		return "RealEstate [id=" + id + ", type=" + type + ", location=" + location + ", picture=" + picture
+		return "RealEstate [id=" + id + ", type=" + estateType + ", location=" + location + ", picture=" + picture
 				+ ", price=" + price + ", rentOrBuy=" + rentOrBuy + ", isActive=" + isActive + "]";
 	}
 
@@ -121,4 +121,8 @@ public class RealEstate {
 	public void setPopularity(Popularity popularity) {
 		this.popularity = popularity;
 	}
+
+
+
+	
 }

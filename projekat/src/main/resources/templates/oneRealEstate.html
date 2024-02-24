@@ -21,7 +21,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link white-font" href="#">Home<span class="sr-only"></span></a>
+                <a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
                 <a class="nav-item nav-link white-font" href="#">Register</a>
                 <a class="nav-item nav-link white-font" href="#">Log in</a>
                 <a class="nav-item nav-link white-font" href="#"><img class="small" src="/images/cart.png"></img></a>
@@ -75,24 +75,21 @@
             <div class="col-md-8">
                 <!--Information about real estate-->
                 <div class="card">
-                    <h3 class="card-header bolder text-orange">Lokacija: </h3>
-                    <div class="card-body">
-                        <h5 class="card-title bolder">Opis:</h5>
-                        <p class="card-text"></p>
-                    </div>
+                    <h3 class="card-header bolder text-orange" th:text="${oneRealEstate.location}">  </h3>
+                   
 
                     <div class="card-body">
-                        <h5 class="card-title bolder">Tip:</h5>
-                        <p class="card-text"></p>
+                        <h5 class="card-title">Tip:<span class="bolder" th:text="${oneRealEstate.estateType}"></span></h5>
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title bolder">Cena:</h5>
-                        <p class="card-text"></p>
+                        <h5 class="card-title" >Cena:<span class="bolder" th:text="${oneRealEstate.price}"></span></h5>
+                    </div>
+                    
+                     <div class="card-body">
+                        <h5 class="card-title" >Najam/Prodaja: <span class="bolder" th:text="${oneRealEstate.rentOrBuy}"></span></h5>
                     </div>
                 </div>
             </div>
-
-
 
 
             <!--Buttons for buyers-->
@@ -105,11 +102,49 @@
                     <button type="button" class="btn btn-bigger">Kupi nekretninu</button>
                 </div>
 
-            <div id="map"></div>
+          <!--   <div id="map"></div>
             <script>(g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })
                     ({ key: "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg", v: "weekly" });
-            </script>
-            <script src="/js/map_functionality.js"></script>
+            
+            (g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })({
+                key: "",
+                v: "weekly",
+                // Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).
+                // Add other bootstrap parameters as needed, using camel case.
+            });
+
+            // Initialize and add the map
+            let map;
+
+            async function initMap() {
+            	
+            	
+                // The location of Uluru
+                const position = { lat: -25.344, lng: 131.031 };
+                // Request needed libraries.
+                //@ts-ignore
+                const { Map } = await google.maps.importLibrary("maps");
+                const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+                // The map, centered at Uluru
+                map = new Map(document.getElementById("map"), {
+                    zoom: 4,
+                    center: position,
+                    mapId: "DEMO_MAP_ID",
+                });
+
+                // The marker, positioned at Uluru
+                const marker = new AdvancedMarkerElement({
+                    map: map,
+                    position: position,
+                    title: "Uluru",
+                });
+            }
+
+            initMap();
+            </script> -->
+            
+           <!--  <script src="/js/map_functionality.js"></script> -->
 
 
             <div class="container rating-container">
@@ -131,8 +166,8 @@
                         </div>
                     </div>
 
-                    <div class="col-md-12 text-center">
-                        <button type="button" class="btn ">Sacuvaj</button>
+                    <div class="col-md-8">
+                        <button type="button" class="btn btn-bigger">Sacuvaj</button>
                     </div>
                 </div>
             </div>

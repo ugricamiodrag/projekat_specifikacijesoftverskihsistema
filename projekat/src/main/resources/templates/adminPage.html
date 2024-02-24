@@ -22,11 +22,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link white-font" href="#">Home<span class="sr-only"></span></a>
+                <a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
                 <a class="nav-item nav-link white-font" href="#">Register</a>
                 <a class="nav-item nav-link white-font" href="#">Log out</a>
                 <a class="nav-item nav-link white-font" href="#">Korisnici</a>
-                <a class="nav-item nav-link white-font" href="#">Nekretnine</a>
+                <a class="nav-item nav-link white-font" href="/realestate/adminPage">Nekretnine</a>
                 <a class="nav-item nav-link white-font" href="#">Izvestaji</a>
 
             </div>
@@ -40,81 +40,36 @@
       <thead>
         <tr>
           <th scope="col"></th>
-          <th scope="col">Ime</th>
-          <th scope="col">Prezime</th>
-          <th scope="col">Kontakt Telefon</th>
-          <th scope="col">Adresa</th>
+          <th scope="col">Tip</th>
+          <th scope="col">Lokacija</th>
+          <th scope="col">Cena</th>
+          <th scope="col">Najam/Prodaja</th>
           <th scope="col"></th>
           <th scope="col"></th>
 
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <form method="post" action="">
+        <tr th:each="estate, iterStat : ${realEstates}">
+          <form method="post" action="delete">
 
-            <th scope="row">1</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-            <td>twitter</td>
+            <th scope="row" th:text="${iterStat.count}">1</th>
+            <td th:text="${estate.estateType}">Larry</td>
+            <td th:text="${estate.location}">the Bird</td>
+            <td th:text="${estate.price}">@twitter</td>
+            <td th:text="${estate.rentOrBuy}">twitter</td>
 
-            <td><a href="" class="link bolder">Edit</a></td>
-            <td><button class="btn ">Delete</button></td>
-            <input type="hidden" value="" name="id">
-
-          </form>
-        </tr>
-        <tr>
-          <form method="post" action="">
-
-            <th scope="row">2</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-            <td>twitter</td>
-
-            <td><a href="" class="link bolder">Edit</a></td>
-            <td><button class="btn ">Delete</button></td>
-            <input type="hidden" value="" name="id">
-
-          </form>
-        </tr>
-        <tr>
-          <form method="post" action="">
-
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-            <td>twitter</td>
-
-            <td><a href="" class="link bolder">Edit</a></td>
+            <td><a th:href="@{edit(id=${estate.id})}" class="link bolder">Edit</a></td>
             <td><button class="btn">Delete</button></td>
-            <input type="hidden" value="" name="id">
-          </form>
-        </tr>
-        <tr>
-          <form method="post" action="">
-
-            <th scope="row">4</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-            <td>twitter</td>
-
-            <td><a href="" class="link bolder">Edit</a></td>
-            <td><button class="btn">Delete</button></td>
-            <input type="hidden" value="" name="id">
+            <input type="hidden" th:value="${estate.id}" name="id">
 
           </form>
         </tr>
+      
       </tbody>
     </table>
     <div class="add">
-      <button class="btn">
-        <a class="" href="destinacija/add">Dodaj</a>
-      </button>
+        <a class="btn" href="add">Dodaj</a>
     </div>
   </div>
 

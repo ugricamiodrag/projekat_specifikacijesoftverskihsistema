@@ -145,10 +145,13 @@
                             <!--Information about nekretnina-->
                             <div class="col-md-8">
                                 <div class="text-container">
-                                    <a class="link" th:href="@{'/realestate/viewOne'}">
-                                        <h5 class="card-title bolder text-orange">Novi Sad</h5>
+                                    <a class="link" th:href="@{'/realestate/viewOne?id=' + ${estate.id}}">
+                                        <h5 class="card-title bolder text-orange">Novi Sad, Novo Naselje</h5>
                                     </a>
-                                    <p class="card-text"><span class="bolder">Cena: </span></p>
+                                    <p class="card-text"><span class="bolder">Opis: </span>This card has supporting text             
+                                        below as a
+                                        natural lead-in to additional content.</p>
+                                    <p class="card-text"><span class="bolder">Cena: </span>400 000</p>
                                     <p class="card-text"><span class="bolder">Povrsina: </span>400m2</p>
                                     <p class="card-text"><span class="bolder">Tip: </span>STAN</p>
                                 </div>

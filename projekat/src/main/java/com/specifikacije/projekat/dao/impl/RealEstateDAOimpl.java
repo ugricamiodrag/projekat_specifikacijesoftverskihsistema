@@ -48,13 +48,13 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 			boolean isActive = resultSet.getBoolean(index++);
 			
 			RealEstate estate = estates.get(id);
-		/*	if (estate == null) {
-				estate = new RealEstate(id, type, location, picture, price, rentOrBuy, isActive);
-				estates.put(estate.getId(), estate); // dodavanje u kolekciju
-			}
+//			if (estate == null) {
+//				estate = new RealEstate(id, type, null, location, picture, price, rentOrBuy, null, isActive);
+//				estates.put(estate.getId(), estate); // dodavanje u kolekciju
+//			}
 			
-			TODO Kada uradimo bazu
-			*/
+//			TODO Kada uradimo bazu
+			
 		}
 
 		public List<RealEstate> getRealEstates() {
@@ -100,7 +100,7 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;
-				preparedStatement.setString(index++, realEstate.getType().toString());
+				preparedStatement.setString(index++, realEstate.getEstateType().toString());
 				preparedStatement.setString(index++, realEstate.getLocation());
 				preparedStatement.setString(index++, realEstate.getPicture());
 				preparedStatement.setDouble(index++, realEstate.getPrice());
@@ -120,7 +120,7 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 	@Override
 	public void update(RealEstate realEstate) {
 		String sql = "UPDATE estate SET type = ?, location = ?, picture = ?, price=?, rentOrBuy=?, isActive=? WHERE id = ?";	
-		jdbcTemplate.update(sql, realEstate.getType().toString(), realEstate.getLocation(), realEstate.getPicture(), realEstate.getPrice(), realEstate.getRentOrBuy().toString(), realEstate.getIsActive(), realEstate.getId());
+		jdbcTemplate.update(sql, realEstate.getEstateType().toString(), realEstate.getLocation(), realEstate.getPicture(), realEstate.getPrice(), realEstate.getRentOrBuy().toString(), realEstate.getIsActive(), realEstate.getId());
 			
 	}
 
