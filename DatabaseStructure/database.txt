@@ -1,19 +1,125 @@
-USE realestate
-CREATE TABLE estate(
-    id INT(11) NOT NULL AUTO_INCREMENT,
-    type VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-    location VARCHAR(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-    picture VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-    price DOUBLE NOT NULL,
-    rentOrBuy VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-    isActive TINYINT(1) NOT NULL,
-    PRIMARY KEY (id)
+USE realestate;
+
+
+CREATE TABLE administrator(
+	id bigint NOT NULL auto_increment,
+    first_name VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    surname VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    phone VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    email VARCHAR(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    address VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+	PRIMARY KEY(id)
 );
 
-Test data :
+CREATE TABLE agency_owner(
+	id bigint NOT NULL auto_increment,
+    first_name VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    surname VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    phone VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    email VARCHAR(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    address VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    primary key(id)
+);
 
-INSERT INTO estate (type, location, picture, price, rentOrBuy, isActive)
-VALUES
-    ('Apartment', 'Novi Sad, Novo Naselje', 'nekretnina.jpg', 2000.00, 'Rent', 1),
-    ('House', 'Novi Sad, Liman 1', 'nekretnine.jpg', 500000.00, 'Buy', 1),
-    
+CREATE TABLE agency(
+	id BIGINT NOT NULL auto_increment,
+    agency_name VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+	agency_owner_id BIGINT NOT NULL,
+    primary key(id),
+    foreign key(agency_owner_id) references agency_owner(id)
+);
+
+CREATE TABLE agent(
+	id bigint NOT NULL auto_increment,
+    first_name VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    surname VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    phone VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    email VARCHAR(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    address VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    agency_id BIGINT NOT NULL,
+    primary key(id),
+    foreign key(agency_id) references agency(id)
+);
+
+CREATE TABLE users(
+	id bigint NOT NULL auto_increment,
+    first_name VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    surname VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    phone VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    email VARCHAR(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    address VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+	PRIMARY KEY(id)
+);
+
+
+
+create table rating(
+	id BIGINT NOT NULL auto_increment,
+    user_id BIGINT NOT NULL,
+    agent_id bigint NOT NULL,
+    grade FLOAT NOT NULL,
+    rating_comment LONGTEXT,
+    primary key(id),
+    foreign key(user_id) references users(id),
+    foreign key(agent_id) references agent(id)
+);
+
+CREATE TABLE estate(
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    estate_type VARCHAR(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+	agent_id bigint NOT NULL,
+	location VARCHAR(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    picture VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    price DOUBLE NOT NULL,
+    rentOrBuy VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+    numOfVisitReq BIGINT,
+    grade FLOAT,
+    viewNumber BIGINT,
+    isActive TINYINT(1) NOT NULL,
+    PRIMARY KEY (id),
+    foreign key(agent_id) references agent(id)
+);
+create table scheduled_tour(
+	id bigint not null auto_increment,
+    start_time timestamp not null,
+    end_time timestamp not null,
+    user_id bigint not null,
+    estate_id bigint not null,
+    is_approved bit,
+    primary key(id),
+    foreign key(user_id) references users(id),
+    foreign key(estate_id) references estate(id)
+);
+
+-- Test data :
+INSERT INTO administrator (first_name, surname, phone, email, address) 
+VALUES ('John', 'Doe', '123456789', 'john@example.com', '123 Main St');
+
+
+INSERT INTO agency_owner (first_name, surname, phone, email, address) 
+VALUES ('Jane', 'Smith', '987654321', 'jane@example.com', '456 Elm St');
+
+
+INSERT INTO agency (agency_name, agency_owner_id) 
+VALUES ('Best Agency', 1);
+
+
+INSERT INTO agent (first_name, surname, phone, email, address, agency_id) 
+VALUES ('Alice', 'Johnson', '456789123', 'alice@example.com', '789 Oak St', 1);
+
+
+INSERT INTO users (first_name, surname, phone, email, address) 
+VALUES ('Michael', 'Williams', '789123456', 'michael@example.com', '321 Pine St');
+
+
+
+INSERT INTO rating (user_id, agent_id, grade, rating_comment) 
+VALUES (1, 1, 4.5, 'Great agent! Very helpful.');
+
+
+INSERT INTO estate (estate_type, agent_id, location, picture, price, rentOrBuy, numOfVisitReq, grade, viewNumber, isActive) 
+VALUES ('House', 1, '123 Elm St', 'house.jpg', 250000, 'Buy', 5, 4.8, 100, 1);
+
+
+INSERT INTO scheduled_tour (start_time, end_time, user_id, estate_id, is_approved) 
+VALUES ('2024-02-23 10:00:00', '2024-02-23 11:00:00', 1, 1, 1);

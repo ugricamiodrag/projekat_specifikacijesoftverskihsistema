@@ -10,7 +10,9 @@ public class RealEstate {
 	private String picture;
 	private Double price;
 	private RentOrBuy rentOrBuy;
-	private Popularity popularity;
+	private Integer numberOfVisitRequests;
+	private Double grade;
+	private Double viewNumber;
 	private Boolean isActive;
 	
 	public RealEstate() {
@@ -18,34 +20,47 @@ public class RealEstate {
 	
 
 
-	public RealEstate(RealEstateType type, Agent agent, String location, String picture, Double price,
-			RentOrBuy rentOrBuy, Popularity popularity, Boolean isActive) {
+
+
+
+	public RealEstate(RealEstateType estateType, Agent agent, String location, String picture, Double price,
+			RentOrBuy rentOrBuy, Integer numberOfVisitRequests, Double grade, Double viewNumber, Boolean isActive) {
 		super();
-		this.estateType = type;
+		this.estateType = estateType;
 		this.agent = agent;
 		this.location = location;
 		this.picture = picture;
 		this.price = price;
 		this.rentOrBuy = rentOrBuy;
-		this.popularity = popularity;
+		this.numberOfVisitRequests = numberOfVisitRequests;
+		this.grade = grade;
+		this.viewNumber = viewNumber;
 		this.isActive = isActive;
 	}
 
 
 
-	public RealEstate(Long id, RealEstateType type, Agent agent, String location, String picture, Double price,
-			RentOrBuy rentOrBuy, Popularity popularity, Boolean isActive) {
+
+
+
+	public RealEstate(Long id, RealEstateType estateType, Agent agent, String location, String picture, Double price,
+			RentOrBuy rentOrBuy, Integer numberOfVisitRequests, Double grade, Double viewNumber, Boolean isActive) {
 		super();
 		this.id = id;
-		this.estateType = type;
+		this.estateType = estateType;
 		this.agent = agent;
 		this.location = location;
 		this.picture = picture;
 		this.price = price;
 		this.rentOrBuy = rentOrBuy;
-		this.popularity = popularity;
+		this.numberOfVisitRequests = numberOfVisitRequests;
+		this.grade = grade;
+		this.viewNumber = viewNumber;
 		this.isActive = isActive;
 	}
+
+
+
 
 
 
@@ -112,14 +127,64 @@ public class RealEstate {
 
 
 
-	public Popularity getPopularity() {
-		return popularity;
+
+
+	public Integer getNumberOfVisitRequests() {
+		return numberOfVisitRequests;
 	}
 
 
 
-	public void setPopularity(Popularity popularity) {
-		this.popularity = popularity;
+
+
+
+	public void setNumberOfVisitRequests(Integer numberOfVisitRequests) {
+		this.numberOfVisitRequests = numberOfVisitRequests;
+	}
+
+
+
+
+
+
+	public Double getGrade() {
+		return grade;
+	}
+
+
+
+
+
+
+	public void setGrade(Double grade) {
+		this.grade = grade;
+	}
+
+
+
+
+
+
+	public Double getViewNumber() {
+		return viewNumber;
+	}
+
+
+
+
+
+
+	public void setViewNumber(Double viewNumber) {
+		this.viewNumber = viewNumber;
+	}
+
+
+
+
+
+
+	public void setEstateType(RealEstateType estateType) {
+		this.estateType = estateType;
 	}
 
 

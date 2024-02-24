@@ -4,7 +4,8 @@ import java.time.LocalDateTime;
 
 public class ScheduledTour {
 	private Long id;
-	private LocalDateTime dateTime;
+	private LocalDateTime startTime;
+	private LocalDateTime endTime;
 	private User user;
 	private RealEstate realEstate;
 	private Boolean isApproved = false;
@@ -14,18 +15,37 @@ public class ScheduledTour {
 	
 	
 	
+	public ScheduledTour(Long id, LocalDateTime startTime, LocalDateTime endTime, User user, RealEstate realEstate,
+			Boolean isApproved) {
+		super();
+		this.id = id;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.user = user;
+		this.realEstate = realEstate;
+		this.isApproved = isApproved;
+	}
+
+
+
+	public ScheduledTour(LocalDateTime startTime, LocalDateTime endTime, User user, RealEstate realEstate,
+			Boolean isApproved) {
+		super();
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.user = user;
+		this.realEstate = realEstate;
+		this.isApproved = isApproved;
+	}
+
+
+
 	public Long getId() {
 		return id;
 	}
 	
 
-	public ScheduledTour(LocalDateTime dateTime, User user, RealEstate realEstate, Boolean isApproved) {
-		super();
-		this.dateTime = dateTime;
-		this.user = user;
-		this.realEstate = realEstate;
-		this.isApproved = isApproved;
-	}
+	
 
 
 
@@ -53,26 +73,14 @@ public class ScheduledTour {
 
 
 
-	public ScheduledTour(Long id, LocalDateTime dateTime, User user, RealEstate realEstate, Boolean isApproved) {
-		super();
-		this.id = id;
-		this.dateTime = dateTime;
-		this.user = user;
-		this.realEstate = realEstate;
-		this.isApproved = isApproved;
-	}
+
 
 
 
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public LocalDateTime getDateTime() {
-		return dateTime;
-	}
-	public void setDateTime(LocalDateTime dateTime) {
-		this.dateTime = dateTime;
-	}
+	
 	public Boolean getIsApproved() {
 		return isApproved;
 	}
@@ -80,8 +88,28 @@ public class ScheduledTour {
 		this.isApproved = isApproved;
 	}
 
-	@Override
-	public String toString() {
-		return "ScheduledTour [id=" + id + ", dateTime=" + dateTime + ", isApproved=" + isApproved + "]";
+
+
+	public LocalDateTime getStartTime() {
+		return startTime;
+	}
+
+
+
+	public void setStartTime(LocalDateTime startTime) {
+		this.startTime = startTime;
+	}
+
+
+
+	public LocalDateTime getEndTime() {
+		return endTime;
+	}
+
+
+
+	public void setEndTime(LocalDateTime endTime) {
+		this.endTime = endTime;
 	}
 }
+
