@@ -33,8 +33,15 @@ import com.specifikacije.projekat.service.impl.RealEstateServiceImpl;
 @Repository
 @Primary
 public class ScheduledTourDAOimpl implements ScheduledTourDAO {
+	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private RealEstateService estateService;
 	
 	private class ScheduledTourCallBackHandler implements RowCallbackHandler {
 
@@ -48,12 +55,10 @@ public class ScheduledTourDAOimpl implements ScheduledTourDAO {
 			LocalDateTime end_time = resultSet.getObject(index++, LocalDateTime.class);
 			Long user_id = resultSet.getLong(index++);
 			
-			UserService userService = new UserServiceImpl();
 			User user = userService.findOne(user_id);
 			
 			Long estate_id = resultSet.getLong(index++);
 			
-			RealEstateService estateService = new RealEstateServiceImpl();
 			RealEstate estate = estateService.findOne(estate_id);
 			
 			Boolean isApproved = resultSet.getBoolean(index++);

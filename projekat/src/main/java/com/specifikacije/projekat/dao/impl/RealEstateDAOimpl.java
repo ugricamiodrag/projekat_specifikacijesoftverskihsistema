@@ -20,9 +20,12 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.specifikacije.projekat.dao.RealEstateDAO;
+import com.specifikacije.projekat.model.Agent;
 import com.specifikacije.projekat.model.RealEstate;
 import com.specifikacije.projekat.model.RealEstateType;
 import com.specifikacije.projekat.model.RentOrBuy;
+import com.specifikacije.projekat.service.AgentService;
+
 
 @Repository
 @Primary
@@ -30,6 +33,9 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	private AgentService agentService;
 	
 	private class RealEstateCallBackHandler implements RowCallbackHandler {
 
@@ -40,18 +46,25 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 			int index = 1;
 			Long id = resultSet.getLong(index++);
 			RealEstateType type = RealEstateType.valueOf(resultSet.getString(index++));
-			
+			Long agent_id = resultSet.getLong(index++);
+			System.out.println("Agent id je " + agent_id);
+			Agent agent = agentService.findOne(agent_id);
+			System.out.println("Agent je " + agent);
+
 			String location = resultSet.getString(index++);
 			String picture = resultSet.getString(index++);
 			Double price = resultSet.getDouble(index++);
 			RentOrBuy rentOrBuy = RentOrBuy.valueOf(resultSet.getString(index++));
+			Integer numOfVisitReq = resultSet.getInt(index++);
+			Double grade = resultSet.getDouble(index++);
+			Double viewNumber = resultSet.getDouble(index++);
 			boolean isActive = resultSet.getBoolean(index++);
 			
 			RealEstate estate = estates.get(id);
-//			if (estate == null) {
-//				estate = new RealEstate(id, type, null, location, picture, price, rentOrBuy, null, isActive);
-//				estates.put(estate.getId(), estate); // dodavanje u kolekciju
-//			}
+			if (estate == null) {
+				estate = new RealEstate(id, type, agent, location, picture, price, rentOrBuy, numOfVisitReq, grade, viewNumber, isActive);
+				estates.put(estate.getId(), estate); // dodavanje u kolekciju
+			}
 			
 //			TODO Kada uradimo bazu
 			
@@ -96,15 +109,19 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 			
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				String sql = "INSERT INTO estate (type, location, picture, price, rentOrBuy, isActive) VALUES (?, ? ,?, ?, ?, ?)";
+				String sql = "INSERT INTO estate (type, agent_id, location, picture, price, rentOrBuy, numOfVisitReq, grade, viewNumber, isActive) VALUES (?, ? ,?, ?, ?, ?)";
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;
 				preparedStatement.setString(index++, realEstate.getEstateType().toString());
+				preparedStatement.setLong(index++, realEstate.getAgent().getId());
 				preparedStatement.setString(index++, realEstate.getLocation());
 				preparedStatement.setString(index++, realEstate.getPicture());
 				preparedStatement.setDouble(index++, realEstate.getPrice());
 				preparedStatement.setString(index++, realEstate.getRentOrBuy().toString());
+				preparedStatement.setInt(index++, realEstate.getNumberOfVisitRequests());
+				preparedStatement.setDouble(index++, realEstate.getGrade());
+				preparedStatement.setDouble(index++, realEstate.getViewNumber());
 				preparedStatement.setBoolean(index++, realEstate.getIsActive());
 
 
@@ -119,8 +136,8 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 	@Transactional
 	@Override
 	public void update(RealEstate realEstate) {
-		String sql = "UPDATE estate SET type = ?, location = ?, picture = ?, price=?, rentOrBuy=?, isActive=? WHERE id = ?";	
-		jdbcTemplate.update(sql, realEstate.getEstateType().toString(), realEstate.getLocation(), realEstate.getPicture(), realEstate.getPrice(), realEstate.getRentOrBuy().toString(), realEstate.getIsActive(), realEstate.getId());
+		String sql = "UPDATE estate SET type = ?, agent_id = ?, location = ?, picture = ?, price = ?, rentOrBuy = ?, numOfVisitReq = ?, grade = ?, viewNumber = ?,  isActive = ? WHERE id = ?";	
+		jdbcTemplate.update(sql, realEstate.getEstateType().toString(), realEstate.getAgent().getId(), realEstate.getLocation(), realEstate.getPicture(), realEstate.getPrice(), realEstate.getRentOrBuy().toString(), realEstate.getNumberOfVisitRequests(), realEstate.getGrade(), realEstate.getViewNumber(), realEstate.getIsActive(), realEstate.getId());
 			
 	}
 

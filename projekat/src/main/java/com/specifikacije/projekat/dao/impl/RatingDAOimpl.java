@@ -36,6 +36,12 @@ public class RatingDAOimpl implements RatingDAO {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private AgentService agentService;
+	
 	private class RatingCallBackHandler implements RowCallbackHandler {
 
 		private Map<Long, Rating> ratings = new LinkedHashMap<>();
@@ -51,7 +57,6 @@ public class RatingDAOimpl implements RatingDAO {
 			
 			Long agent_id = resultSet.getLong(index++);
 			
-			AgentService agentService = new AgentServiceImpl();
 			Agent agent = agentService.findOne(agent_id);
 			
 			Double grade = resultSet.getDouble(index++);

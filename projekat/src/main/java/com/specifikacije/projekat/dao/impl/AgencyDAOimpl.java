@@ -33,6 +33,10 @@ public class AgencyDAOimpl implements AgencyDAO {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
+
+	@Autowired
+	private AgencyOwnerService ownerService;
+	
 	private class AgencyCallBackHandler implements RowCallbackHandler {
 
 		private Map<Long, Agency> agencies = new LinkedHashMap<>();
@@ -44,14 +48,13 @@ public class AgencyDAOimpl implements AgencyDAO {
 			String agency_name = resultSet.getString(index++);
 			Long agency_owner_id = resultSet.getLong(index++);
 			
-			AgencyOwnerService ownerService = new AgencyOwnerServiceImpl();
 			AgencyOwner agencyOwner = ownerService.findOne(agency_owner_id);
 				
-//			Agency agency = agencies.get(id);
-//			if (agency == null) {
-//				agency = new Agency(id, agency_name, agencyOwner, null);
-//				agencies.put(agency.getId(), agency); // dodavanje u kolekciju
-//			}
+			Agency agency = agencies.get(id);
+			if (agency == null) {
+				agency = new Agency(id, agency_name, agencyOwner, null);
+				agencies.put(agency.getId(), agency); // dodavanje u kolekciju
+			}
 			
 //			TODO Kada uradimo bazu
 		}

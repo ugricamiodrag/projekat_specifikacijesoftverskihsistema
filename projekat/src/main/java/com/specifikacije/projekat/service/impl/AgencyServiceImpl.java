@@ -3,11 +3,13 @@ package com.specifikacije.projekat.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.specifikacije.projekat.dao.impl.AgencyDAOimpl;
 import com.specifikacije.projekat.model.Agency;
 import com.specifikacije.projekat.service.AgencyService;
 
+@Service
 public class AgencyServiceImpl implements AgencyService {
 
 	@Autowired

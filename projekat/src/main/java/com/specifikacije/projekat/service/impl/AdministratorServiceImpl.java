@@ -3,11 +3,13 @@ package com.specifikacije.projekat.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.specifikacije.projekat.dao.impl.AdministratorDAOimpl;
 import com.specifikacije.projekat.model.Administrator;
 import com.specifikacije.projekat.service.AdministratorService;
 
+@Service
 public class AdministratorServiceImpl implements AdministratorService {
 
 	@Autowired

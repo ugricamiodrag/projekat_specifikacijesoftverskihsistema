@@ -3,13 +3,14 @@ package com.specifikacije.projekat.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.specifikacije.projekat.dao.impl.UserDAOimpl;
 import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.UserService;
 
 
-
+@Service
 public class UserServiceImpl implements UserService {
 
 	@Autowired
