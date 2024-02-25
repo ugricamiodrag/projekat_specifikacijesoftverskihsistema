@@ -7,6 +7,7 @@ public class Person {
 	private String phoneNumber;
 	private String email;
 	private String address;
+	private boolean isActive;
 	
 	public Person() {
 	}
@@ -19,6 +20,16 @@ public class Person {
 		this.email = email;
 		this.address = address;
 	}
+	
+	public Person(String name, String surname, String phoneNumber, String email, String address, boolean isActive) {
+		super();
+		this.name = name;
+		this.surname = surname;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.address = address;
+		this.setActive(isActive);
+	}
 
 	public Person(Long id, String name, String surname, String phoneNumber, String email, String address) {
 		super();
@@ -28,6 +39,18 @@ public class Person {
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.address = address;
+	}
+	
+	public Person(Long id, String name, String surname, String phoneNumber, String email, String address, boolean isActive) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.surname = surname;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.address = address;
+		this.setActive(isActive);
+
 	}
 	
 	public Long getId() {
@@ -71,5 +94,13 @@ public class Person {
 	public String toString() {
 		return "Person [id=" + id + ", name=" + name + ", surname=" + surname + ", phoneNumber=" + phoneNumber
 				+ ", email=" + email + ", address=" + address + "]";
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 }

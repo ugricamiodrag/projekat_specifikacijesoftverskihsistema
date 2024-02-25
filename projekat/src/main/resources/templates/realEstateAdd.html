@@ -55,6 +55,20 @@
             <label class="bolder" for="picture">Slika:</label>
             <input type="text" value="" name="picture" class="form-control"  >
         </div>
+        <div class="form-group">
+            <label class="bolder" for="surface">Povrsina:</label>
+            <input type="number" value="" name="surface" class="form-control"  >
+        </div>
+        <div class="form-group">
+            <label class="bolder" for="agent">Agent:</label>
+			<select name="agentId" id="agentId" class="form-control">
+        		<option th:each="agent : ${agents}"
+                th:value="${agent.id}" 
+                th:text="${agent.name}"></option>
+              	</option>
+    	 	</select>          </div>
+        
+        
         
         <button type="submit" class="btn">Sacuvaj</button>
        

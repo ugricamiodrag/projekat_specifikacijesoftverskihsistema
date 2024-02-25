@@ -14,7 +14,8 @@ public class RealEstate {
 	private Double grade;
 	private Double viewNumber;
 	private Boolean isActive;
-	
+	private Integer surface; // dodato zbog pretrage po povrsini
+
 	public RealEstate() {
 	}
 	
@@ -57,6 +58,23 @@ public class RealEstate {
 		this.grade = grade;
 		this.viewNumber = viewNumber;
 		this.isActive = isActive;
+	}
+	
+	public RealEstate(Long id, RealEstateType estateType, Agent agent, String location, String picture, Double price,
+			RentOrBuy rentOrBuy, Integer numberOfVisitRequests, Double grade, Double viewNumber, Boolean isActive, Integer surface) {
+		super();
+		this.id = id;
+		this.estateType = estateType;
+		this.agent = agent;
+		this.location = location;
+		this.picture = picture;
+		this.price = price;
+		this.rentOrBuy = rentOrBuy;
+		this.numberOfVisitRequests = numberOfVisitRequests;
+		this.grade = grade;
+		this.viewNumber = viewNumber;
+		this.isActive = isActive;
+		this.surface = surface;
 	}
 
 
@@ -186,6 +204,28 @@ public class RealEstate {
 	public void setEstateType(RealEstateType estateType) {
 		this.estateType = estateType;
 	}
+
+
+
+
+
+
+	public Integer getSurface() {
+		return surface;
+	}
+
+
+
+
+
+
+	public void setSurface(Integer surface) {
+		this.surface = surface;
+	}
+
+
+
+
 
 
 

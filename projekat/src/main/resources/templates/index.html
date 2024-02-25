@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="/css/index.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
     <title>Agencija za Nekretnine</title>
 </head>
@@ -13,7 +13,7 @@
 <body>
     <!--navbar-->
     <nav class="navbar navbar-expand-lg black-bg">
-        <img class="img" src="images/keyToTheCastleLogoOrangeWhiteWithTitle.png">
+        <img class="img" src="/images/keyToTheCastleLogoOrangeWhiteWithTitle.png">
         <!-- add above logo -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,9 +21,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link white-font" href="#">Home<span class="sr-only"></span></a>
-                <a class="nav-item nav-link white-font" href="#">Register</a>
-                <a class="nav-item nav-link white-font" href="#">Log in</a>
+                <a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
+                <a class="nav-item nav-link white-font" href="registration.html">Register</a>
+                <a class="nav-item nav-link white-font" href="/login">Log in</a>
                 <a class="nav-item nav-link white-font" href="/realestate/adminPage">Admin</a>
                 <a class="nav-item nav-link white-font" href="#"><img class="small" src="/images/cart.png"></img></a>
 
@@ -41,11 +41,10 @@
                 <div class="sidebar">
                     <h3 class="bolder text-orange">Filter Options</h3>
                     <form action="" method="get"> <!--Add action and method here -->
-                        <p><span class="bolder">Lokacija:</span></span></p>
+                        <p><span class="bolder">Lokacija:</span></p>
 
                         <div class="form-inline" >
                             <input class="shadow form-control mr-sm-2" type="search">
-
                         </div>
 
                         <p><span class="bolder">Povrsina:</span></p>
@@ -130,30 +129,57 @@
 
                                 <!--Images here-->
                                 <div class="overlay-container">
-                                    <a href="realestate/viewOne">
+                                    <a th:href="@{'/realestate/viewOne?id=' + ${estate.id}}">
                                         <img class="card-img-top smaller" src="/images/nekretnina.jpeg"
                                             alt="Card image cap">
                                     </a>
-                                    <a href="">
+                                    <a href="" class="like-dislike">
                                         <!--Like/Dislike heart here-->
-                                        <img class="card-img-top small overlay" src="images/heart_broken.png"
-                                            alt="Card image cap">
+                                        <img class="card-img-top small overlay heart-normal" src="/images/heart.png" alt="Card image cap">
+                                        
                                     </a>
                                 </div>
                             </div>
+                            
+                            <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                const heartIcons = document.querySelectorAll(".like-dislike img");
+
+                                heartIcons.forEach(icon => {
+                                    icon.addEventListener("mouseenter", function() {
+                                        if (icon.classList.contains("heart-normal")) {
+                                            icon.style.display = "none";
+                                            icon.nextElementSibling.style.display = "block";
+                                        } else if (icon.classList.contains("heart-filled")) {
+                                            icon.style.display = "none";
+                                            icon.nextElementSibling.nextElementSibling.style.display = "block";
+                                        }
+                                    });
+
+                                    icon.addEventListener("mouseleave", function() {
+                                        if (icon.classList.contains("heart-normal")) {
+                                            icon.style.display = "block";
+                                            icon.nextElementSibling.style.display = "none";
+                                        } else if (icon.classList.contains("heart-filled")) {
+                                            icon.style.display = "block";
+                                            icon.previousElementSibling.style.display = "block";
+                                        }
+                                    });
+                                });
+                            });
+
+                            </script>
 
                             <!--Information about nekretnina-->
                             <div class="col-md-8">
                                 <div class="text-container">
                                     <a class="link" th:href="@{'/realestate/viewOne?id=' + ${estate.id}}">
-                                        <h5 class="card-title bolder text-orange">Novi Sad, Novo Naselje</h5>
+                                        <h5 class="card-title bolder text-orange" th:text="${estate.location}">Novi Sad, Novo Naselje</h5>
                                     </a>
-                                    <p class="card-text"><span class="bolder">Opis: </span>This card has supporting text             
-                                        below as a
-                                        natural lead-in to additional content.</p>
-                                    <p class="card-text"><span class="bolder">Cena: </span>400 000</p>
-                                    <p class="card-text"><span class="bolder">Povrsina: </span>400m2</p>
-                                    <p class="card-text"><span class="bolder">Tip: </span>STAN</p>
+                                    
+                                    <p class="card-text"><span class="bolder">Cena: </span><span th:text="${estate.price}"></span></p>
+                                    <p class="card-text"><span class="bolder">Povrsina: </span><span th:text="${estate.surface}"></span></p>
+                                    <p class="card-text"><span class="bolder">Tip: </span><span th:text="${estate.rentOrBuy}"></span></p>
                                 </div>
                             </div>
 

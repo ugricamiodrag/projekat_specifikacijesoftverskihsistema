@@ -101,14 +101,47 @@ body{
 }
 
 
-.overlay-container {
+/*.overlay-container {
     position: relative;
     display: inline-block;
+}*/
+
+.overlay-container {
+    position: relative;
 }
+
+
+.overlay-container:hover .like-dislike {
+    display: block;
+}
+
+.like-dislike {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 15%; 
+    height: auto;
+    opacity: 1; 
+    margin: 2%;
+    transition: opacity 0.3s ease-in-out; 
+}
+
+.like-dislike img {
+    width: 40px; 
+    height: auto;
+}
+
+.like-dislike:hover img {
+    cursor: pointer;
+}
+
 
 .text-container{
     margin-left: 20px;
 }
+
+
 
 
 .overlay {
@@ -121,6 +154,7 @@ body{
     margin: 2%;
     transition: opacity 0.3s ease-in-out; 
 }
+
 
 *{
     font-size: 100%;

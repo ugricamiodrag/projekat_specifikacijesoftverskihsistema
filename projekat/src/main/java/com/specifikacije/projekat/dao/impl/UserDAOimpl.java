@@ -42,10 +42,11 @@ public class UserDAOimpl implements UserDAO {
 			String phone = resultSet.getString(index++);
 			String email = resultSet.getString(index++);
 			String address = resultSet.getString(index++);
+			boolean isActive = resultSet.getBoolean(index++);
 				
 			User user = users.get(id);
 			if (user == null) {
-				user = new User(id, first_name, surname, phone, email, address);
+				user = new User(id, first_name, surname, phone, email, address, isActive);
 				users.put(user.getId(), user); // dodavanje u kolekciju
 			}
 			
@@ -87,7 +88,7 @@ public class UserDAOimpl implements UserDAO {
 			
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				String sql = "INSERT INTO users (first_name, surname, phone, email, address) VALUES (?, ? ,?, ?, ?)";
+				String sql = "INSERT INTO users (first_name, surname, phone, email, address, is_active) VALUES (?, ? ,?, ?, ?, ?)";
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;
@@ -96,6 +97,7 @@ public class UserDAOimpl implements UserDAO {
 				preparedStatement.setString(index++, user.getPhoneNumber());
 				preparedStatement.setString(index++, user.getEmail());
 				preparedStatement.setString(index++, user.getAddress());
+				preparedStatement.setBoolean(index++, user.isActive());
 
 				return preparedStatement;
 			}
@@ -108,8 +110,8 @@ public class UserDAOimpl implements UserDAO {
 	@Transactional
 	@Override
 	public void update(User user) {
-		String sql = "UPDATE users SET first_name = ?, surname = ?, phone = ?, email = ?, address = ? WHERE id = ?";	
-		jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getPhoneNumber(), user.getEmail(), user.getAddress(), user.getId());	
+		String sql = "UPDATE users SET first_name = ?, surname = ?, phone = ?, email = ?, address = ? is_active = ? WHERE id = ?";	
+		jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getPhoneNumber(), user.getEmail(), user.getAddress(), user.isActive(), user.getId());	
 	}
 
 	@Transactional

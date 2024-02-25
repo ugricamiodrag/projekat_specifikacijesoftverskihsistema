@@ -51,6 +51,10 @@ CREATE TABLE users(
 	PRIMARY KEY(id)
 );
 
+//add is_active column for blocking/unblocking users
+
+ALTER TABLE users
+ADD COLUMN is_active BOOLEAN;
 
 
 create table rating(
@@ -79,6 +83,14 @@ CREATE TABLE estate(
     PRIMARY KEY (id),
     foreign key(agent_id) references agent(id)
 );
+
+
+// za pretrazivanje po povrsini nekretnine
+
+ALTER TABLE estate
+ADD COLUMN surface INT;
+
+
 create table scheduled_tour(
 	id bigint not null auto_increment,
     start_time timestamp not null,

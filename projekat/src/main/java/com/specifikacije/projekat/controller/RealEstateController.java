@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.specifikacije.projekat.model.Agent;
 import com.specifikacije.projekat.model.RealEstate;
 import com.specifikacije.projekat.model.RealEstateType;
 import com.specifikacije.projekat.model.RentOrBuy;
+import com.specifikacije.projekat.service.AgentService;
 import com.specifikacije.projekat.service.RealEstateService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +27,9 @@ public class RealEstateController {
 
 	@Autowired
 	private RealEstateService realEstateService;
+	
+	@Autowired
+	private AgentService agentService;
 	
 	@GetMapping
 	public String showRealEstate(HttpServletRequest request, Model model) {
@@ -86,7 +91,7 @@ public class RealEstateController {
 	}
 	
 	@PostMapping("/edit")
-	public void edit(@RequestParam Long id, @RequestParam String type, @RequestParam String location, @RequestParam double price, @RequestParam String rentOrBuy, HttpServletResponse response) throws IOException {
+	public void edit(@RequestParam Long id, @RequestParam String type, @RequestParam String location, @RequestParam double price, @RequestParam String rentOrBuy, @RequestParam int surface, HttpServletResponse response) throws IOException {
 		
 
 		RealEstate d = realEstateService.findOne(id);
@@ -98,6 +103,7 @@ public class RealEstateController {
 		d.setLocation(location);
 		d.setPrice(price);
 		d.setRentOrBuy(RentOrBuy.valueOf(rentOrBuy));
+		d.setSurface(surface);
 		// TODO: set atributes
 
 		realEstateService.update(d);
@@ -109,14 +115,16 @@ public class RealEstateController {
 	}
 	
 	@GetMapping(value="/add")
-	public String add(HttpServletResponse response) throws IOException {
+	public String add(HttpServletResponse response, Model model) throws IOException {
 		
+		List<Agent> agents= agentService.findAll();
+		model.addAttribute("agents",agents);
 		return "realEstateAdd";
 		
 	}
 	
 	@PostMapping("add")
-	public void add(HttpServletResponse response, @RequestParam String picture, @RequestParam String type, @RequestParam String location, @RequestParam double price, @RequestParam String rentOrBuy) throws IOException {
+	public void add(HttpServletResponse response, @RequestParam Long agentId, @RequestParam int surface, @RequestParam String picture, @RequestParam String type, @RequestParam String location, @RequestParam double price, @RequestParam String rentOrBuy) throws IOException {
 		
 
 		RealEstate d = new RealEstate();
@@ -127,6 +135,12 @@ public class RealEstateController {
 		d.setPicture(picture);
 		d.setRentOrBuy(RentOrBuy.valueOf(rentOrBuy));
 		d.setIsActive(false);
+		d.setSurface(surface);
+		Agent agent = agentService.findOne(agentId);
+		d.setAgent(agent);
+		d.setNumberOfVisitRequests(0);
+		d.setGrade(0.0);
+		d.setViewNumber(0.0);
 
 		realEstateService.save(d);
 		

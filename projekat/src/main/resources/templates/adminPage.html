@@ -44,6 +44,7 @@
           <th scope="col">Lokacija</th>
           <th scope="col">Cena</th>
           <th scope="col">Najam/Prodaja</th>
+          <th scope="col">Povrsina</th>
           <th scope="col"></th>
           <th scope="col"></th>
 
@@ -58,6 +59,7 @@
             <td th:text="${estate.location}">the Bird</td>
             <td th:text="${estate.price}">@twitter</td>
             <td th:text="${estate.rentOrBuy}">twitter</td>
+            <td th:text="${estate.surface}">twitter</td>
 
             <td><a th:href="@{edit(id=${estate.id})}" class="link bolder">Edit</a></td>
             <td><button class="btn">Delete</button></td>
