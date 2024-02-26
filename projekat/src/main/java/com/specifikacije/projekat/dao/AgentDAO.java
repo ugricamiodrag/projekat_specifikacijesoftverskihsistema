@@ -8,6 +8,8 @@ import com.specifikacije.projekat.model.Agent;
 public interface AgentDAO {
 	public Agent findOne(Long id);
 
+	public Agent findByUsername(String username);
+
 	public List<Agent> findAll();
 
 	public void save(Agent agent);

@@ -41,4 +41,10 @@ public class AgencyOwnerServiceImpl implements AgencyOwnerService {
 		agencyOwnerDAO.update(d);		
 	}
 
+	@Override
+	public AgencyOwner findByUsername(String username) {
+		return agencyOwnerDAO.findByUsername(username);
+
+	}
+
 }

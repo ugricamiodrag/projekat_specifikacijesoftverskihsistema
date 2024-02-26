@@ -71,6 +71,8 @@ public class UserDAOimpl implements UserDAO {
 
 		return rowCallbackHandler.getUsers().get(0);
 	}
+	
+	
 
 	@Override
 	public List<User> findAll() {
@@ -90,7 +92,7 @@ public class UserDAOimpl implements UserDAO {
 			
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				String sql = "INSERT INTO users (first_name, surname, username, password, phone, email, address, is_active) VALUES (?, ?, ?, ? ,?, ?, ?, ?)";
+				String sql = "INSERT INTO users (first_name, surname, username, password, phone, email, address, isActive) VALUES (?, ?, ?, ? ,?, ?, ?, ?)";
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;
@@ -114,7 +116,7 @@ public class UserDAOimpl implements UserDAO {
 	@Transactional
 	@Override
 	public void update(User user) {
-		String sql = "UPDATE users SET first_name = ?, surname = ?, username = ?, password = ?, phone = ?, email = ?, address = ? is_active = ? WHERE id = ?";	
+		String sql = "UPDATE users SET first_name = ?, surname = ?, username = ?, password = ?, phone = ?, email = ?, address = ? isActive = ? WHERE id = ?";	
 		jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getUsername(), user.getPassword(), user.getPhoneNumber(), user.getEmail(), user.getAddress(), user.isActive(), user.getId());	
 	}
 
@@ -123,6 +125,21 @@ public class UserDAOimpl implements UserDAO {
 	public void delete(Long id) {
 		String sql = "DELETE FROM users WHERE id = ?";
 		jdbcTemplate.update(sql, id);	
+	}
+
+
+
+	@Override
+	public User findByUsername(String username) {
+		String sql = 
+				"SELECT * FROM users ck " +
+				"WHERE ck.username = ? " + 
+				"ORDER BY ck.username";
+
+		UserCallBackHandler rowCallbackHandler = new UserCallBackHandler();
+		jdbcTemplate.query(sql, rowCallbackHandler, username);
+
+		return rowCallbackHandler.getUsers().get(0);
 	}
 
 }

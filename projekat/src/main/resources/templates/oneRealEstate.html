@@ -51,7 +51,7 @@
                     </div>
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img src="/images/nekretnina.jpeg" class="d-block w-100" alt="...">
+                            <img th:src="@{/images/} + ${oneRealEstate.picture}" class="d-block w-100" alt="...">
                         </div>
                         <div class="carousel-item">
                             <img src="/images/cart.png" class="d-block w-100" alt="...">
@@ -74,7 +74,7 @@
             </div>
             <div class="col-md-8">
                 <!--Information about real estate-->
-                <div class="card">
+                <div class="card card_less">
                     <h3 class="card-header bolder text-orange" th:text="${oneRealEstate.location}">  </h3>
                    
 
@@ -87,6 +87,9 @@
                     
                      <div class="card-body">
                         <h5 class="card-title" >Najam/Prodaja: <span class="bolder" th:text="${oneRealEstate.rentOrBuy}"></span></h5>
+                    </div>
+                     <div class="card-body">
+                        <h5 class="card-title" >Tip: <span class="bolder" th:text="${oneRealEstate.estateType}"></span></h5>
                     </div>
                 </div>
             </div>

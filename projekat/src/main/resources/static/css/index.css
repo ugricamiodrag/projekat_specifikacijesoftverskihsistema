@@ -11,12 +11,22 @@
 }
 .smaller{
     height: 200px;
-    width: auto;
+    width: 260px;
+}
+#carouselExampleIndicators{
+	height: 370px;
+    width: 550px;
+}
+
+.card_less{
+	margin-left: 20%;
 }
 
 .small{
-    height: 30px;
-    width: auto;
+	 width: 35px; 
+    height: auto;
+     margin-right: 5px;
+    
 }
 .tables{
     margin: 10%;
@@ -125,15 +135,32 @@ body{
     opacity: 1; 
     margin: 2%;
     transition: opacity 0.3s ease-in-out; 
+    align-items: center;
 }
 
 .like-dislike img {
-    width: 40px; 
+    width: 35px; 
     height: auto;
+     margin-right: 5px;
 }
 
 .like-dislike:hover img {
     cursor: pointer;
+}
+
+.low_opacity{
+	opacity: 0.7;
+}
+
+
+.low_opacity:hover{
+	opacity: 1;
+}
+
+
+.heart-filled{
+	top: 1;
+    left: 1;
 }
 
 

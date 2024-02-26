@@ -55,12 +55,12 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 			String picture = resultSet.getString(index++);
 			Double price = resultSet.getDouble(index++);
 			RentOrBuy rentOrBuy = RentOrBuy.valueOf(resultSet.getString(index++));
-			Integer surface = resultSet.getInt(index++);
 			Integer numOfVisitReq = resultSet.getInt(index++);
 			Double grade = resultSet.getDouble(index++);
 			Double viewNumber = resultSet.getDouble(index++);
 			boolean isActive = resultSet.getBoolean(index++);
-			
+			Integer surface = resultSet.getInt(index++);
+
 
 			RealEstate estate = estates.get(id);
 			if (estate == null) {

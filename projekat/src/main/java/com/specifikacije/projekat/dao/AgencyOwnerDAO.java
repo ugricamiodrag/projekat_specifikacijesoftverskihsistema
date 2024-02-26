@@ -7,7 +7,9 @@ import com.specifikacije.projekat.model.AgencyOwner;
 public interface AgencyOwnerDAO {
 	
 	public AgencyOwner findOne(Long id);
-
+	
+	public AgencyOwner findByUsername(String username);
+	
 	public List<AgencyOwner> findAll();
 
 	public void save(AgencyOwner agencyOwner);

@@ -41,4 +41,9 @@ public class AdministratorServiceImpl implements AdministratorService {
 		AdministratorDAO.update(d);		
 	}
 
+	@Override
+	public Administrator findByUsername(String username) {
+		return AdministratorDAO.findByUsername(username);
+	}
+
 }

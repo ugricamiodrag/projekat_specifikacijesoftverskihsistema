@@ -71,6 +71,20 @@ public class AdministratorDAOimpl implements AdministratorDAO {
 
 		return rowCallbackHandler.getAdministrators().get(0);
 	}
+	
+	@Override
+	public Administrator findByUsername(String username) {
+		String sql = 
+				"SELECT * FROM administrator ck " +
+				"WHERE ck.username = ? " + 
+				"ORDER BY ck.username";
+
+		AdministratorCallBackHandler rowCallbackHandler = new AdministratorCallBackHandler();
+		jdbcTemplate.query(sql, rowCallbackHandler, username);
+
+		return rowCallbackHandler.getAdministrators().get(0);
+	}
+	
 
 	@Override
 	public List<Administrator> findAll() {
@@ -124,4 +138,8 @@ public class AdministratorDAOimpl implements AdministratorDAO {
 		String sql = "DELETE FROM administrator WHERE id = ?";
 		jdbcTemplate.update(sql, id);	
 	}
+
+
+
+	
 }

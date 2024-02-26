@@ -37,10 +37,10 @@ public class RegistrationController {
 	}
 	
 	@PostMapping("/register")
-	public void Register(@RequestParam String name, @RequestParam String surname, @RequestParam String phoneNumber, @RequestParam String email, @RequestParam String address, HttpServletResponse response) throws IOException {
+	public void Register(@RequestParam String name, @RequestParam String surname, @RequestParam String username, @RequestParam String password, @RequestParam String phoneNumber, @RequestParam String email, @RequestParam String address, HttpServletResponse response) throws IOException {
 		
 		
-		User newUser = new User(name, surname, phoneNumber, email, address, false);
+		User newUser = new User(name, surname, username, password, phoneNumber, email, address, true);
 		
 		userService.save(newUser);
 

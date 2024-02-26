@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.specifikacije.projekat.dao.AgencyOwnerDAO;
 import com.specifikacije.projekat.model.AgencyOwner;
+import com.specifikacije.projekat.model.Agent;
 
 @Repository
 @Primary
@@ -71,6 +72,19 @@ public class AgencyOwnerDAOimpl implements AgencyOwnerDAO {
 		return rowCallbackHandler.getAgencyOwners().get(0);
 	}
 
+	@Override
+	public AgencyOwner findByUsername(String username) {
+		String sql = 
+				"SELECT * FROM agency_owner ck " +
+				"WHERE ck.username = ? " + 
+				"ORDER BY ck.username";
+
+		AgencyOwnerCallBackHandler rowCallbackHandler = new AgencyOwnerCallBackHandler();
+		jdbcTemplate.query(sql, rowCallbackHandler, username);
+
+		return rowCallbackHandler.getAgencyOwners().get(0);
+	}
+	
 	@Override
 	public List<AgencyOwner> findAll() {
 		String sql = 

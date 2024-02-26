@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.specifikacije.projekat.dao.AgentDAO;
 import com.specifikacije.projekat.model.Agency;
 import com.specifikacije.projekat.model.Agent;
+import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.AgencyService;
 import com.specifikacije.projekat.service.impl.AgencyServiceImpl;
 
@@ -77,6 +78,19 @@ public class AgentDAOimpl implements AgentDAO {
 
 		AgentCallBackHandler rowCallbackHandler = new AgentCallBackHandler();
 		jdbcTemplate.query(sql, rowCallbackHandler, id);
+
+		return rowCallbackHandler.getAgents().get(0);
+	}
+	
+	@Override
+	public Agent findByUsername(String username) {
+		String sql = 
+				"SELECT * FROM agent ck " +
+				"WHERE ck.username = ? " + 
+				"ORDER BY ck.username";
+
+		AgentCallBackHandler rowCallbackHandler = new AgentCallBackHandler();
+		jdbcTemplate.query(sql, rowCallbackHandler, username);
 
 		return rowCallbackHandler.getAgents().get(0);
 	}

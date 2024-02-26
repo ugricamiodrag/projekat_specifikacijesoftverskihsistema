@@ -7,15 +7,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.specifikacije.projekat.service.AdministratorService;
+import com.specifikacije.projekat.service.AgencyOwnerService;
+import com.specifikacije.projekat.service.AgentService;
 import com.specifikacije.projekat.service.UserService;
 
 @Controller
 @RequestMapping("/login")
 public class LoginLogoutController {
 
-	
-	@Autowired
-	private UserService userService;
+	public static final String KORISNIK_KEY = "korisnik";
+
 	
 	@GetMapping
 	public String showLoginPage() {
@@ -26,7 +28,7 @@ public class LoginLogoutController {
 	
 	
 	@PostMapping("/logIn")
-	public String LogIn(@RequestParam String name, @RequestParam String lastName) {
+	public String LogIn(@RequestParam String username, @RequestParam String password) {
 		
 //		TODO: make a method to find user by name and lastname and set name to be unique, or add username and password to person class
 		return "login.html";

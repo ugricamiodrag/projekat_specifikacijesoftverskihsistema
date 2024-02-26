@@ -42,4 +42,10 @@ public class AgentServiceImpl implements AgentService{
 		agentDAO.update(d);		
 	}
 
+	@Override
+	public Agent findByUsername(String username) {
+		return agentDAO.findByUsername(username);
+
+	}
+
 }
