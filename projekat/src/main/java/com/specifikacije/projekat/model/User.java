@@ -6,18 +6,14 @@ public class User extends Person{
 	private List<RealEstate> likedRealEstate;
 	private List<Rating> allRatings;
 
-	public User(Long id, String name, String surname, String phoneNumber, String email, String address) {
-		super(id, name, surname, phoneNumber, email, address);
+	public User(Long id, String name, String surname, String username, String password, String phoneNumber, String email, String address, boolean isActive) {
+		super(id, name, surname, username, password, phoneNumber, email, address, isActive);
 		// TODO Auto-generated constructor stub
 	}
+
 	
-	public User(Long id, String name, String surname, String phoneNumber, String email, String address, boolean isActive) {
-		super(id, name, surname, phoneNumber, email, address, isActive);
-		// TODO Auto-generated constructor stub
-	}
-	
-	public User(String name, String surname, String phoneNumber, String email, String address, boolean isActive) {
-		super( name, surname, phoneNumber, email, address, isActive);
+	public User(String name, String surname, String username, String password, String phoneNumber, String email, String address, boolean isActive) {
+		super( name, surname, username, password, phoneNumber, email, address, isActive);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -29,27 +25,21 @@ public class User extends Person{
 		this.allRatings = allRatings;
 	}
 
-	public User(String name, String surname, String phoneNumber, String email, String address, List<Rating> allRatings) {
-		super(name, surname, phoneNumber, email, address);
+	public User(String name, String surname, String username, String password, String phoneNumber, String email, String address, List<Rating> allRatings, boolean isActive) {
+		super(name, surname, username, password, phoneNumber, email, address, isActive);
 		this.allRatings = allRatings;
 		// TODO Auto-generated constructor stub
 	}
-	public User(Long id, String name, String surname, String phoneNumber, String email, String address, List<RealEstate> likedRealEstate, List<Rating> allRatings) {
-		super(id, name, surname, phoneNumber, email, address);
+	public User(Long id, String name, String surname, String username, String password, String phoneNumber, String email, String address, List<RealEstate> likedRealEstate, List<Rating> allRatings, boolean isActive) {
+		super(id, name, surname, username, password, phoneNumber, email, address, isActive);
 		this.likedRealEstate = likedRealEstate;
 		this.allRatings = allRatings;
 		// TODO Auto-generated constructor stub
 	}
 	
-	public User(Long id, String name, String surname, String phoneNumber, String email, String address, boolean isActive, List<RealEstate> likedRealEstate, List<Rating> allRatings) {
-		super(id, name, surname, phoneNumber, email, address, isActive);
-		this.likedRealEstate = likedRealEstate;
-		this.allRatings = allRatings;
-		// TODO Auto-generated constructor stub
-	}
 
-	public User(String name, String surname, String phoneNumber, String email, String address, List<RealEstate> likedRealEstate, List<Rating> allRatings) {
-		super(name, surname, phoneNumber, email, address);
+	public User(String name, String surname, String username, String password, String phoneNumber, String email, String address, List<RealEstate> likedRealEstate, List<Rating> allRatings, boolean isActive) {
+		super(name, surname, username, password, phoneNumber, email, address, isActive);
 		this.likedRealEstate = likedRealEstate;
 		this.allRatings = allRatings;
 		// TODO Auto-generated constructor stub

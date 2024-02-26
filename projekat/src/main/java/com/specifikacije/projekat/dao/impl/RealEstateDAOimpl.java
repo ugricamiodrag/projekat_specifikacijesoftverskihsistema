@@ -55,15 +55,16 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 			String picture = resultSet.getString(index++);
 			Double price = resultSet.getDouble(index++);
 			RentOrBuy rentOrBuy = RentOrBuy.valueOf(resultSet.getString(index++));
+			Integer surface = resultSet.getInt(index++);
 			Integer numOfVisitReq = resultSet.getInt(index++);
 			Double grade = resultSet.getDouble(index++);
 			Double viewNumber = resultSet.getDouble(index++);
 			boolean isActive = resultSet.getBoolean(index++);
-			Integer surface = resultSet.getInt(index++);
+			
 
 			RealEstate estate = estates.get(id);
 			if (estate == null) {
-				estate = new RealEstate(id, type, agent, location, picture, price, rentOrBuy, numOfVisitReq, grade, viewNumber, isActive, surface);
+				estate = new RealEstate(id, type, agent, location, picture, price, rentOrBuy, surface, numOfVisitReq, grade, viewNumber, isActive);
 				estates.put(estate.getId(), estate); // dodavanje u kolekciju
 			}
 			
@@ -110,7 +111,7 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 			
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				String sql = "INSERT INTO estate (estate_type, agent_id, location, picture, price, rentOrBuy, numOfVisitReq, grade, viewNumber, isActive, surface) VALUES (?, ? ,?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				String sql = "INSERT INTO estate (estate_type, agent_id, location, picture, price, rentOrBuy, surface, numOfVisitReq, grade, viewNumber, isActive) VALUES (?, ? ,?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;
@@ -120,11 +121,12 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 				preparedStatement.setString(index++, realEstate.getPicture());
 				preparedStatement.setDouble(index++, realEstate.getPrice());
 				preparedStatement.setString(index++, realEstate.getRentOrBuy().toString());
+				preparedStatement.setInt(index++, realEstate.getSurface());
 				preparedStatement.setInt(index++, realEstate.getNumberOfVisitRequests());
 				preparedStatement.setDouble(index++, realEstate.getGrade());
 				preparedStatement.setDouble(index++, realEstate.getViewNumber());
 				preparedStatement.setBoolean(index++, realEstate.getIsActive());
-				preparedStatement.setInt(index++, realEstate.getSurface());
+				
 
 
 				return preparedStatement;
@@ -138,8 +140,8 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 	@Transactional
 	@Override
 	public void update(RealEstate realEstate) {
-		String sql = "UPDATE estate SET estate_type = ?, agent_id = ?, location = ?, picture = ?, price = ?, rentOrBuy = ?, numOfVisitReq = ?, grade = ?, viewNumber = ?,  isActive = ?, surface = ? WHERE id = ?";	
-		jdbcTemplate.update(sql, realEstate.getEstateType().toString(), realEstate.getAgent().getId(), realEstate.getLocation(), realEstate.getPicture(), realEstate.getPrice(), realEstate.getRentOrBuy().toString(), realEstate.getNumberOfVisitRequests() != null ? realEstate.getNumberOfVisitRequests() : null,  realEstate.getGrade() != null ? realEstate.getGrade() : null, realEstate.getViewNumber() != null ? realEstate.getViewNumber() : null, realEstate.getIsActive(), realEstate.getSurface(), realEstate.getId());
+		String sql = "UPDATE estate SET estate_type = ?, agent_id = ?, location = ?, picture = ?, price = ?, rentOrBuy = ?, surface = ?, numOfVisitReq = ?, grade = ?, viewNumber = ?,  isActive = ? WHERE id = ?";	
+		jdbcTemplate.update(sql, realEstate.getEstateType().toString(), realEstate.getAgent().getId(), realEstate.getLocation(), realEstate.getPicture(), realEstate.getPrice(), realEstate.getRentOrBuy().toString(), realEstate.getSurface(), realEstate.getNumberOfVisitRequests() != null ? realEstate.getNumberOfVisitRequests() : null,  realEstate.getGrade() != null ? realEstate.getGrade() : null, realEstate.getViewNumber() != null ? realEstate.getViewNumber() : null, realEstate.getIsActive(), realEstate.getId());
 			
 	}
 

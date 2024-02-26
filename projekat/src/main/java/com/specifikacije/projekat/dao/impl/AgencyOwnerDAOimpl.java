@@ -39,13 +39,16 @@ public class AgencyOwnerDAOimpl implements AgencyOwnerDAO {
 			Long id = resultSet.getLong(index++);
 			String first_name = resultSet.getString(index++);
 			String surname = resultSet.getString(index++);
+			String username = resultSet.getString(index++);
+			String password = resultSet.getString(index++);
 			String phone = resultSet.getString(index++);
 			String email = resultSet.getString(index++);
 			String address = resultSet.getString(index++);
+			Boolean isActive = resultSet.getBoolean(index++);
 			
 			AgencyOwner owner = owners.get(id);
 			if (owner == null) {
-				owner = new AgencyOwner(id, first_name, surname, phone, email, address);
+				owner = new AgencyOwner(id, first_name, surname, username, password, phone, email, address, isActive);
 				owners.put(owner.getId(), owner); // dodavanje u kolekciju
 			}
 //			TODO Kada uradimo bazu
@@ -86,15 +89,18 @@ public class AgencyOwnerDAOimpl implements AgencyOwnerDAO {
 			
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				String sql = "INSERT INTO agency_owner (first_name, surname, phone, email, address) VALUES (?, ? ,?, ?, ?)";
+				String sql = "INSERT INTO agency_owner (first_name, surname, username, password, phone, email, address, isActive) VALUES (?, ?, ?, ?, ? ,?, ?, ?)";
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;
 				preparedStatement.setString(index++, agencyOwner.getName());
 				preparedStatement.setString(index++, agencyOwner.getSurname());
+				preparedStatement.setString(index++, agencyOwner.getUsername());
+				preparedStatement.setString(index++, agencyOwner.getPassword());
 				preparedStatement.setString(index++, agencyOwner.getPhoneNumber());
 				preparedStatement.setString(index++, agencyOwner.getEmail());
 				preparedStatement.setString(index++, agencyOwner.getAddress());
+				preparedStatement.setBoolean(index, agencyOwner.isActive());
 
 				return preparedStatement;
 			}
@@ -107,8 +113,8 @@ public class AgencyOwnerDAOimpl implements AgencyOwnerDAO {
 	@Transactional
 	@Override
 	public void update(AgencyOwner agencyOwner) {
-		String sql = "UPDATE agency_owner SET first_name = ?, surname = ?, phone = ?, email = ?, address = ? WHERE id = ?";	
-		jdbcTemplate.update(sql, agencyOwner.getName(), agencyOwner.getSurname(), agencyOwner.getPhoneNumber(), agencyOwner.getEmail(), agencyOwner.getAddress(), agencyOwner.getId());
+		String sql = "UPDATE agency_owner SET first_name = ?, surname = ?, username = ?, password = ?, phone = ?, email = ?, address = ?, isActive = ? WHERE id = ?";	
+		jdbcTemplate.update(sql, agencyOwner.getName(), agencyOwner.getSurname(), agencyOwner.getUsername(), agencyOwner.getPassword(), agencyOwner.getPhoneNumber(), agencyOwner.getEmail(), agencyOwner.getAddress(), agencyOwner.isActive(), agencyOwner.getId());
 	}
 
 	@Transactional

@@ -39,13 +39,16 @@ public class AdministratorDAOimpl implements AdministratorDAO {
 			Long id = resultSet.getLong(index++);
 			String first_name = resultSet.getString(index++);
 			String surname = resultSet.getString(index++);
+			String username = resultSet.getString(index++);
+			String password = resultSet.getString(index++);
 			String phone = resultSet.getString(index++);
 			String email = resultSet.getString(index++);
 			String address = resultSet.getString(index++);
+			Boolean isActive = resultSet.getBoolean(index++);
 				
 			Administrator admin = admins.get(id);
 			if (admin == null) {
-				admin = new Administrator(id, first_name, surname, phone, email, address);
+				admin = new Administrator(id, first_name, surname, username, password, phone, email, address, isActive);
 				admins.put(admin.getId(), admin); // dodavanje u kolekciju
 			}
 			
@@ -87,15 +90,18 @@ public class AdministratorDAOimpl implements AdministratorDAO {
 			
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				String sql = "INSERT INTO administrator (first_name, surname, phone, email, address) VALUES (?, ? ,?, ?, ?)";
+				String sql = "INSERT INTO administrator (first_name, surname, username, password, phone, email, address, isActive) VALUES (?, ? ,?, ?, ?, ?, ?, ?)";
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;
 				preparedStatement.setString(index++, admin.getName());
 				preparedStatement.setString(index++, admin.getSurname());
+				preparedStatement.setString(index++, admin.getUsername());
+				preparedStatement.setString(index++, admin.getPassword());
 				preparedStatement.setString(index++, admin.getPhoneNumber());
 				preparedStatement.setString(index++, admin.getEmail());
 				preparedStatement.setString(index++, admin.getAddress());
+				preparedStatement.setBoolean(index++, admin.isActive());
 
 				return preparedStatement;
 			}
@@ -108,8 +114,8 @@ public class AdministratorDAOimpl implements AdministratorDAO {
 	@Transactional
 	@Override
 	public void update(Administrator admin) {
-		String sql = "UPDATE administrator SET first_name = ?, surname = ?, phone = ?, email = ?, address = ? WHERE id = ?";	
-		jdbcTemplate.update(sql, admin.getName(), admin.getSurname(), admin.getPhoneNumber(), admin.getEmail(), admin.getAddress(), admin.getId());	
+		String sql = "UPDATE administrator SET first_name = ?, surname = ?, username = ?, password = ?, phone = ?, email = ?, address = ?, isActive = ? WHERE id = ?";	
+		jdbcTemplate.update(sql, admin.getName(), admin.getSurname(), admin.getUsername(), admin.getPassword(), admin.getPhoneNumber(), admin.getEmail(), admin.getAddress(), admin.isActive(), admin.getId());	
 	}
 
 	@Transactional

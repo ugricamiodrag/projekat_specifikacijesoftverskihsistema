@@ -1,29 +1,15 @@
 package com.specifikacije.projekat.model;
 
 public class AgencyOwner extends Person {
-	public void addAgent(Agent agent) {
-		
-	}
-	
-	public AgencyOwner(Long id, String name, String surname, String phoneNumber, String email, String address) {
-		super(id, name, surname, phoneNumber, email, address);
+	public AgencyOwner(Long id, String name, String surname, String username, String password, String phoneNumber, String email, String address, Boolean isActive) {
+		super(id, name, surname, username, password, phoneNumber, email, address, isActive);
 		// TODO Auto-generated constructor stub
 	}
 
-	public AgencyOwner(String name, String surname, String phoneNumber, String email, String address) {
-		super(name, surname, phoneNumber, email, address);
+	public AgencyOwner(String name, String surname, String username, String password, String phoneNumber, String email, String address, Boolean isActive) {
+		super(name, surname, username, password, phoneNumber, email, address, isActive);
 		// TODO Auto-generated constructor stub
 	}
 
-	public void deleteExisting(Agent agent) {
-			
-	}
-	
-	public RealEstate searchPopularEstate() {
-		return null;
-	}
-	
-	public Agent searchPopularAgent() {
-		return null;
-	}
+
 }

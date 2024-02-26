@@ -1,26 +1,17 @@
 package com.specifikacije.projekat.model;
 
 public class Administrator extends Person {
-	public Administrator(Long id, String name, String surname, String phoneNumber, String email, String address) {
-		super(id, name, surname, phoneNumber, email, address);
+	public Administrator(Long id, String name, String surname, String username, String password, String phoneNumber, String email, String address, boolean isActive) {
+		super(id, name, surname, username, password, phoneNumber, email, address, isActive);
 		// TODO Auto-generated constructor stub
 	}
 
-	public void addAgencyOwner(AgencyOwner agencyOwner) {
-		
-	}
 	
-	public Administrator(String name, String surname, String phoneNumber, String email, String address) {
-		super(name, surname, phoneNumber, email, address);
+	public Administrator(String name, String surname, String username, String password, String phoneNumber, String email, String address, boolean isActive) {
+		super(name, surname, username, password, phoneNumber, email, address, isActive);
 		// TODO Auto-generated constructor stub
 	}
 
-	public void deactivateUser(User user) {
-		
-	}
 
-	public void hideRealEstate(RealEstate realEstate) {
-		
-	}
 	
 }

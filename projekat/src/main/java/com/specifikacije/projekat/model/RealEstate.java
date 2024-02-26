@@ -10,11 +10,12 @@ public class RealEstate {
 	private String picture;
 	private Double price;
 	private RentOrBuy rentOrBuy;
+	private Integer surface; // dodato zbog pretrage po povrsini
 	private Integer numberOfVisitRequests;
 	private Double grade;
 	private Double viewNumber;
 	private Boolean isActive;
-	private Integer surface; // dodato zbog pretrage po povrsini
+	
 
 	public RealEstate() {
 	}
@@ -25,7 +26,7 @@ public class RealEstate {
 
 
 	public RealEstate(RealEstateType estateType, Agent agent, String location, String picture, Double price,
-			RentOrBuy rentOrBuy, Integer numberOfVisitRequests, Double grade, Double viewNumber, Boolean isActive) {
+			RentOrBuy rentOrBuy, Integer surface, Integer numberOfVisitRequests, Double grade, Double viewNumber, Boolean isActive) {
 		super();
 		this.estateType = estateType;
 		this.agent = agent;
@@ -33,6 +34,7 @@ public class RealEstate {
 		this.picture = picture;
 		this.price = price;
 		this.rentOrBuy = rentOrBuy;
+		this.surface = surface;
 		this.numberOfVisitRequests = numberOfVisitRequests;
 		this.grade = grade;
 		this.viewNumber = viewNumber;
@@ -41,27 +43,9 @@ public class RealEstate {
 
 
 
-
-
-
-	public RealEstate(Long id, RealEstateType estateType, Agent agent, String location, String picture, Double price,
-			RentOrBuy rentOrBuy, Integer numberOfVisitRequests, Double grade, Double viewNumber, Boolean isActive) {
-		super();
-		this.id = id;
-		this.estateType = estateType;
-		this.agent = agent;
-		this.location = location;
-		this.picture = picture;
-		this.price = price;
-		this.rentOrBuy = rentOrBuy;
-		this.numberOfVisitRequests = numberOfVisitRequests;
-		this.grade = grade;
-		this.viewNumber = viewNumber;
-		this.isActive = isActive;
-	}
 	
 	public RealEstate(Long id, RealEstateType estateType, Agent agent, String location, String picture, Double price,
-			RentOrBuy rentOrBuy, Integer numberOfVisitRequests, Double grade, Double viewNumber, Boolean isActive, Integer surface) {
+			RentOrBuy rentOrBuy, Integer surface, Integer numberOfVisitRequests, Double grade, Double viewNumber, Boolean isActive) {
 		super();
 		this.id = id;
 		this.estateType = estateType;
@@ -70,11 +54,12 @@ public class RealEstate {
 		this.picture = picture;
 		this.price = price;
 		this.rentOrBuy = rentOrBuy;
+		this.surface = surface;
 		this.numberOfVisitRequests = numberOfVisitRequests;
 		this.grade = grade;
 		this.viewNumber = viewNumber;
 		this.isActive = isActive;
-		this.surface = surface;
+		
 	}
 
 

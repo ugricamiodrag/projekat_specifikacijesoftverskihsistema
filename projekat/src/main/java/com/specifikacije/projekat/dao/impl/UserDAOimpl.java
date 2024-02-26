@@ -39,6 +39,8 @@ public class UserDAOimpl implements UserDAO {
 			Long id = resultSet.getLong(index++);
 			String first_name = resultSet.getString(index++);
 			String surname = resultSet.getString(index++);
+			String username = resultSet.getString(index++);
+			String password = resultSet.getString(index++);
 			String phone = resultSet.getString(index++);
 			String email = resultSet.getString(index++);
 			String address = resultSet.getString(index++);
@@ -46,7 +48,7 @@ public class UserDAOimpl implements UserDAO {
 				
 			User user = users.get(id);
 			if (user == null) {
-				user = new User(id, first_name, surname, phone, email, address, isActive);
+				user = new User(id, first_name, surname, username, password, phone, email, address, isActive);
 				users.put(user.getId(), user); // dodavanje u kolekciju
 			}
 			
@@ -88,12 +90,14 @@ public class UserDAOimpl implements UserDAO {
 			
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				String sql = "INSERT INTO users (first_name, surname, phone, email, address, is_active) VALUES (?, ? ,?, ?, ?, ?)";
+				String sql = "INSERT INTO users (first_name, surname, username, password, phone, email, address, is_active) VALUES (?, ?, ?, ? ,?, ?, ?, ?)";
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;
 				preparedStatement.setString(index++, user.getName());
 				preparedStatement.setString(index++, user.getSurname());
+				preparedStatement.setString(index++, user.getUsername());
+				preparedStatement.setString(index++, user.getPassword());
 				preparedStatement.setString(index++, user.getPhoneNumber());
 				preparedStatement.setString(index++, user.getEmail());
 				preparedStatement.setString(index++, user.getAddress());
@@ -110,8 +114,8 @@ public class UserDAOimpl implements UserDAO {
 	@Transactional
 	@Override
 	public void update(User user) {
-		String sql = "UPDATE users SET first_name = ?, surname = ?, phone = ?, email = ?, address = ? is_active = ? WHERE id = ?";	
-		jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getPhoneNumber(), user.getEmail(), user.getAddress(), user.isActive(), user.getId());	
+		String sql = "UPDATE users SET first_name = ?, surname = ?, username = ?, password = ?, phone = ?, email = ?, address = ? is_active = ? WHERE id = ?";	
+		jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getUsername(), user.getPassword(), user.getPhoneNumber(), user.getEmail(), user.getAddress(), user.isActive(), user.getId());	
 	}
 
 	@Transactional
