@@ -41,7 +41,7 @@ public class RegistrationController {
 		
 		
 		User newUser = new User(name, surname, username, password, phoneNumber, email, address, true);
-		
+	
 		userService.save(newUser);
 
 		response.sendRedirect("/realestate");
