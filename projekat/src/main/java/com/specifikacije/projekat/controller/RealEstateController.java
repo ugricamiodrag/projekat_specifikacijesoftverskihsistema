@@ -45,32 +45,28 @@ public class RealEstateController {
 //		}
 		
 		boolean isLoggedIn = false;
+		// get user is exists
 		Object obj =  request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
+		
+		// check if user is logged in and users type
 		if (obj instanceof User) {
-		    User user = (User) obj;
 		    isLoggedIn = true;
 		
 		    Class<?> objClass = obj.getClass();
 		    model.addAttribute("user", objClass);
 		    
 		}else if(obj instanceof Administrator){
-			Administrator user = (Administrator) obj;
-			    isLoggedIn = true;
-			    
+			    isLoggedIn = true;   
 			    Class<?> objClass = obj.getClass();
 			    model.addAttribute("admin", objClass);
 			    
 		}else if(obj instanceof Agent){
-			Agent user = (Agent) obj;
 		    isLoggedIn = true;
-		    
 		    Class<?> objClass = obj.getClass();
 		    model.addAttribute("agent", objClass);
 		    
 		}else if(obj instanceof AgencyOwner){
-			AgencyOwner user = (AgencyOwner) obj;
 		    isLoggedIn = true;
-		    
 		    Class<?> objClass = obj.getClass();
 		    model.addAttribute("owner", objClass);
 		    
@@ -78,10 +74,11 @@ public class RealEstateController {
 		    isLoggedIn = false;
 		}
 		
+		//add attribures
 		model.addAttribute("isLoggedIn", isLoggedIn);
-		
-		
 		model.addAttribute("realEstate", realEstateList);
+		
+		
 		return "index";
 	}
 	
