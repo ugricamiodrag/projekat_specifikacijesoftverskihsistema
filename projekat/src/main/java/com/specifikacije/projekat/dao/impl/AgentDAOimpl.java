@@ -153,4 +153,18 @@ public class AgentDAOimpl implements AgentDAO {
 		jdbcTemplate.update(sql, id);
 	}
 
+	@Override
+	public boolean usernameExists(String username) {
+		String sql = "SELECT COUNT(*) FROM agent WHERE username = ?";
+	    Integer count = jdbcTemplate.queryForObject(sql, Integer.class, username);
+	    return count != null && count > 0;
+	}
+
+	@Override
+	public boolean emailExists(String email) {
+		String sql = "SELECT COUNT(*) FROM agent WHERE email = ?";
+	    Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
+	    return count != null && count > 0;
+	}
+
 }

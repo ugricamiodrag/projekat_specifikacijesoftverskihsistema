@@ -46,4 +46,14 @@ public class AdministratorServiceImpl implements AdministratorService {
 		return AdministratorDAO.findByUsername(username);
 	}
 
+	@Override
+	public boolean usernameExists(String username) {
+		return AdministratorDAO.usernameExists(username);
+	}
+
+	@Override
+	public boolean emailExists(String email) {
+		return AdministratorDAO.emailExists(email);
+	}
+
 }

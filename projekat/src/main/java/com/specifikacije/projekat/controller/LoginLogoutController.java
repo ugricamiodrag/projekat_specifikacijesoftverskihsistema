@@ -44,7 +44,7 @@ public class LoginLogoutController {
 	}
 	
 	
-	@SuppressWarnings("unused")
+
 	@PostMapping("/logIn")
 	public String LogIn(@RequestParam String username, @RequestParam String password, Model model, RedirectAttributes redirectAttributes, HttpSession session) throws IOException {
 		

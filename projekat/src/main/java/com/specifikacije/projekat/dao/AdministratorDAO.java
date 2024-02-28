@@ -19,4 +19,7 @@ public interface AdministratorDAO {
 	public void update(Administrator admin);
 
 	public void delete(Long id);
+	
+	public boolean usernameExists(String username);
+	public boolean emailExists(String email);
 }

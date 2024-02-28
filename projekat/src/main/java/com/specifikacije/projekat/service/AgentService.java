@@ -13,4 +13,6 @@ public interface AgentService {
 	Agent save(Agent agent);
 	void delete(Long id);
 	void update(Agent d);
+	public boolean usernameExists(String username);
+	public boolean emailExists(String email);
 }

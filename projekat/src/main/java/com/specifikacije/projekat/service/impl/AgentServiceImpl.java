@@ -48,4 +48,14 @@ public class AgentServiceImpl implements AgentService{
 
 	}
 
+	@Override
+	public boolean usernameExists(String username) {
+		return agentDAO.usernameExists(username);
+	}
+
+	@Override
+	public boolean emailExists(String email) {
+		return agentDAO.emailExists(email);
+	}
+
 }

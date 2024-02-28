@@ -17,4 +17,7 @@ public interface AgentDAO {
 	public void update(Agent agent);
 
 	public void delete(Long id);
+	
+	public boolean usernameExists(String username);
+	public boolean emailExists(String email);
 }

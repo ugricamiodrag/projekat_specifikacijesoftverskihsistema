@@ -48,4 +48,14 @@ public class UserServiceImpl implements UserService {
 
 	}
 
+	@Override
+	public boolean usernameExists(String username) {
+		return userDAO.usernameExists(username);
+	}
+
+	@Override
+	public boolean emailExists(String email) {
+		return userDAO.emailExists(email);
+	}
+
 }

@@ -13,4 +13,6 @@ public interface AgencyOwnerService {
 	AgencyOwner save(AgencyOwner agencyOwner);
 	void delete(Long id);
 	void update(AgencyOwner d);
+	public boolean usernameExists(String username);
+	public boolean emailExists(String email);
 }

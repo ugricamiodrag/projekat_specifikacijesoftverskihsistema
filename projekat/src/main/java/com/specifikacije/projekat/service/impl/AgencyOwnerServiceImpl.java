@@ -47,4 +47,14 @@ public class AgencyOwnerServiceImpl implements AgencyOwnerService {
 
 	}
 
+	@Override
+	public boolean usernameExists(String username) {
+		return agencyOwnerDAO.usernameExists(username);
+	}
+
+	@Override
+	public boolean emailExists(String email) {
+		return agencyOwnerDAO.emailExists(email);
+	}
+
 }

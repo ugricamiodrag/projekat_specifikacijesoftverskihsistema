@@ -17,4 +17,7 @@ public interface AgencyOwnerDAO {
 	public void update(AgencyOwner agencyOwner);
 
 	public void delete(Long id);
+	
+	public boolean usernameExists(String username);
+	public boolean emailExists(String email);
 }

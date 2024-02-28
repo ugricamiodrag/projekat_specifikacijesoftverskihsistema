@@ -18,4 +18,8 @@ public interface UserDAO {
 	public void update(User user);
 
 	public void delete(Long id);
+	
+	public boolean usernameExists(String username);
+	
+	public boolean emailExists(String email);
 }

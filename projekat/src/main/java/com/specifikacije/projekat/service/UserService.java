@@ -12,4 +12,6 @@ public interface UserService {
 	User save(User user);
 	void delete(Long id);
 	void update(User d);
+	public boolean usernameExists(String username);
+	public boolean emailExists(String email);
 }

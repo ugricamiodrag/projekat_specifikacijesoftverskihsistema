@@ -14,4 +14,6 @@ public interface AdministratorService {
 	Administrator save(Administrator administrator);
 	void delete(Long id);
 	void update(Administrator d);
+	public boolean usernameExists(String username);
+	public boolean emailExists(String email);
 }
