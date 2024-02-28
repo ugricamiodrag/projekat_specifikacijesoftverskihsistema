@@ -92,8 +92,12 @@ public class AgentDAOimpl implements AgentDAO {
 		AgentCallBackHandler rowCallbackHandler = new AgentCallBackHandler();
 		jdbcTemplate.query(sql, rowCallbackHandler, username);
 
-		return rowCallbackHandler.getAgents().get(0);
-	}
+		 List<Agent> users = rowCallbackHandler.getAgents();
+		    if (!users.isEmpty()) {
+		        return users.get(0);
+		    } else {
+		        return null; 
+		   }	}
 
 	@Override
 	public List<Agent> findAll() {

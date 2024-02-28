@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.specifikacije.projekat.dao.AgencyOwnerDAO;
 import com.specifikacije.projekat.model.AgencyOwner;
 import com.specifikacije.projekat.model.Agent;
+import com.specifikacije.projekat.model.User;
 
 @Repository
 @Primary
@@ -69,8 +70,12 @@ public class AgencyOwnerDAOimpl implements AgencyOwnerDAO {
 		AgencyOwnerCallBackHandler rowCallbackHandler = new AgencyOwnerCallBackHandler();
 		jdbcTemplate.query(sql, rowCallbackHandler, id);
 
-		return rowCallbackHandler.getAgencyOwners().get(0);
-	}
+		 List<AgencyOwner> users = rowCallbackHandler.getAgencyOwners();
+		    if (!users.isEmpty()) {
+		        return users.get(0);
+		    } else {
+		        return null; 
+		   }	}
 
 	@Override
 	public AgencyOwner findByUsername(String username) {
@@ -82,8 +87,12 @@ public class AgencyOwnerDAOimpl implements AgencyOwnerDAO {
 		AgencyOwnerCallBackHandler rowCallbackHandler = new AgencyOwnerCallBackHandler();
 		jdbcTemplate.query(sql, rowCallbackHandler, username);
 
-		return rowCallbackHandler.getAgencyOwners().get(0);
-	}
+		List<AgencyOwner> users = rowCallbackHandler.getAgencyOwners();
+	    if (!users.isEmpty()) {
+	        return users.get(0);
+	    } else {
+	        return null; 
+	   }	}
 	
 	@Override
 	public List<AgencyOwner> findAll() {

@@ -139,7 +139,12 @@ public class UserDAOimpl implements UserDAO {
 		UserCallBackHandler rowCallbackHandler = new UserCallBackHandler();
 		jdbcTemplate.query(sql, rowCallbackHandler, username);
 
-		return rowCallbackHandler.getUsers().get(0);
+		List<User> users = rowCallbackHandler.getUsers();
+		    if (!users.isEmpty()) {
+		        return users.get(0);
+		    } else {
+		        return null; 
+		   }
 	}
 
 }

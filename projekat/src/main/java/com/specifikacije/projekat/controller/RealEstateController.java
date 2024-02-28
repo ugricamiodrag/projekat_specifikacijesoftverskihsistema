@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.specifikacije.projekat.model.Administrator;
+import com.specifikacije.projekat.model.AgencyOwner;
 import com.specifikacije.projekat.model.Agent;
 import com.specifikacije.projekat.model.RealEstate;
 import com.specifikacije.projekat.model.RealEstateType;
 import com.specifikacije.projekat.model.RentOrBuy;
+import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.AgentService;
 import com.specifikacije.projekat.service.RealEstateService;
 
@@ -37,9 +40,46 @@ public class RealEstateController {
 		List<RealEstate> realEstateList = realEstateService.findAll();
 		
 		// tocheck if the data is loaded, needed table 'estate' in database to work, get data from service              
-		for(RealEstate e: realEstateList ) {
-			System.out.println(e.getLocation());
+//		for(RealEstate e: realEstateList ) {
+//			System.out.println(e.getLocation());
+//		}
+		
+		boolean isLoggedIn = false;
+		Object obj =  request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
+		if (obj instanceof User) {
+		    User user = (User) obj;
+		    isLoggedIn = true;
+		
+		    Class<?> objClass = obj.getClass();
+		    model.addAttribute("user", objClass);
+		    
+		}else if(obj instanceof Administrator){
+			Administrator user = (Administrator) obj;
+			    isLoggedIn = true;
+			    
+			    Class<?> objClass = obj.getClass();
+			    model.addAttribute("admin", objClass);
+			    
+		}else if(obj instanceof Agent){
+			Agent user = (Agent) obj;
+		    isLoggedIn = true;
+		    
+		    Class<?> objClass = obj.getClass();
+		    model.addAttribute("agent", objClass);
+		    
+		}else if(obj instanceof AgencyOwner){
+			AgencyOwner user = (AgencyOwner) obj;
+		    isLoggedIn = true;
+		    
+		    Class<?> objClass = obj.getClass();
+		    model.addAttribute("owner", objClass);
+		    
+		}else {
+		    isLoggedIn = false;
 		}
+		
+		model.addAttribute("isLoggedIn", isLoggedIn);
+		
 		
 		model.addAttribute("realEstate", realEstateList);
 		return "index";

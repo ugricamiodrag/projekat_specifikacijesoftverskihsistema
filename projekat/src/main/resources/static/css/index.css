@@ -18,6 +18,10 @@
     width: 550px;
 }
 
+.wrong{
+	color: red;
+}
+
 .card_less{
 	margin-left: 20%;
 }

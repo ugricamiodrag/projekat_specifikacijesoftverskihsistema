@@ -23,9 +23,10 @@
             <div class="navbar-nav">
                 <a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
                 <a class="nav-item nav-link white-font" href="registration">Register</a>
-                <a class="nav-item nav-link white-font" href="/login">Log in</a>
-                <a class="nav-item nav-link white-font" href="/realestate/adminPage">Admin</a>
-                <a class="nav-item nav-link white-font" href="#"><img class="small" src="/images/cart.png"></img></a>
+                <a class="nav-item nav-link white-font" th:if="${isLoggedIn == false}" href="/login">Log in</a>
+                <a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="/login/logOut">Log out</a>
+                <a class="nav-item nav-link white-font" th:if="${admin != null}" href="/realestate/adminPage">Admin</a>
+                <a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="#"><img class="small" src="/images/cart.png"></img></a>
 
             </div>
         </div>
@@ -122,7 +123,7 @@
 
             <!--Main content - nekretnine 0 -->
             <div class="col-md-9">
-                <div class="card" th:each="estate, iterStat : ${realEstate}">
+                <div class="card" th:each="estate : ${realEstate}">
                     <div class="card-body d-flex flex-column" >
                         <div class="row" >
                             <div class="col-md-4" >

@@ -33,12 +33,14 @@
     <div class="form">
         <form method="post" action="/login/logIn">
             <div class="form-group">
-                <label for="grad">Korisnicko Ime:</label>
-                <input type="text" value="" name="username" class="form-control" aria-describedby="emailHelp">
+                <label for="grad">Username:</label>
+                <input type="text" th:value="${username}" name="username" class="form-control" aria-describedby="emailHelp">
+            <small class="wrong" th:text="${errorUsername}">ERROR</small>
             </div>
             <div class="form-group">
-                <label for="drzava">Lozinka:</label>
-                <input type="text" value="" name="password" class="form-control">
+                <label for="drzava">Password:</label>
+                <input type="text" th:value="${password}" name="password" class="form-control"/>
+                <small class="wrong" th:text="${errorPassword}">ERROR</small>
             </div>
 
 

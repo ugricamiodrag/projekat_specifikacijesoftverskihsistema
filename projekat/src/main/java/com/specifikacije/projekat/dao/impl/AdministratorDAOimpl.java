@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.specifikacije.projekat.dao.AdministratorDAO;
 import com.specifikacije.projekat.model.Administrator;
+import com.specifikacije.projekat.model.User;
 
 @Repository
 @Primary
@@ -82,8 +83,12 @@ public class AdministratorDAOimpl implements AdministratorDAO {
 		AdministratorCallBackHandler rowCallbackHandler = new AdministratorCallBackHandler();
 		jdbcTemplate.query(sql, rowCallbackHandler, username);
 
-		return rowCallbackHandler.getAdministrators().get(0);
-	}
+		 List<Administrator> users = rowCallbackHandler.getAdministrators();
+		    if (!users.isEmpty()) {
+		        return users.get(0);
+		    } else {
+		        return null; 
+		   }	}
 	
 
 	@Override
