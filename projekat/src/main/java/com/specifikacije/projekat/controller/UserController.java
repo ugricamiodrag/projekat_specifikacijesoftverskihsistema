@@ -9,12 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.specifikacije.projekat.bean.SecondConfiguration.ApplicationMemory;
+import com.specifikacije.projekat.model.Administrator;
+import com.specifikacije.projekat.model.AgencyOwner;
+import com.specifikacije.projekat.model.Agent;
+import com.specifikacije.projekat.model.RealEstate;
 import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.AdministratorService;
 import com.specifikacije.projekat.service.AgencyOwnerService;
@@ -78,5 +84,26 @@ public class UserController implements ApplicationContextAware{
 		
 		return response;
 	}
+	
+	
+	
+	
+	
+	@GetMapping("viewAllUsers") // for showing users in admin page
+	public String adminPage(Model model) {
+		
+		List<User> usersList = userService.findAll();
+		List<Administrator> adminsList = adminService.findAll();
+		List<Agent> agentsList = agentService.findAll();
+		List<AgencyOwner> agencyOwnersList = ownerService.findAll();
+
+		model.addAttribute("users", usersList);
+		model.addAttribute("admins", adminsList);
+		model.addAttribute("agents", agentsList);
+		model.addAttribute("owners", agencyOwnersList);
+
+		return "users";
+	}
+	//TODO: other CRUD operations for every user type and add attribute in every user for blocking user function        
 
 }

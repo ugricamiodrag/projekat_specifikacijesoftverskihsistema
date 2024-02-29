@@ -41,4 +41,9 @@ public class AgencyServiceImpl implements AgencyService {
 		agencyDAO.update(d);
 	}
 
+	@Override
+	public Agency findOwnersAgency(Long ownerId) {
+		return agencyDAO.findOwner(ownerId);
+	}
+
 }

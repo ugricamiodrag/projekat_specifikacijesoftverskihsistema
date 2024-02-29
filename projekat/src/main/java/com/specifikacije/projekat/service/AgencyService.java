@@ -11,4 +11,5 @@ public interface AgencyService {
 	Agency save(Agency agency);
 	void delete(Long id);
 	void update(Agency d);
+	Agency findOwnersAgency(Long id);
 }

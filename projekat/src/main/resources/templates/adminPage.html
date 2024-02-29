@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Pregled korisnika</title>
+  <title>Admin - View users</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/index.css">
 
@@ -23,11 +23,11 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
                 <a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
-                <a class="nav-item nav-link white-font" href="#">Register</a>
-                <a class="nav-item nav-link white-font" href="#">Log out</a>
-                <a class="nav-item nav-link white-font" href="#">Korisnici</a>
-                <a class="nav-item nav-link white-font" href="/realestate/adminPage">Nekretnine</a>
-                <a class="nav-item nav-link white-font" href="#">Izvestaji</a>
+                <a class="nav-item nav-link white-font" href="/registration">Register</a>
+                <a class="nav-item nav-link white-font" href="/login/logOut">Log out</a>
+                <a class="nav-item nav-link white-font" href="/users/viewAllUsers">Users</a>
+                <a class="nav-item nav-link white-font" href="/realestate/adminPage">Real Estates</a>
+                <a class="nav-item nav-link white-font" href="#">Reports</a>
 
             </div>
         </div>
@@ -40,11 +40,11 @@
       <thead>
         <tr>
           <th scope="col"></th>
-          <th scope="col">Tip</th>
-          <th scope="col">Lokacija</th>
-          <th scope="col">Cena</th>
-          <th scope="col">Najam/Prodaja</th>
-          <th scope="col">Povrsina</th>
+          <th scope="col">Type</th>
+          <th scope="col">Location</th>
+          <th scope="col">Price</th>
+          <th scope="col">Rent/Buy</th>
+          <th scope="col">Surface</th>
           <th scope="col"></th>
           <th scope="col"></th>
 
@@ -71,7 +71,7 @@
       </tbody>
     </table>
     <div class="add">
-        <a class="btn" href="add">Dodaj</a>
+        <a class="btn" href="add">Add</a>
     </div>
   </div>
 

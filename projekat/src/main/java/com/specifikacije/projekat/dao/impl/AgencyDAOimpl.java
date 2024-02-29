@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.specifikacije.projekat.dao.AgencyDAO;
 import com.specifikacije.projekat.model.Agency;
 import com.specifikacije.projekat.model.AgencyOwner;
+import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.AgencyOwnerService;
 import com.specifikacije.projekat.service.impl.AgencyOwnerServiceImpl;
 
@@ -122,4 +123,23 @@ public class AgencyDAOimpl implements AgencyDAO {
 		String sql = "DELETE FROM agency WHERE id = ?";
 		jdbcTemplate.update(sql, id);
 	}
+
+	public Agency findOwner(Long ownerId) {
+		String sql = 
+				"SELECT * FROM agency ck " +
+				"WHERE ck.agency_owner_id = ? " + 
+				"ORDER BY ck.id";
+
+		AgencyCallBackHandler rowCallbackHandler = new AgencyCallBackHandler();
+		jdbcTemplate.query(sql, rowCallbackHandler, ownerId);
+
+		List<Agency> agencies = rowCallbackHandler.getAgencies();
+	    if (!agencies.isEmpty()) {
+	        return agencies.get(0);
+	    } else {
+	        return null; 
+	   }
+	}
+
+	
 }

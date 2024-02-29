@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/index.css">
+
+</head>
+
+<body>
+ <!--navbar-->
+    <nav class="navbar navbar-expand-lg black-bg">
+        <img class="img" src="/images/keyToTheCastleLogoOrangeWhiteWithTitle.png">
+        <!-- add above logo -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
+                <a class="nav-item nav-link white-font" href="/registration">Register</a>
+                <a class="nav-item nav-link white-font" href="/login/logOut">Log out</a>
+                <a class="nav-item nav-link white-font" href="/users/viewUsers">Users</a>
+                <a class="nav-item nav-link white-font" href="/realestate/adminPage">Real Estates</a>
+                <a class="nav-item nav-link white-font" href="#">Reports</a>
+
+            </div>
+        </div>
+    </nav>
+    
+    
+    
+  <div id="pocetna" class="tables">
+
+	<h3 class="bolder">Users:</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Name</th>
+          <th scope="col">Surname</th>
+          <th scope="col">Username</th>
+          <th scope="col">Password</th>
+          <th scope="col">Phone</th>
+          <th scope="col">Email</th>
+          <th scope="col">Address</th>
+           <th scope="col">Is Active</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="user, iterStat : ${users}">
+          <form method="post" action="delete">
+
+            <th scope="row" th:text="${iterStat.count}">1</th>
+            <td th:text="${user.name}">Larry</td>
+            <td th:text="${user.surname}">the Bird</td>
+            <td th:text="${user.username}">@twitter</td>
+            <td th:text="${user.password}">twitter</td>
+            <td th:text="${user.email}">twitter</td>
+            <td th:text="${user.phoneNumber}">twitter</td>
+            <td th:text="${user.address}">twitter</td>
+            <td th:text="${user.isActive}">twitter</td>
+
+            <td><a th:href="@{editUser(id=${user.id})}" class="link bolder">Edit</a></td>
+            <td><button class="btn">Delete</button></td>
+            <input type="hidden" th:value="${user.id}" name="id">
+
+          </form>
+        </tr>
+      
+      </tbody>
+    </table>
+    <div class="add">
+        <a class="btn" href="addUser">Add</a>
+    </div>
+  </div>
+  
+   <div id="pocetna" class="tables">
+
+	<h3 class="bolder">Administrators:</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Name</th>
+          <th scope="col">Surname</th>
+          <th scope="col">Username</th>
+          <th scope="col">Password</th>
+          <th scope="col">Phone</th>
+          <th scope="col">Email</th>
+          <th scope="col">Address</th>
+           <th scope="col">Is Active</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="admin, iterStat : ${admins}">
+          <form method="post" action="delete">
+
+            <th scope="row" th:text="${iterStat.count}">1</th>
+            <td th:text="${admin.name}">Larry</td>
+            <td th:text="${admin.surname}">the Bird</td>
+            <td th:text="${admin.username}">@twitter</td>
+            <td th:text="${admin.password}">twitter</td>
+            <td th:text="${admin.email}">twitter</td>
+            <td th:text="${admin.phoneNumber}">twitter</td>
+            <td th:text="${admin.address}">twitter</td>
+            <td th:text="${admin.isActive}">twitter</td>
+
+            <td><a th:href="@{editAdmin(id=${admin.id})}" class="link bolder">Edit</a></td>
+            <td><button class="btn">Delete</button></td>
+            <input type="hidden" th:value="${admin.id}" name="id">
+
+          </form>
+        </tr>
+      
+      </tbody>
+    </table>
+    <div class="add">
+        <a class="btn" href="addAdmin">Add</a>
+    </div>
+  </div>
+  
+   <div id="pocetna" class="tables">
+
+	<h3 class="bolder">Agents:</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Name</th>
+          <th scope="col">Surname</th>
+          <th scope="col">Username</th>
+          <th scope="col">Password</th>
+          <th scope="col">Phone</th>
+          <th scope="col">Email</th>
+          <th scope="col">Address</th>
+           <th scope="col">Is Active</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="user, iterStat : ${agents}">
+          <form method="post" action="delete">
+
+            <th scope="row" th:text="${iterStat.count}">1</th>
+            <td th:text="${user.name}">Larry</td>
+            <td th:text="${user.surname}">the Bird</td>
+            <td th:text="${user.username}">@twitter</td>
+            <td th:text="${user.password}">twitter</td>
+            <td th:text="${user.email}">twitter</td>
+            <td th:text="${user.phoneNumber}">twitter</td>
+            <td th:text="${user.address}">twitter</td>
+            <td th:text="${user.isActive}">twitter</td>
+
+            <td><a th:href="@{editAgent(id=${user.id})}" class="link bolder">Edit</a></td>
+            <td><button class="btn">Delete</button></td>
+            <input type="hidden" th:value="${user.id}" name="id">
+
+          </form>
+        </tr>
+      
+      </tbody>
+    </table>
+    <div class="add">
+        <a class="btn" href="addAgent">Add</a>
+    </div>
+  </div>
+  
+   <div id="pocetna" class="tables">
+
+	<h3 class="bolder">AgencyOwners:</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Name</th>
+          <th scope="col">Surname</th>
+          <th scope="col">Username</th>
+          <th scope="col">Password</th>
+          <th scope="col">Phone</th>
+          <th scope="col">Email</th>
+          <th scope="col">Address</th>
+          <th scope="col">Is Active</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="user, iterStat : ${owners}">
+          <form method="post" action="delete">
+
+            <th scope="row" th:text="${iterStat.count}">1</th>
+            <td th:text="${user.name}">Larry</td>
+            <td th:text="${user.surname}">the Bird</td>
+            <td th:text="${user.username}">@twitter</td>
+            <td th:text="${user.password}">twitter</td>
+            <td th:text="${user.email}">twitter</td>
+            <td th:text="${user.phoneNumber}">twitter</td>
+            <td th:text="${user.address}">twitter</td>
+            <td th:text="${user.isActive}">twitter</td>
+
+            <td><a th:href="@{editOwner(id=${user.id})}" class="link bolder">Edit</a></td>
+            <td><button class="btn">Delete</button></td>
+            <input type="hidden" th:value="${user.id}" name="id">
+
+          </form>
+        </tr>
+      
+      </tbody>
+    </table>
+    <div class="add">
+        <a class="btn" href="addOwner">Add</a>
+    </div>
+  </div>
+
+ 
+
+    <!--Footer -->
+    <div>
+        <nav class="navbar ">
+            <a class="navbar-brand" href="#">
+                <form class="form-inline red">
+                    <p>some information about agency such as mail phone number..etc</p>
+                </form>
+            </a>
+        </nav>
+    </div>
+    
+    
+
+</body>
+
+</html>
