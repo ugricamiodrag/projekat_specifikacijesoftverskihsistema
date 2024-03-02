@@ -7,7 +7,7 @@
     <title>Login</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/index.css">
-
+    <base th:href="@{/}">
 </head>
 
 <body>
@@ -34,7 +34,7 @@
     
     
     
-  <div id="pocetna" class="tables">
+  <div id="pocetna3" class="tables">
 
 	<h3 class="bolder">Users:</h3>
     <table class="table">
@@ -57,20 +57,20 @@
       </thead>
       <tbody>
         <tr th:each="user, iterStat : ${users}">
-          <form method="post" action="deleteUser">
+          <form method="post" action="users/deleteUser">
 
-            <th scope="row" th:text="${iterStat.count}">1</th>
-            <td th:text="${user.name}">Larry</td>
-            <td th:text="${user.surname}">the Bird</td>
-            <td th:text="${user.username}">@twitter</td>
-            <td th:text="${user.password}">twitter</td>
-            <td th:text="${user.email}">twitter</td>
-            <td th:text="${user.phoneNumber}">twitter</td>
-            <td th:text="${user.address}">twitter</td>
-            <td th:text="${user.isBlocked}">twitter</td>
+            <th scope="row" th:text="${iterStat.count}"></th>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.surname}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.password}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.phoneNumber}"></td>
+            <td th:text="${user.address}"></td>
+            <td th:text="${user.isBlocked}"></td>
 
-            <td><a th:href="@{editUser(id=${user.id})}" class="link bolder">Edit</a></td>
-            <td><a th:href="@{blockUser(id=${user.id})}" class="link bolder">Block</a></td>
+            <td><a th:href="@{users/editUser(id=${user.id})}" class="link bolder">Edit</a></td>
+            <td><a th:href="@{users/blockUser(id=${user.id})}" class="link bolder">Block</a></td>
             <td><button class="btn">Delete</button></td>
             <input type="hidden" th:value="${user.id}" name="id">
 
@@ -80,11 +80,11 @@
       </tbody>
     </table>
     <div class="add">
-        <a class="btn" href="addUser">Add</a>
+        <a class="btn" href="users/addUser">Add</a>
     </div>
   </div>
   
-   <div id="pocetna" class="tables">
+   <div id="pocetna2" class="tables">
 
 	<h3 class="bolder">Administrators:</h3>
     <table class="table">
@@ -106,20 +106,20 @@
       </thead>
       <tbody>
         <tr th:each="admin, iterStat : ${admins}">
-          <form method="post" action="delete">
+          <form method="post" action="admin/deleteAdmin">
 
-            <th scope="row" th:text="${iterStat.count}">1</th>
-            <td th:text="${admin.name}">Larry</td>
-            <td th:text="${admin.surname}">the Bird</td>
-            <td th:text="${admin.username}">@twitter</td>
-            <td th:text="${admin.password}">twitter</td>
-            <td th:text="${admin.email}">twitter</td>
-            <td th:text="${admin.phoneNumber}">twitter</td>
-            <td th:text="${admin.address}">twitter</td>
-            <td th:text="${admin.isBlocked}">twitter</td>
+            <th scope="row" th:text="${iterStat.count}"></th>
+            <td th:text="${admin.name}"></td>
+            <td th:text="${admin.surname}"></td>
+            <td th:text="${admin.username}"></td>
+            <td th:text="${admin.password}"></td>
+            <td th:text="${admin.email}"></td>
+            <td th:text="${admin.phoneNumber}"></td>
+            <td th:text="${admin.address}"></td>
+            <td th:text="${admin.isBlocked}"></td>
 
-            <td><a th:href="@{editAdmin(id=${admin.id})}" class="link bolder">Edit</a></td>
-            <td><a th:href="@{blockAdmin(id=${admin.id})}" class="link bolder">Block</a></td>
+            <td><a th:href="@{admin/editAdmin(id=${admin.id})}" class="link bolder">Edit</a></td>
+            <td><a th:href="@{admin/blockAdmin(id=${admin.id})}" class="link bolder">Block</a></td>
             
             <td><button class="btn">Delete</button></td>
             <input type="hidden" th:value="${admin.id}" name="id">
@@ -130,11 +130,11 @@
       </tbody>
     </table>
     <div class="add">
-        <a class="btn" href="addAdmin">Add</a>
+        <a class="btn" href="admin/addAdmin">Add</a>
     </div>
   </div>
   
-   <div id="pocetna" class="tables">
+   <div id="pocetna4" class="tables">
 
 	<h3 class="bolder">Agents:</h3>
     <table class="table">
@@ -156,20 +156,20 @@
       </thead>
       <tbody>
         <tr th:each="user, iterStat : ${agents}">
-          <form method="post" action="delete">
+          <form method="post" action="agents/deleteAgent">
 
-            <th scope="row" th:text="${iterStat.count}">1</th>
-            <td th:text="${user.name}">Larry</td>
-            <td th:text="${user.surname}">the Bird</td>
-            <td th:text="${user.username}">@twitter</td>
-            <td th:text="${user.password}">twitter</td>
-            <td th:text="${user.email}">twitter</td>
-            <td th:text="${user.phoneNumber}">twitter</td>
-            <td th:text="${user.address}">twitter</td>
-            <td th:text="${user.isBlocked}">twitter</td>
+            <th scope="row" th:text="${iterStat.count}"></th>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.surname}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.password}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.phoneNumber}"></td>
+            <td th:text="${user.address}"></td>
+            <td th:text="${user.isBlocked}"></td>
 
-            <td><a th:href="@{editAgent(id=${user.id})}" class="link bolder">Edit</a></td>
-            <td><a th:href="@{blockAgent(id=${user.id})}" class="link bolder">Block</a></td>
+            <td><a th:href="@{agents/editAgent(id=${user.id})}" class="link bolder">Edit</a></td>
+            <td><a th:href="@{agents/blockAgent(id=${user.id})}" class="link bolder">Block</a></td>
             
             <td><button class="btn">Delete</button></td>
             <input type="hidden" th:value="${user.id}" name="id">
@@ -180,7 +180,7 @@
       </tbody>
     </table>
     <div class="add">
-        <a class="btn" href="addAgent">Add</a>
+        <a class="btn" href="agents/addAgent">Add</a>
     </div>
   </div>
   
@@ -206,20 +206,20 @@
       </thead>
       <tbody>
         <tr th:each="user, iterStat : ${owners}">
-          <form method="post" action="delete">
+          <form method="post" action="owner/deleteOwner">
 
-            <th scope="row" th:text="${iterStat.count}">1</th>
-            <td th:text="${user.name}">Larry</td>
-            <td th:text="${user.surname}">the Bird</td>
-            <td th:text="${user.username}">@twitter</td>
-            <td th:text="${user.password}">twitter</td>
-            <td th:text="${user.email}">twitter</td>
-            <td th:text="${user.phoneNumber}">twitter</td>
-            <td th:text="${user.address}">twitter</td>
-            <td th:text="${user.isBlocked}">twitter</td>
+            <th scope="row" th:text="${iterStat.count}"></th>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.surname}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.password}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.phoneNumber}"></td>
+            <td th:text="${user.address}"></td>
+            <td th:text="${user.isBlocked}"></td>
 
-            <td><a th:href="@{editOwner(id=${user.id})}" class="link bolder">Edit</a></td>
-            <td><a th:href="@{blockOwner(id=${user.id})}" class="link bolder">Block</a></td>
+            <td><a th:href="@{owner/editOwner(id=${user.id})}" class="link bolder">Edit</a></td>
+            <td><a th:href="@{owner/blockOwner(id=${user.id})}" class="link bolder">Block</a></td>
             
             <td><button class="btn">Delete</button></td>
             <input type="hidden" th:value="${user.id}" name="id">
@@ -230,7 +230,7 @@
       </tbody>
     </table>
     <div class="add">
-        <a class="btn" href="addOwner">Add</a>
+        <a class="btn" href="owner/addOwner">Add</a>
     </div>
   </div>
 

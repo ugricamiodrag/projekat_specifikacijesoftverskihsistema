@@ -131,51 +131,14 @@ public class UserController implements ApplicationContextAware{
 		
 	}
 	
-	@GetMapping(value="addAdmin")  // for showing users in admin page
-	public String addAdmin()  throws IOException{
-		
-		return "adminAdd";
-	}
-	
-	
-	@PostMapping("addAdmin")
-	public void addAdmin(HttpServletResponse response, @RequestParam String name, @RequestParam String surname, @RequestParam String username, @RequestParam String password, @RequestParam String phone, @RequestParam String email, @RequestParam String address ) throws IOException {
-		
 
-		Administrator d = new Administrator(name, surname, username, password, phone, email, address, true, false);
+	
+	
 
-		adminService.save(d);
-		
-		response.sendRedirect("viewAllUsers");
-		
-		
-	}
 	
-	@GetMapping(value="addOwner")  // for showing users in admin page
-	public String addOwner()  throws IOException{
-		
-		return "ownerAdd";
-	}
-	
-	
-	@PostMapping("addOwner")
-	public void addOwner(HttpServletResponse response, @RequestParam String name, @RequestParam String surname, @RequestParam String username, @RequestParam String password, @RequestParam String phone, @RequestParam String email, @RequestParam String address ) throws IOException {
-		
 
-		AgencyOwner d = new AgencyOwner(name, surname, username, password, phone, email, address, true, false);
-
-		ownerService.save(d);
-		
-		response.sendRedirect("viewAllUsers");
-		
-		
-	}
 	
-	@GetMapping(value="addAgent")  // for showing users in admin page
-	public String addAgent()  throws IOException{
-		
-		return "agentAdd";
-	}
+
 	
 	
 //	@PostMapping("addAgent")
@@ -199,6 +162,8 @@ public class UserController implements ApplicationContextAware{
 		User d = userService.findOne(id);
 		
 		model.addAttribute("user",d);
+		model.addAttribute("entityType", "User");
+		model.addAttribute("entity", "users");
 		
 		return "userEdit";
 		
@@ -255,85 +220,13 @@ public class UserController implements ApplicationContextAware{
 	}
 	
 	
-	@PostMapping("/deleteAgent")
-	public String deleteAgent(@RequestParam Long id ) {
-		
-		Agent d = agentService.findOne(id);
-		
-		agentService.delete(d.getId());
 
-		return "redirect:viewAllUsers";
-	}
 	
 	
-	@GetMapping("/blockAgent")
-	public String blockAgent(@RequestParam Long id ) {
-		
-		Agent d = agentService.findOne(id);
-		boolean blocked = d.isBlocked();
-		if(blocked == true) 
-			d.setBlocked(false);
-		else 
-			d.setBlocked(true);
 
-		agentService.update(d);
+	
+	
 
-		return "redirect:viewAllUsers";
-	}
-	
-	
-	@PostMapping("/deleteAdmin")
-	public String deleteAdmin(@RequestParam Long id ) {
-		
-		Administrator d = adminService.findOne(id);
-		
-		adminService.delete(d.getId());
-
-		return "redirect:viewAllUsers";
-	}
-	
-	
-	@GetMapping("/blockAdmin")
-	public String blockAdmin(@RequestParam Long id ) {
-		
-		Administrator d = adminService.findOne(id);
-		boolean blocked = d.isBlocked();
-		if(blocked == true) 
-			d.setBlocked(false);
-		else 
-			d.setBlocked(true);
-
-		adminService.update(d);
-
-		return "redirect:viewAllUsers";
-	}
-	
-	
-	@PostMapping("/deleteOwner")
-	public String deleteOwner(@RequestParam Long id ) {
-		
-		AgencyOwner d = ownerService.findOne(id);
-		
-		ownerService.delete(d.getId());
-
-		return "redirect:viewAllUsers";
-	}
-	
-	
-	@GetMapping("/blockOwner")
-	public String blockOwner(@RequestParam Long id ) {
-		
-		AgencyOwner d = ownerService.findOne(id);
-		boolean blocked = d.isBlocked();
-		if(blocked == true) 
-			d.setBlocked(false);
-		else 
-			d.setBlocked(true);
-
-		ownerService.update(d);
-
-		return "redirect:viewAllUsers";
-	}
 	
 	
 	

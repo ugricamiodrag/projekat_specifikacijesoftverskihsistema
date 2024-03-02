@@ -116,10 +116,10 @@ public class AgentDAOimpl implements AgentDAO {
 	@Override
 	public void save(Agent agent) {
 		PreparedStatementCreator preparedStatementCreator = new PreparedStatementCreator() {
-			
+
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				String sql = "INSERT INTO agent (first_name, surname, username, password, phone, email, address, isActive, isBlocked) VALUES (?, ?, ?, ?, ? ,?, ?, ?, ?)";
+				String sql = "INSERT INTO agent (first_name, surname, username, password, phone, email, address, agency_id, isActive, isBlocked) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;

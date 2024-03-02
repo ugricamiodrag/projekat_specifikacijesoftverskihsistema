@@ -7,6 +7,7 @@
   <title>Admin - View users</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/index.css">
+    <base th:href="@{/}">
 
 
 </head>
@@ -54,12 +55,12 @@
         <tr th:each="estate, iterStat : ${realEstates}">
           <form method="post" action="delete">
 
-            <th scope="row" th:text="${iterStat.count}">1</th>
-            <td th:text="${estate.estateType}">Larry</td>
-            <td th:text="${estate.location}">the Bird</td>
-            <td th:text="${estate.price}">@twitter</td>
-            <td th:text="${estate.rentOrBuy}">twitter</td>
-            <td th:text="${estate.surface}">twitter</td>
+            <th scope="row" th:text="${iterStat.count}"></th>
+            <td th:text="${estate.estateType}"></td>
+            <td th:text="${estate.location}"></td>
+            <td th:text="${estate.price}"></td>
+            <td th:text="${estate.rentOrBuy}"></td>
+            <td th:text="${estate.surface}"></td>
 
             <td><a th:href="@{edit(id=${estate.id})}" class="link bolder">Edit</a></td>
             <td><button class="btn">Delete</button></td>

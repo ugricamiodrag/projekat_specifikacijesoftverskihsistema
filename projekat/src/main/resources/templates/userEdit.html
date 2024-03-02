@@ -6,7 +6,7 @@
     <title>Add user</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/index.css">
-
+    <base th:href="@{/}">
 </head>
 <body>
      <!--navbar-->
@@ -29,9 +29,10 @@
   </nav>
     
    <div class="form">
-    <form method="post" action="editUser">
-        
-        <div class="form-group">
+       <form method="post" th:action="@{'/' + ${entity} + '/edit' + ${entityType}}">
+
+
+       <div class="form-group">
           <label class="bolder"  for="location">Name:</label>
           <input type="text" th:value="${user.name}" name="name" class="form-control"  >
         </div>

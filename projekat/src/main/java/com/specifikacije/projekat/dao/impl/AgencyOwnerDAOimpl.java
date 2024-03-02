@@ -127,7 +127,7 @@ public class AgencyOwnerDAOimpl implements AgencyOwnerDAO {
 				preparedStatement.setString(index++, agencyOwner.getPhoneNumber());
 				preparedStatement.setString(index++, agencyOwner.getEmail());
 				preparedStatement.setString(index++, agencyOwner.getAddress());
-				preparedStatement.setBoolean(index, agencyOwner.isActive());
+				preparedStatement.setBoolean(index++, agencyOwner.isActive());
 				preparedStatement.setBoolean(index++, agencyOwner.isBlocked());
 
 				return preparedStatement;
@@ -141,9 +141,10 @@ public class AgencyOwnerDAOimpl implements AgencyOwnerDAO {
 	@Transactional
 	@Override
 	public void update(AgencyOwner agencyOwner) {
-		String sql = "UPDATE agency_owner SET first_name = ?, surname = ?, username = ?, password = ?, phone = ?, email = ?, address = ?, isActive = ?, isBlocked = ? WHERE id = ?";	
+		String sql = "UPDATE agency_owner SET first_name = ?, surname = ?, username = ?, password = ?, phone = ?, email = ?, address = ?, isActive = ?, isBlocked = ? WHERE id = ?";
 		jdbcTemplate.update(sql, agencyOwner.getName(), agencyOwner.getSurname(), agencyOwner.getUsername(), agencyOwner.getPassword(), agencyOwner.getPhoneNumber(), agencyOwner.getEmail(), agencyOwner.getAddress(), agencyOwner.isActive(), agencyOwner.isBlocked(), agencyOwner.getId());
 	}
+
 
 	@Transactional
 	@Override
