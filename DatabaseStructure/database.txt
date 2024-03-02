@@ -121,6 +121,12 @@ create table report(
     foreign key(admin_id) references administrator(id)
 );
 
+
+ALTER TABLE users ADD COLUMN isBlocked BOOLEAN
+ALTER TABLE agent ADD COLUMN isBlocked BOOLEAN
+ALTER TABLE agency_owner ADD COLUMN isBlocked BOOLEAN
+ALTER TABLE administrator ADD COLUMN isBlocked BOOLEAN
+
 -- Test data :
 INSERT INTO administrator (first_name, surname, username, password, phone, email, address, isActive) 
 VALUES ('John', 'Doe', 'johndoe', 'password123', '123456789', 'john@example.com', '123 Main St', 1);

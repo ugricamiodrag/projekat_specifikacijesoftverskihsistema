@@ -1,7 +1,9 @@
 package com.specifikacije.projekat.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.springframework.beans.BeansException;
@@ -21,6 +23,8 @@ import com.specifikacije.projekat.model.Administrator;
 import com.specifikacije.projekat.model.AgencyOwner;
 import com.specifikacije.projekat.model.Agent;
 import com.specifikacije.projekat.model.RealEstate;
+import com.specifikacije.projekat.model.RealEstateType;
+import com.specifikacije.projekat.model.RentOrBuy;
 import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.AdministratorService;
 import com.specifikacije.projekat.service.AgencyOwnerService;
@@ -29,6 +33,7 @@ import com.specifikacije.projekat.service.AgentService;
 import com.specifikacije.projekat.service.UserService;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/users")
@@ -90,7 +95,7 @@ public class UserController implements ApplicationContextAware{
 	
 	
 	@GetMapping("viewAllUsers") // for showing users in admin page
-	public String adminPage(Model model) {
+	public String viewAll(Model model) {
 		
 		List<User> usersList = userService.findAll();
 		List<Administrator> adminsList = adminService.findAll();
@@ -106,4 +111,231 @@ public class UserController implements ApplicationContextAware{
 	}
 	//TODO: other CRUD operations for every user type and add attribute in every user for blocking user function        
 
+	@GetMapping(value="addUser")  // for showing users in admin page
+	public String addUser ()  throws IOException{
+		
+		return "userAdd";
+	}
+	
+	
+	@PostMapping("addUser")
+	public void add(HttpServletResponse response, @RequestParam String name, @RequestParam String surname, @RequestParam String username, @RequestParam String password, @RequestParam String phone, @RequestParam String email, @RequestParam String address ) throws IOException {
+		
+
+		User d = new User(name, surname, username, password, phone, email, address, true, false);
+
+		userService.save(d);
+		
+		response.sendRedirect("viewAllUsers");
+		
+		
+	}
+	
+	@GetMapping(value="addAdmin")  // for showing users in admin page
+	public String addAdmin()  throws IOException{
+		
+		return "adminAdd";
+	}
+	
+	
+	@PostMapping("addAdmin")
+	public void addAdmin(HttpServletResponse response, @RequestParam String name, @RequestParam String surname, @RequestParam String username, @RequestParam String password, @RequestParam String phone, @RequestParam String email, @RequestParam String address ) throws IOException {
+		
+
+		Administrator d = new Administrator(name, surname, username, password, phone, email, address, true, false);
+
+		adminService.save(d);
+		
+		response.sendRedirect("viewAllUsers");
+		
+		
+	}
+	
+	@GetMapping(value="addOwner")  // for showing users in admin page
+	public String addOwner()  throws IOException{
+		
+		return "ownerAdd";
+	}
+	
+	
+	@PostMapping("addOwner")
+	public void addOwner(HttpServletResponse response, @RequestParam String name, @RequestParam String surname, @RequestParam String username, @RequestParam String password, @RequestParam String phone, @RequestParam String email, @RequestParam String address ) throws IOException {
+		
+
+		AgencyOwner d = new AgencyOwner(name, surname, username, password, phone, email, address, true, false);
+
+		ownerService.save(d);
+		
+		response.sendRedirect("viewAllUsers");
+		
+		
+	}
+	
+	@GetMapping(value="addAgent")  // for showing users in admin page
+	public String addAgent()  throws IOException{
+		
+		return "agentAdd";
+	}
+	
+	
+//	@PostMapping("addAgent")
+//	public void addAgent(HttpServletResponse response, @RequestParam String name, @RequestParam String surname, @RequestParam String username, @RequestParam String password, @RequestParam String phone, @RequestParam String email, @RequestParam String address) throws IOException {
+//		
+//		List<RealEstate> realEstate = new ArrayList<>(); 
+//		
+//		Agent d = new Agent(name, surname, username, password, phone, email, address, realEstate, null, true, false);
+//
+//		agentService.save(d);
+//		
+//		response.sendRedirect("viewAllUsers");
+//		
+//		
+//	}
+	
+	@GetMapping(value="/editUser")
+	public String edit(@RequestParam Long id, HttpServletResponse response, Model model) throws IOException {
+		
+
+		User d = userService.findOne(id);
+		
+		model.addAttribute("user",d);
+		
+		return "userEdit";
+		
+	}
+	
+	@PostMapping("/editUser")
+	public void edit(@RequestParam Long id, @RequestParam String name, @RequestParam String surname, @RequestParam String username, @RequestParam String password, @RequestParam String phone, @RequestParam String email, @RequestParam String address, HttpServletResponse response) throws IOException {
+		
+
+		User d = userService.findOne(id);
+
+		d.setName(name);
+		d.setSurname(surname);
+		d.setUsername(username);
+		d.setPassword(password);
+		d.setEmail(email);
+		d.setAddress(address);
+		d.setPhoneNumber(phone);
+
+
+		userService.update(d);
+		
+		
+		response.sendRedirect("viewAllUsers");
+		
+
+	}
+	
+	
+	@PostMapping("/deleteUser")
+	public String deleteUser(@RequestParam Long id ) {
+		
+		User d = userService.findOne(id);
+		
+		userService.delete(d.getId());
+
+		return "redirect:viewAllUsers";
+	}
+	
+	
+	@GetMapping("/blockUser")
+	public String blockUser(@RequestParam Long id ) {
+		
+		User d = userService.findOne(id);
+		boolean blocked = d.isBlocked();
+		if(blocked == true) 
+			d.setBlocked(false);
+		else 
+			d.setBlocked(true);
+
+		userService.update(d);
+
+		return "redirect:viewAllUsers";
+	}
+	
+	
+	@PostMapping("/deleteAgent")
+	public String deleteAgent(@RequestParam Long id ) {
+		
+		Agent d = agentService.findOne(id);
+		
+		agentService.delete(d.getId());
+
+		return "redirect:viewAllUsers";
+	}
+	
+	
+	@GetMapping("/blockAgent")
+	public String blockAgent(@RequestParam Long id ) {
+		
+		Agent d = agentService.findOne(id);
+		boolean blocked = d.isBlocked();
+		if(blocked == true) 
+			d.setBlocked(false);
+		else 
+			d.setBlocked(true);
+
+		agentService.update(d);
+
+		return "redirect:viewAllUsers";
+	}
+	
+	
+	@PostMapping("/deleteAdmin")
+	public String deleteAdmin(@RequestParam Long id ) {
+		
+		Administrator d = adminService.findOne(id);
+		
+		adminService.delete(d.getId());
+
+		return "redirect:viewAllUsers";
+	}
+	
+	
+	@GetMapping("/blockAdmin")
+	public String blockAdmin(@RequestParam Long id ) {
+		
+		Administrator d = adminService.findOne(id);
+		boolean blocked = d.isBlocked();
+		if(blocked == true) 
+			d.setBlocked(false);
+		else 
+			d.setBlocked(true);
+
+		adminService.update(d);
+
+		return "redirect:viewAllUsers";
+	}
+	
+	
+	@PostMapping("/deleteOwner")
+	public String deleteOwner(@RequestParam Long id ) {
+		
+		AgencyOwner d = ownerService.findOne(id);
+		
+		ownerService.delete(d.getId());
+
+		return "redirect:viewAllUsers";
+	}
+	
+	
+	@GetMapping("/blockOwner")
+	public String blockOwner(@RequestParam Long id ) {
+		
+		AgencyOwner d = ownerService.findOne(id);
+		boolean blocked = d.isBlocked();
+		if(blocked == true) 
+			d.setBlocked(false);
+		else 
+			d.setBlocked(true);
+
+		ownerService.update(d);
+
+		return "redirect:viewAllUsers";
+	}
+	
+	
+	
+	
 }

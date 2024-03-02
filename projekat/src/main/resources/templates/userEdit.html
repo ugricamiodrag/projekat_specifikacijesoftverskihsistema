@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add user</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/index.css">
+
+</head>
+<body>
+     <!--navbar-->
+     <nav class="navbar navbar-expand-lg black-bg">
+      <img class="img" src="/images/keyToTheCastleLogoOrangeWhiteWithTitle.png">
+      <!-- add above logo -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+              <a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
+              <a class="nav-item nav-link white-font" href="#">Register</a>
+              <a class="nav-item nav-link white-font" href="#">Log in</a>
+              <a class="nav-item nav-link white-font" href="#"><img class="small" src="/images/cart.png"></img></a>
+
+          </div>
+      </div>
+  </nav>
+    
+   <div class="form">
+    <form method="post" action="editUser">
+        
+        <div class="form-group">
+          <label class="bolder"  for="location">Name:</label>
+          <input type="text" th:value="${user.name}" name="name" class="form-control"  >
+        </div>
+        <div class="form-group">
+            <label class="bolder" for="price">Surname:</label>
+            <input type="text" th:value="${user.surname}" name="surname" class="form-control"  aria-describedby="emailHelp" >
+          </div>
+          <div class="form-group">
+            <label class="bolder" for="rentOrBuy">Username:</label>
+            <input type="text" th:value="${user.username}"  name="username" class="form-control"  >
+        </div>
+         <div class="form-group">
+            <label class="bolder" for="picture">Password:</label>
+            <input type="text" th:value="${user.password}" name="password" class="form-control"  >
+        </div>
+        <div class="form-group">
+            <label class="bolder" for="surface">Phone:</label>
+            <input type="text" th:value="${user.phoneNumber}" name="phone" class="form-control"  >
+        </div>
+        <div class="form-group">
+            <label class="bolder" for="agent">Email:</label>
+			<input type="text" th:value="${user.email}" name="email" class="form-control"  >
+		</div>
+		<div class="form-group">
+            <label class="bolder" for="agent">Address:</label>
+			<input type="text" th:value="${user.address}" name="address" class="form-control"  >
+		</div>
+        <div class="hidden">
+            <label class="bolder" for="agent">id:</label>
+			<input type="text" th:value="${user.id}" name="id" class="form-control"  >
+		</div>
+        
+        
+        <button type="submit" class="btn">Save</button>
+       
+    </form>
+   </div>
+
+   <br/><br/><br/><br/>
+
+
+
+
+
+    <!--Footer -->
+    <div>
+        <nav class="navbar ">
+            <a class="navbar-brand" href="#">
+                <form class="form-inline red">
+                    <p>some information about agency such as mail phone number..etc</p>
+                </form>
+            </a>
+        </nav>
+    </div>
+
+</body>
+
+</html>

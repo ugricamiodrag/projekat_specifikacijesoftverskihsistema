@@ -40,7 +40,7 @@ public class RegistrationController {
 	public void Register(@RequestParam String name, @RequestParam String surname, @RequestParam String username, @RequestParam String password, @RequestParam String phoneNumber, @RequestParam String email, @RequestParam String address, HttpServletResponse response) throws IOException {
 		
 		
-		User newUser = new User(name, surname, username, password, phoneNumber, email, address, true);
+		User newUser = new User(name, surname, username, password, phoneNumber, email, address, true, false);
 	
 		userService.save(newUser);
 

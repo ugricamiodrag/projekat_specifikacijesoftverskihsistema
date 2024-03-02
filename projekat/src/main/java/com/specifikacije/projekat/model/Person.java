@@ -10,14 +10,29 @@ public class Person {
 	private String email;
 	private String address;
 	private boolean isActive;
-	
+	private boolean isBlocked;
+
 	public Person() {
 	}
 	
 
 	
+//	public Person(Long id, String name, String surname, String username, String password, String phoneNumber,
+//			String email, String address, boolean isActive) {
+//		super();
+//		this.id = id;
+//		this.name = name;
+//		this.surname = surname;
+//		this.username = username;
+//		this.password = password;
+//		this.phoneNumber = phoneNumber;
+//		this.email = email;
+//		this.address = address;
+//		this.isActive = isActive;
+//	}
+	
 	public Person(Long id, String name, String surname, String username, String password, String phoneNumber,
-			String email, String address, boolean isActive) {
+			String email, String address, boolean isActive, boolean isBlocked) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -28,12 +43,13 @@ public class Person {
 		this.email = email;
 		this.address = address;
 		this.isActive = isActive;
+		this.setBlocked(isBlocked);
 	}
 
 
 
 	public Person(String name, String surname, String username, String password, String phoneNumber, String email,
-			String address, boolean isActive) {
+			String address, boolean isActive, boolean isBLocked) {
 		super();
 		this.name = name;
 		this.surname = surname;
@@ -43,6 +59,7 @@ public class Person {
 		this.email = email;
 		this.address = address;
 		this.isActive = isActive;
+		this.setBlocked(isBLocked);
 	}
 
 
@@ -120,5 +137,17 @@ public class Person {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+
+
+	public boolean isBlocked() {
+		return isBlocked;
+	}
+
+
+
+	public void setBlocked(boolean isBlocked) {
+		this.isBlocked = isBlocked;
 	}
 }

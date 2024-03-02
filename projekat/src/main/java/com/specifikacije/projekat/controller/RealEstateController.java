@@ -146,7 +146,7 @@ public class RealEstateController {
 		realEstateService.update(d);
 		
 		
-		response.sendRedirect("adminPage");
+		response.sendRedirect("viewAllUsers");
 		
 
 	}

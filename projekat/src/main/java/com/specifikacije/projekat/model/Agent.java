@@ -22,15 +22,15 @@ public class Agent extends Person {
 		this.realEstates = realEstates;
 	}
 
-	public Agent(Long id, String name, String surname, String username, String password, String phoneNumber, String email, String address, List<RealEstate> realEstates, Agency agency, boolean isActive) {
-		super(id, name, surname, username, password, phoneNumber, email, address, isActive);
+	public Agent(Long id, String name, String surname, String username, String password, String phoneNumber, String email, String address, List<RealEstate> realEstates, Agency agency, boolean isActive, boolean isBlocked) {
+		super(id, name, surname, username, password, phoneNumber, email, address, isActive, isBlocked);
 		this.realEstates = realEstates;
 		this.agency = agency;
 		// TODO Auto-generated constructor stub
 	}
 
-	public Agent(String name, String surname, String username, String password, String phoneNumber, String email, String address, List<RealEstate> realEstates, Agency agency, boolean isActive) {
-		super(name, surname, username, password, phoneNumber, email, address, isActive);
+	public Agent(String name, String surname, String username, String password, String phoneNumber, String email, String address, List<RealEstate> realEstates, Agency agency, boolean isActive, boolean isBlocked) {
+		super(name, surname, username, password, phoneNumber, email, address, isActive, isBlocked);
 		this.realEstates = realEstates;
 		this.agency = agency;
 		// TODO Auto-generated constructor stub

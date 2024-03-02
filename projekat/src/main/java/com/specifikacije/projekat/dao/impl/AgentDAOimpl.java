@@ -53,12 +53,13 @@ public class AgentDAOimpl implements AgentDAO {
 			String address = resultSet.getString(index++);
 			Long agencyId = resultSet.getLong(index++);
 			Boolean isActive = resultSet.getBoolean(index++);
+			Boolean isBlocked = resultSet.getBoolean(index++);
 
 			Agency agency = agencyService.findOne(agencyId);
 			
 			Agent agent = agents.get(id);
 			if (agent == null) {
-				agent = new Agent(id, first_name, surname, username, password, phone, email, address, null, agency, isActive);
+				agent = new Agent(id, first_name, surname, username, password, phone, email, address, null, agency, isActive, isBlocked);
 				agents.put(agent.getId(), agent); // dodavanje u kolekciju
 			}
 			
@@ -103,7 +104,8 @@ public class AgentDAOimpl implements AgentDAO {
 	public List<Agent> findAll() {
 		String sql = 
 				"SELECT * FROM agent ck " +
-				"ORDER BY ck.id";
+				"WHERE ck.isActive = true "
+				+ "ORDER BY ck.id";
 
 		AgentCallBackHandler rowCallbackHandler = new AgentCallBackHandler();
 		jdbcTemplate.query(sql, rowCallbackHandler);
@@ -117,7 +119,7 @@ public class AgentDAOimpl implements AgentDAO {
 			
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				String sql = "INSERT INTO agent (first_name, surname, username, password, phone, email, address, isActive) VALUES (?, ?, ?, ?, ? ,?, ?, ?)";
+				String sql = "INSERT INTO agent (first_name, surname, username, password, phone, email, address, isActive, isBlocked) VALUES (?, ?, ?, ?, ? ,?, ?, ?, ?)";
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;
@@ -130,6 +132,7 @@ public class AgentDAOimpl implements AgentDAO {
 				preparedStatement.setString(index++, agent.getAddress());
 				preparedStatement.setLong(index++, agent.getAgency().getId());
 				preparedStatement.setBoolean(index++, agent.isActive());
+				preparedStatement.setBoolean(index++, agent.isBlocked());
 
 				return preparedStatement;
 			}
@@ -142,14 +145,14 @@ public class AgentDAOimpl implements AgentDAO {
 	@Transactional
 	@Override
 	public void update(Agent agent) {
-		String sql = "UPDATE agent SET first_name = ?, surname = ?, username = ?, password = ?, phone = ?, email = ?, address = ?, agency_id = ?, isActive = ? WHERE id = ?";	
-		jdbcTemplate.update(sql, agent.getName(), agent.getSurname(), agent.getUsername(), agent.getPassword(), agent.getPhoneNumber(), agent.getEmail(), agent.getAddress(), agent.getAgency().getId(), agent.isActive(), agent.getId());	
+		String sql = "UPDATE agent SET first_name = ?, surname = ?, username = ?, password = ?, phone = ?, email = ?, address = ?, agency_id = ?, isActive = ?, isBlocked = ? WHERE id = ?";	
+		jdbcTemplate.update(sql, agent.getName(), agent.getSurname(), agent.getUsername(), agent.getPassword(), agent.getPhoneNumber(), agent.getEmail(), agent.getAddress(), agent.getAgency().getId(), agent.isActive(),agent.isBlocked(), agent.getId());	
 	}
 
 	@Transactional
 	@Override
 	public void delete(Long id) {
-		String sql = "DELETE FROM agent WHERE id = ?";
+		String sql = "UPDATE agent SET isActive = false WHERE id = ?";
 		jdbcTemplate.update(sql, id);
 	}
 

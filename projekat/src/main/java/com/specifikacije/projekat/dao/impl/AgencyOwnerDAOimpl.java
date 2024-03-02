@@ -49,10 +49,11 @@ public class AgencyOwnerDAOimpl implements AgencyOwnerDAO {
 			String email = resultSet.getString(index++);
 			String address = resultSet.getString(index++);
 			Boolean isActive = resultSet.getBoolean(index++);
-			
+			Boolean isBlocked = resultSet.getBoolean(index++);
+
 			AgencyOwner owner = owners.get(id);
 			if (owner == null) {
-				owner = new AgencyOwner(id, first_name, surname, username, password, phone, email, address, isActive);
+				owner = new AgencyOwner(id, first_name, surname, username, password, phone, email, address, isActive, isBlocked);
 				owners.put(owner.getId(), owner); // dodavanje u kolekciju
 			}
 //			TODO Kada uradimo bazu
@@ -100,7 +101,8 @@ public class AgencyOwnerDAOimpl implements AgencyOwnerDAO {
 	public List<AgencyOwner> findAll() {
 		String sql = 
 				"SELECT * FROM agency_owner ck " +
-				"ORDER BY ck.id";
+				"WHERE ck.isActive = true "
+				+ "ORDER BY ck.id";
 
 		AgencyOwnerCallBackHandler rowCallbackHandler = new AgencyOwnerCallBackHandler();
 		jdbcTemplate.query(sql, rowCallbackHandler);
@@ -114,7 +116,7 @@ public class AgencyOwnerDAOimpl implements AgencyOwnerDAO {
 			
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				String sql = "INSERT INTO agency_owner (first_name, surname, username, password, phone, email, address, isActive) VALUES (?, ?, ?, ?, ? ,?, ?, ?)";
+				String sql = "INSERT INTO agency_owner (first_name, surname, username, password, phone, email, address, isActive, isBlocked) VALUES (?, ?, ?, ?, ? ,?, ?, ?, ?)";
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;
@@ -126,6 +128,7 @@ public class AgencyOwnerDAOimpl implements AgencyOwnerDAO {
 				preparedStatement.setString(index++, agencyOwner.getEmail());
 				preparedStatement.setString(index++, agencyOwner.getAddress());
 				preparedStatement.setBoolean(index, agencyOwner.isActive());
+				preparedStatement.setBoolean(index++, agencyOwner.isBlocked());
 
 				return preparedStatement;
 			}
@@ -138,14 +141,14 @@ public class AgencyOwnerDAOimpl implements AgencyOwnerDAO {
 	@Transactional
 	@Override
 	public void update(AgencyOwner agencyOwner) {
-		String sql = "UPDATE agency_owner SET first_name = ?, surname = ?, username = ?, password = ?, phone = ?, email = ?, address = ?, isActive = ? WHERE id = ?";	
-		jdbcTemplate.update(sql, agencyOwner.getName(), agencyOwner.getSurname(), agencyOwner.getUsername(), agencyOwner.getPassword(), agencyOwner.getPhoneNumber(), agencyOwner.getEmail(), agencyOwner.getAddress(), agencyOwner.isActive(), agencyOwner.getId());
+		String sql = "UPDATE agency_owner SET first_name = ?, surname = ?, username = ?, password = ?, phone = ?, email = ?, address = ?, isActive = ?, isBlocked = ? WHERE id = ?";	
+		jdbcTemplate.update(sql, agencyOwner.getName(), agencyOwner.getSurname(), agencyOwner.getUsername(), agencyOwner.getPassword(), agencyOwner.getPhoneNumber(), agencyOwner.getEmail(), agencyOwner.getAddress(), agencyOwner.isActive(), agencyOwner.isBlocked(), agencyOwner.getId());
 	}
 
 	@Transactional
 	@Override
 	public void delete(Long id) {
-		String sql = "DELETE FROM agency_owner WHERE id = ?";
+		String sql = "UPDATE agency_owner SET isActive = false WHERE id = ?";
 		jdbcTemplate.update(sql, id);
 	}
 

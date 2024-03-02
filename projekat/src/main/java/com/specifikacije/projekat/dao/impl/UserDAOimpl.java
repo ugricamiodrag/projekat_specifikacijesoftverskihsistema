@@ -45,10 +45,11 @@ public class UserDAOimpl implements UserDAO {
 			String email = resultSet.getString(index++);
 			String address = resultSet.getString(index++);
 			boolean isActive = resultSet.getBoolean(index++);
-				
+			boolean isBlocked = resultSet.getBoolean(index++);
+
 			User user = users.get(id);
 			if (user == null) {
-				user = new User(id, first_name, surname, username, password, phone, email, address, isActive);
+				user = new User(id, first_name, surname, username, password, phone, email, address, isActive, isBlocked);
 				users.put(user.getId(), user); // dodavanje u kolekciju
 			}
 			
@@ -78,7 +79,8 @@ public class UserDAOimpl implements UserDAO {
 	public List<User> findAll() {
 		String sql = 
 				"SELECT * FROM users ck " +
-				"ORDER BY ck.id";
+				"WHERE ck.isActive = true "
+				+ "ORDER BY ck.id";
 
 		UserCallBackHandler rowCallbackHandler = new UserCallBackHandler();
 		jdbcTemplate.query(sql, rowCallbackHandler);
@@ -92,7 +94,7 @@ public class UserDAOimpl implements UserDAO {
 			
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				String sql = "INSERT INTO users (first_name, surname, username, password, phone, email, address, isActive) VALUES (?, ?, ?, ? ,?, ?, ?, ?)";
+				String sql = "INSERT INTO users (first_name, surname, username, password, phone, email, address, isActive, isBlocked) VALUES (?, ?, ?, ? ,?, ?, ?, ?, ?)";
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;
@@ -104,6 +106,7 @@ public class UserDAOimpl implements UserDAO {
 				preparedStatement.setString(index++, user.getEmail());
 				preparedStatement.setString(index++, user.getAddress());
 				preparedStatement.setBoolean(index++, user.isActive());
+				preparedStatement.setBoolean(index++, user.isBlocked());
 
 				return preparedStatement;
 			}
@@ -116,14 +119,14 @@ public class UserDAOimpl implements UserDAO {
 	@Transactional
 	@Override
 	public void update(User user) {
-		String sql = "UPDATE users SET first_name = ?, surname = ?, username = ?, password = ?, phone = ?, email = ?, address = ? isActive = ? WHERE id = ?";	
-		jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getUsername(), user.getPassword(), user.getPhoneNumber(), user.getEmail(), user.getAddress(), user.isActive(), user.getId());	
+		String sql = "UPDATE users SET first_name = ?, surname = ?, username = ?, password = ?, phone = ?, email = ?, address = ?, isActive = ?, isBlocked = ? WHERE id = ?";	
+		jdbcTemplate.update(sql, user.getName(), user.getSurname(), user.getUsername(), user.getPassword(), user.getPhoneNumber(), user.getEmail(), user.getAddress(), user.isActive(), user.isBlocked(), user.getId());	
 	}
 
 	@Transactional
 	@Override
 	public void delete(Long id) {
-		String sql = "DELETE FROM users WHERE id = ?";
+		String sql = "UPDATE users SET isActive = false WHERE id = ?";
 		jdbcTemplate.update(sql, id);	
 	}
 

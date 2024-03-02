@@ -86,7 +86,7 @@ public class LoginLogoutController {
     	Agent agent = loginService.findAgent(username);
 
     	//if any user doesnt exist then set error message that the user doesnt exist in database
-    	if(user == null && agent == null && owner == null && admin == null) {
+    	if((user == null || user.isActive() == false) && (agent == null || agent.isActive() == false) && (owner == null || owner.isActive() == false) && (admin == null || admin.isActive() == false)) {
     		error="User doesn`t exist.";
     		model.addAttribute("errorPassword", error);
     		redirectAttributes.addFlashAttribute("errorPassword", error);
@@ -96,6 +96,11 @@ public class LoginLogoutController {
     			
     	
         if(user != null) {
+        	if(user.isBlocked() == true) {
+        		error="User is blocked.";
+    			redirectAttributes.addFlashAttribute("errorPassword", error);
+    			return "redirect:/login";
+        	}
         	if (!user.getPassword().equals(password)) {
     			error="Wrong password.";
     			redirectAttributes.addFlashAttribute("errorPassword", error);
@@ -106,6 +111,11 @@ public class LoginLogoutController {
         }
 		
         if(agent != null) {
+        	if(agent.isBlocked() == true) {
+        		error="User is blocked.";
+    			redirectAttributes.addFlashAttribute("errorPassword", error);
+    			return "redirect:/login";
+        	}
     		if (!agent.getPassword().equals(password)) {
     			error="Wrong password.";
     			redirectAttributes.addFlashAttribute("errorPassword", error);
@@ -116,6 +126,11 @@ public class LoginLogoutController {
         }
 			
 		if(owner != null) {
+			if(owner.isBlocked() == true) {
+        		error="User is blocked.";
+    			redirectAttributes.addFlashAttribute("errorPassword", error);
+    			return "redirect:/login";
+        	}
 			if (!owner.getPassword().equals(password)) {
 				error="Wrong password.";
 				redirectAttributes.addFlashAttribute("errorPassword", error);
@@ -126,6 +141,11 @@ public class LoginLogoutController {
 		}
        
 		if(admin != null) {
+			if(admin.isBlocked() == true) {
+        		error="User is blocked.";
+    			redirectAttributes.addFlashAttribute("errorPassword", error);
+    			return "redirect:/login";
+        	}
 			if (!admin.getPassword().equals(password)) {
 				error="Wrong password.";
 				redirectAttributes.addFlashAttribute("errorPassword", error);
