@@ -9,6 +9,8 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
     <title>Agencija za Nekretnine</title>
     <base th:href="@{/}">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    
 </head>
 
 <body>
@@ -47,23 +49,22 @@
                 <!--Sidebar - filters -->
                 <div class="sidebar">
                     <h3 class="bolder text-orange">Filter Options</h3>
-                    <form action="" method="get"> <!--Add action and method here -->
+                    <form action="/realestate/search" method="get" id="searchForm"> 
                         <p><span class="bolder">Location:</span></p>
 
                         <div class="form-inline" >
-                            <input class="shadow form-control mr-sm-2" type="search">
+                            <input class="shadow form-control mr-sm-2" type="search" id ="location" name="location">
                         </div>
 
                         <p><span class="bolder">Surface:</span></p>
                         <p>Min.</p>
                         <div class="form-inline">
-
-                            <input class=" form-control mr-sm-2" min="0" type="number" id="cenaOd" name="surcafeFrom">
+                            <input class=" form-control mr-sm-2" min="0" type="number" id="surcafeFrom" name="surcafeFrom">
                         </div>
                         <p>Max.</p>
                         <div class="form-inline">
 
-                            <input class="form-control mr-sm-2" type="number" id="cenaDo" name="surfaceTo">
+                            <input class="form-control mr-sm-2" type="number" id="surfaceTo" name="surfaceTo">
                         </div>
 
                         <p><span class="bolder">Price:</span></p>
@@ -71,43 +72,144 @@
                         <p>Min.</p>
                         <div class="form-inline">
 
-                            <input class="form-control mr-sm-2" min="0" type="number" id="cenaOd" name="cenaOd">
+                            <input class="form-control mr-sm-2" min="0" type="number" id="priceMin" name="priceMin">
                         </div>
                         <p>Max.</p>
                         <div class="form-inline">
 
-                            <input class="form-control mr-sm-2" type="number" id="cenaDo" name="cenaDo">
+                            <input class="form-control mr-sm-2" type="number" id="priceMax" name="priceMax">
                         </div>
 
                         <p><span class="bolder">Rent/Buy:</span></p>
 
                         <ul>
-                            <li><label><input type="checkbox" id="prodajaCheckbox" value="PRODAJA"> Rent</label></li>
-                            <li><label><input type="checkbox" id="izdavanjeCheckbox" value="IZDAVANJE">
+                            <li><label><input type="checkbox" id="rent" name="rent" value="Rent"> Rent</label></li>
+                            <li><label><input type="checkbox" id="buy" name="buy" value="Buy">
                                     Buy</label></li>
                         </ul>
                         <p><span class="bolder">Type:</span></p>
 
                         <ul>
-                            <li><label><input type="checkbox" class="checkbox-color" value="HOUSE"> House</label></li>
-                            <li><label><input type="checkbox" value="APARTMENT"> Apartment</label></li>
-                            <li><label><input type="checkbox" value="LAND"> Land</label></li>
-                            <li><label><input type="checkbox" value="OFFICE"> Office</label></li>
+                            <li><label><input type="checkbox" name="house" id="house" class="checkbox-color" value="true"> House</label></li>
+                            <li><label><input type="checkbox" name="apartment" id="apartment" value="true"> Apartment</label></li>
+                            <li><label><input type="checkbox" name="land" id="land" value="true"> Land</label></li>
+                            <li><label><input type="checkbox" name="office" id="office" value="true"> Office</label></li>
 
                         </ul>
                         <!--Search button for filtering-->
                         <div class="form-inline">
-                            <button class="my-2 my-sm-0 btn" type="submit">Search</button>
+                            <button class="my-2 my-sm-0 btn" onclick="search()" type="button">Search</button>
                         </div>
                     </form>
                 </div>
             </div>
+            
+            
+<!-- For filtering trips -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script th:inline="javascript">
+    function search() {
+       
+        $.ajax({
+            type: 'GET',
+            url: '/realestate/search',
+            data: $('#searchForm').serialize(),
+            success: function(data) {
+            console.log(data);
+			console.log('Search success:', data);
+        	$('#searchResults').empty(); // Empty the searchResults div before appending new results
+                if (data.realEstate && data.realEstate.length) {
+
+                for (var i = 0; i < data.realEstate.length; i++) {
+                    var estate = data.realEstate[i];
+                    
+                    var resultHtml = '<div class="card" >' +
+                    '<div class="card-body d-flex flex-column">' +
+                    '<div class="row">' +
+                    '<div class="col-md-4">' +
+                    '<div class="overlay-container">' +
+                    '<a href="/realestate/viewOne?id=' + estate.id + '">' +
+                    '<img class="card-img-top smaller" src="/images/' + estate.picture + '" alt="Card image cap">' +
+                    '</a>' +
+                    '<a href="" class="">' +
+                    '<img class="card-img-top small overlay" src="/images/heart.png" alt="Card image cap">' +
+                    '</a>' +
+                    '<div class="like-dislike">' +
+                    '<a><img class="card-img-top small low_opacity" src="images/heart_filled.png" alt="Card image cap"></a>' +
+                    '<a><img class="card-img-top small low_opacity" src="images/heart_broken.png" alt="Card image cap"></a>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="col-md-8">' +
+                    '<div class="text-container">' +
+                    '<a class="link" href="/realestate/viewOne?id=' + estate.id + '">' +
+                    '<h5 class="card-title bolder text-orange" th:text="${estate.location}">' + estate.location + '</h5>' +
+                    '</a>' +
+                    '<p class="card-text"><span class="bolder">Price: </span><span>' + estate.price + '</span></p>' +
+                    '<p class="card-text"><span class="bolder">Surface: </span><span>' + estate.surface + '</span></p>' +
+                    '<p class="card-text"><span class="bolder">Rent/Buy: </span><span>' + estate.rentOrBuy + '</span></p>' +
+                    '<p class="card-text"><span class="bolder">Type: </span><span>' + estate.estateType + '</span></p>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+                    
+                 
+                    $('#searchResults').append(resultHtml);
+                	
+
+            }
+                }
+                else {
+                    console.log('No putovanja data found');
+                }
+            }, 
+            error: function(error) {
+                console.log("Something went wrong");
+            }
+        });
+    }
+</script>
+
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- For autocomplete in searchBar -->
+<script>
+$(document).ready(function() {
+    $("#location").autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: '/autocomplete/estate',
+                type: 'GET',
+                success: function(data) {
+                    var term = request.term.toLowerCase();
+                    var filtered = data.filter(function(estate) {
+                        return estate.toLowerCase().includes(term);
+                    });
+                    response(filtered);
+                },
+                error: function(error) {
+                    console.log("Error fetching autocomplete data");
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+
+                }
+            });
+        },
+        minLength: 1
+    });
+});
+
+
+
+</script>
 
             <!--For selecting and deselecting prodaja/izdavanje, when one is selected deselect other-->
             <script>
                 // Get references to the checkboxes
-                const prodajaCheckbox = document.getElementById('prodajaCheckbox');
-                const izdavanjeCheckbox = document.getElementById('izdavanjeCheckbox');
+                const prodajaCheckbox = document.getElementById('rent');
+                const izdavanjeCheckbox = document.getElementById('buy');
 
                 // Add event listeners to checkboxes
                 prodajaCheckbox.addEventListener('change', function () {
@@ -128,9 +230,9 @@
 
 
             <!--Main content - nekretnine 0 -->
-            <div class="col-md-9">
+            <div class="col-md-9" id="searchResults">
                 <div class="card" th:each="estate : ${realEstate}">
-                    <div class="card-body d-flex flex-column" >
+                    <div class="card-body d-flex flex-column"  >
                         <div class="row" >
                             <div class="col-md-4" >
 

@@ -1,15 +1,22 @@
 package com.specifikacije.projekat.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.specifikacije.projekat.model.Administrator;
 import com.specifikacije.projekat.model.AgencyOwner;
@@ -35,17 +42,25 @@ public class RealEstateController {
 	private AgentService agentService;
 	
 	@GetMapping
-	public String showRealEstate(HttpServletRequest request, Model model) {
+	public String showRealEstate(HttpServletRequest request, Model model,
+			@RequestParam(required=false) String location, 
+			@RequestParam(required=false) Integer surfaceFrom, 
+			@RequestParam(required=false) Integer surfaceTo, 
+			@RequestParam(required=false) Integer priceMin, 
+			@RequestParam(required=false) Integer priceMax, 
+			@RequestParam(required=false) String rent, 
+			@RequestParam(required=false) String buy,
+			@RequestParam(required=false) boolean house, 
+			@RequestParam(required=false) boolean apartment, 
+			@RequestParam(required=false) boolean land,
+			@RequestParam(required=false) boolean office) {
 		
-		List<RealEstate> realEstateList = realEstateService.findAll();
 		
-		// tocheck if the data is loaded, needed table 'estate' in database to work, get data from service              
-//		for(RealEstate e: realEstateList ) {
-//			System.out.println(e.getLocation());
-//		}
+		Map<String, Object> response = new HashMap<>(); // for filtering
+		
 		
 		boolean isLoggedIn = false;
-		// get user is exists
+		// get user if exists
 		Object obj =  request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
 		
 		// check if user is logged in and users type
@@ -76,10 +91,102 @@ public class RealEstateController {
 		
 		//add attribures
 		model.addAttribute("isLoggedIn", isLoggedIn);
-		model.addAttribute("realEstate", realEstateList);
 		
 		
+		//for filtering 
+		
+		if(location != null && location.trim().equals(""))
+			location = null;
+		if(surfaceFrom != null && surfaceFrom == 0)
+			surfaceFrom = null;
+		if(surfaceTo != null && surfaceTo == 0)
+			surfaceTo = null;
+		if(priceMin != null && priceMin == 0)
+			priceMin = null;
+		if(priceMax != null && priceMax == 0)
+			priceMax = null;
+		
+		// if no filters are added just find all real estates
+		if(location == null && surfaceFrom == null && surfaceTo == null && priceMin == null && priceMax == null && house == false && apartment == false && land == false && office == false && rent == null && buy == null) {
+			
+			List<RealEstate> realEstateList = realEstateService.findAll();
+			model.addAttribute("realEstate", realEstateList);
+			response.put("realEstate", realEstateList);
+
+			return "index";
+			}
+		
+		// if filters are added find trough filter --> in RealEstateDAO
+		List<RealEstate> realEstates = realEstateService.find(location, surfaceFrom, surfaceTo, priceMin, priceMax, rent, buy, house, apartment, land, office);
+
+		model.addAttribute("realEstate", realEstates);
+
 		return "index";
+	}
+	
+	
+	@GetMapping(value="/search")
+	@ResponseBody
+	public Map<String, Object>  search(HttpServletRequest request, Model model,
+			@RequestParam(required=false) String location, 
+			@RequestParam(required=false) Integer surfaceFrom, 
+			@RequestParam(required=false) Integer surfaceTo, 
+			@RequestParam(required=false) Integer priceMin, 
+			@RequestParam(required=false) Integer priceMax, 
+			@RequestParam(required=false) String rent, 
+			@RequestParam(required=false) String buy,
+			@RequestParam(required=false) boolean house, 
+			@RequestParam(required=false) boolean apartment, 
+			@RequestParam(required=false) boolean land,
+			@RequestParam(required=false) boolean office) throws ParseException {
+		
+		
+//		System.out.println(location);
+//		System.out.println(surfaceFrom);
+//		System.out.println(surfaceTo);
+//		System.out.println(priceMax);
+//		System.out.println(priceMin);
+//		System.out.println(rent);
+//		System.out.println(buy);
+//		System.out.println(house);
+//		System.out.println(apartment);
+//		System.out.println(land);
+//		System.out.println(office);
+		
+		Map<String, Object> response = new HashMap<>();
+	
+		if(location != null && location.trim().equals(""))
+			location = null;
+		if(surfaceFrom != null && surfaceFrom == 0)
+			surfaceFrom = null;
+		if(surfaceTo != null && surfaceTo == 0)
+			surfaceTo = null;
+		if(priceMin != null && priceMin == 0)
+			priceMin = null;
+		if(priceMax != null && priceMax == 0)
+			priceMax = null;
+//		if(rent != null && rent.trim().equals(""))
+//			rent = null;
+//		if(buy != null && buy.trim().equals(""))
+//			buy = null;
+		
+		if(location == null && surfaceFrom == null && surfaceTo == null && priceMin == null && priceMax == null && house == false && apartment == false && land == false && office == false && rent == null && buy == null) {
+			
+			List<RealEstate> realEstateList = realEstateService.findAll();
+			model.addAttribute("realEstate", realEstateList);
+			response.put("realEstate", realEstateList);
+
+			return response;
+			}
+		
+		
+		List<RealEstate> realEstates = realEstateService.find(location, surfaceFrom, surfaceTo, priceMin, priceMax, rent, buy, house, apartment, land, office);
+
+		model.addAttribute("realEstate", realEstates);
+
+		response.put("realEstate", realEstates);
+		return response;
+		
 	}
 	
 	
@@ -122,6 +229,7 @@ public class RealEstateController {
 		model.addAttribute("person", obj);
 		model.addAttribute("type", type);
 		model.addAttribute("theHref", theHref);
+		System.out.println(obj +" "+ type +" "+ theHref);
 		return "profile";
 	}
 	
