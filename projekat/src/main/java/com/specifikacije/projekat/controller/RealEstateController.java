@@ -2,10 +2,12 @@ package com.specifikacije.projekat.controller;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +31,7 @@ import com.specifikacije.projekat.service.RealEstateService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/realestate")
@@ -44,22 +47,11 @@ public class RealEstateController {
 	private AgentService agentService;
 	
 	@GetMapping
-	public String showRealEstate(HttpServletRequest request, Model model,
-			@RequestParam(required=false) String location, 
-			@RequestParam(required=false) Integer surfaceFrom, 
-			@RequestParam(required=false) Integer surfaceTo, 
-			@RequestParam(required=false) Integer priceMin, 
-			@RequestParam(required=false) Integer priceMax, 
-			@RequestParam(required=false) String rent, 
-			@RequestParam(required=false) String buy,
-			@RequestParam(required=false) boolean house, 
-			@RequestParam(required=false) boolean apartment, 
-			@RequestParam(required=false) boolean land,
-			@RequestParam(required=false) boolean office) {
+	public String showRealEstate(HttpServletRequest request, Model model) {
 		
 		
-		Map<String, Object> response = new HashMap<>(); // for filtering
-		
+		Map<String, Object> response = new HashMap<>();
+		List<RealEstate> realEstateList = realEstateService.findAll();
 		
 		
 		boolean isLoggedIn = false;
@@ -91,6 +83,7 @@ public class RealEstateController {
 		}else if(obj instanceof Agent){
 		    isLoggedIn = true;
 		    Class<?> objClass = obj.getClass();
+			Agent agent = (Agent) obj;
 		    model.addAttribute("agent", objClass);
 		    
 		}else if(obj instanceof AgencyOwner){
@@ -108,57 +101,39 @@ public class RealEstateController {
 		//add attribures
 		model.addAttribute("isLoggedIn", isLoggedIn);
 		
-		
-		//for filtering 
-		
-		if(location != null && location.trim().equals(""))
-			location = null;
-		if(surfaceFrom != null && surfaceFrom == 0)
-			surfaceFrom = null;
-		if(surfaceTo != null && surfaceTo == 0)
-			surfaceTo = null;
-		if(priceMin != null && priceMin == 0)
-			priceMin = null;
-		if(priceMax != null && priceMax == 0)
-			priceMax = null;
-		
-		// if no filters are added just find all real estates
-		if(location == null && surfaceFrom == null && surfaceTo == null && priceMin == null && priceMax == null && house == false && apartment == false && land == false && office == false && rent == null && buy == null) {
-			
-			List<RealEstate> realEstateList = realEstateService.findAll();
-			model.addAttribute("realEstate", realEstateList);
-			response.put("realEstate", realEstateList);
+		List<String> types = new ArrayList<>();
+		for (RealEstateType type : RealEstateType.values()){
+			types.add(String.valueOf(type));
 
-			return "index";
-			}
-		
-		// if filters are added find trough filter --> in RealEstateDAO
-		List<RealEstate> realEstates = realEstateService.find(location, surfaceFrom, surfaceTo, priceMin, priceMax, rent, buy, house, apartment, land, office);
-		
-		
-		
-		model.addAttribute("realEstate", realEstates);
+		}
+
+
+		model.addAttribute("realEstate", realEstateList);
+		model.addAttribute("typesOfEstate", types);
+		response.put("realEstate", realEstateList);
+		response.put("typesOfEstate", types);
 
 		return "index";
+
+
+
+
 	}
 	
 	
 	@GetMapping(value="/search")
 	@ResponseBody
 	public Map<String, Object>  search(HttpServletRequest request, Model model,
-			@RequestParam(required=false) String location, 
-			@RequestParam(required=false) Integer surfaceFrom, 
-			@RequestParam(required=false) Integer surfaceTo, 
-			@RequestParam(required=false) Integer priceMin, 
-			@RequestParam(required=false) Integer priceMax, 
-			@RequestParam(required=false) String rent, 
-			@RequestParam(required=false) String buy,
-			@RequestParam(required=false) boolean house, 
-			@RequestParam(required=false) boolean apartment, 
-			@RequestParam(required=false) boolean land,
-			@RequestParam(required=false) boolean office) throws ParseException {
-		
-		
+									   @RequestParam(required=false) String location,
+									   @RequestParam(required=false) String surfaceFrom,
+									   @RequestParam(required=false) String surfaceTo,
+									   @RequestParam(required=false) String priceMin,
+									   @RequestParam(required=false) String priceMax,
+									   @RequestParam(required=false) String rent,
+									   @RequestParam(required=false) String buy,
+									   @RequestParam(required=false) List<String> propertyTypes) throws ParseException {
+
+
 //		System.out.println(location);
 //		System.out.println(surfaceFrom);
 //		System.out.println(surfaceTo);
@@ -170,39 +145,37 @@ public class RealEstateController {
 //		System.out.println(apartment);
 //		System.out.println(land);
 //		System.out.println(office);
-		
-		Map<String, Object> response = new HashMap<>();
-	
-		if(location != null && location.trim().equals(""))
-			location = null;
-		if(surfaceFrom != null && surfaceFrom == 0)
-			surfaceFrom = null;
-		if(surfaceTo != null && surfaceTo == 0)
-			surfaceTo = null;
-		if(priceMin != null && priceMin == 0)
-			priceMin = null;
-		if(priceMax != null && priceMax == 0)
-			priceMax = null;
-		
-		if(location == null && surfaceFrom == null && surfaceTo == null && priceMin == null && priceMax == null && house == false && apartment == false && land == false && office == false && rent == null && buy == null) {
-			
-			List<RealEstate> realEstateList = realEstateService.findAll();
-			model.addAttribute("realEstate", realEstateList);
-			response.put("realEstate", realEstateList);
 
-			return response;
-			}
-		
-		
-		List<RealEstate> realEstates = realEstateService.find(location, surfaceFrom, surfaceTo, priceMin, priceMax, rent, buy, house, apartment, land, office);
+		Map<String, Object> response = new HashMap<>();
+
+
+
+		List<RealEstate> realEstates = realEstateService.find(location,
+				parseInteger(surfaceFrom),
+				parseInteger(surfaceTo),
+				parseDouble(priceMin),
+				parseDouble(priceMax),
+				rent, buy, propertyTypes);
 
 		model.addAttribute("realEstate", realEstates);
 
 		response.put("realEstate", realEstates);
 		return response;
-		
+
 	}
-	
+	private Integer parseInteger(String value) {
+		if (value != null && !value.isEmpty()) {
+			return Integer.parseInt(value);
+		}
+		return null;
+	}
+
+	private Double parseDouble(String value) {
+		if (value != null && !value.isEmpty()) {
+			return Double.parseDouble(value);
+		}
+		return null;
+	}
 	
 	@GetMapping("/viewOne")
 	public String viewOne(@RequestParam Long id, Model model) {
@@ -295,32 +268,38 @@ public class RealEstateController {
 	}
 	
 	@GetMapping(value="/add")
-	public String add(HttpServletResponse response, Model model) throws IOException {
-		
-		List<Agent> agents= agentService.findAll();
-		model.addAttribute("agents",agents);
+	public String add(HttpServletResponse response, Model model, HttpSession session) throws IOException {
+		Agent agent = (Agent) session.getAttribute(LoginLogoutController.KORISNIK_KEY);
+		if (agent == null){
+			return "404NotFound";
+		}
+		List<String> allTypes = new ArrayList<>();
+		for (RealEstateType types : RealEstateType.values()){
+			allTypes.add(types.toString());
+		}
+		model.addAttribute("allTypes", allTypes);
 		return "realEstateAdd";
 		
 	}
 	
 	@PostMapping("add")
-	public void add(HttpServletResponse response, @RequestParam Long agentId, @RequestParam int surface, @RequestParam String picture, @RequestParam String type, @RequestParam String location, @RequestParam double price, @RequestParam String rentOrBuy) throws IOException {
+	public void add(HttpServletResponse response, HttpSession session, @RequestParam int surface, @RequestParam("picture") MultipartFile picture, @RequestParam String type, @RequestParam String location, @RequestParam double price, @RequestParam String rentOrBuy) throws IOException {
 		
-
+		Agent agent = (Agent) session.getAttribute(LoginLogoutController.KORISNIK_KEY);
 		RealEstate d = new RealEstate();
-
+		String relativePath = picture.getOriginalFilename();
 		d.setType(RealEstateType.valueOf(type));
 		d.setLocation(location);
 		d.setPrice(price);
-		d.setPicture(picture);
+		d.setPicture(relativePath);
 		d.setRentOrBuy(RentOrBuy.valueOf(rentOrBuy));
 		d.setIsActive(false);
 		d.setSurface(surface);
-		Agent agent = agentService.findOne(agentId);
 		d.setAgent(agent);
 		d.setNumberOfVisitRequests(0);
 		d.setGrade(0.0);
 		d.setViewNumber(0.0);
+		d.setIsActive(true);
 
 		realEstateService.save(d);
 		

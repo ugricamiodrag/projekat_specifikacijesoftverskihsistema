@@ -29,48 +29,47 @@
   </nav>
     
    <div class="form">
-    <form method="post" action="add">
+    <form method="post" action="realestate/add" enctype="multipart/form-data">
         <div class="form-group">
-    		<label class="bolder" for="type">Tip:</label>
-    			<select name="type" class="form-control" aria-describedby="emailHelp">
-        			<option value="House">House</option>
-       				<option value="Apartment">Apartment</option>
-        			<option value="Land">Land</option>
-        			<option value="Office">Office</option>
-    			</select>
-		</div>
+    		<label class="bolder" for="type">Type:</label>
+            <select name="type" id="type" class="form-control" aria-describedby="emailHelp">
+                <option value="">Select a type</option>
+                <option th:each="oneType : ${allTypes}" th:value="${oneType}" th:text="${oneType}"></option>
+            </select>
+
+        </div>
         <div class="form-group">
-          <label class="bolder"  for="location">Lokacija:</label>
+          <label class="bolder"  for="location">Location:</label>
           <input type="text" value="" name="location" class="form-control"  >
         </div>
         <div class="form-group">
-            <label class="bolder" for="price">Cena:</label>
+            <label class="bolder" for="price">Price:</label>
             <input type="number" value="" name="price" class="form-control"  aria-describedby="emailHelp" >
           </div>
           <div class="form-group">
-            <label class="bolder" for="rentOrBuy">Najam/Prodaja:</label>
-            <input type="text" value="" name="rentOrBuy" class="form-control"  >
+            <label class="bolder" for="rentOrBuy">Rent/Buy:</label>
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="rentOrBuy" id="rentOption" value="Rent">
+                  <label class="form-check-label" for="rentOption">Rent</label>
+              </div>
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="rentOrBuy" id="buyOption" value="Buy">
+                  <label class="form-check-label" for="buyOption">Buy</label>
+              </div>
         </div>
          <div class="form-group">
-            <label class="bolder" for="picture">Slika:</label>
-            <input type="text" value="" name="picture" class="form-control"  >
+            <label class="bolder" for="picture">Photo:</label>
+             <input type="file" name="picture" class="form-control">
         </div>
         <div class="form-group">
-            <label class="bolder" for="surface">Povrsina:</label>
+            <label class="bolder" for="surface">Surface:</label>
             <input type="number" value="" name="surface" class="form-control"  >
         </div>
-        <div class="form-group">
-            <label class="bolder" for="agent">Agent:</label>
-			<select name="agentId" id="agentId" class="form-control">
-        		<option th:each="agent : ${agents}"
-                th:value="${agent.id}" 
-                th:text="${agent.name}"></option>
-              	</option>
-    	 	</select>          </div>
+
         
         
         
-        <button type="submit" class="btn">Sacuvaj</button>
+        <button type="submit" class="btn">Save</button>
        
     </form>
    </div>

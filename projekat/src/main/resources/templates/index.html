@@ -31,6 +31,7 @@
                 <a class="nav-item nav-link white-font" th:if="${admin != null}" href="/realestate/adminPage">Admin</a>
                 <a class="nav-item nav-link white-font" th:if="${owner != null}" href="/agency">My Agency</a>
                 <a class="nav-item nav-link white-font" th:if="${agent != null}" href="">Calendar</a>
+                <a class="nav-item nav-link white-font" th:if="${agent != null}" href="/realestate/add">Add an estate</a>
 
                 <a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="#"><img class="small" src="/images/cart.png"></img></a>
                	
@@ -59,7 +60,7 @@
                         <p><span class="bolder">Surface:</span></p>
                         <p>Min.</p>
                         <div class="form-inline">
-                            <input class=" form-control mr-sm-2" min="0" type="number" id="surcafeFrom" name="surcafeFrom">
+                            <input class=" form-control mr-sm-2" min="0" type="number" id="surfaceFrom" name="surfaceFrom">
                         </div>
                         <p>Max.</p>
                         <div class="form-inline">
@@ -90,11 +91,12 @@
                         <p><span class="bolder">Type:</span></p>
 
                         <ul>
-                            <li><label><input type="checkbox" name="house" id="house" class="checkbox-color" value="true"> House</label></li>
-                            <li><label><input type="checkbox" name="apartment" id="apartment" value="true"> Apartment</label></li>
-                            <li><label><input type="checkbox" name="land" id="land" value="true"> Land</label></li>
-                            <li><label><input type="checkbox" name="office" id="office" value="true"> Office</label></li>
+                            <li th:each="type : ${typesOfEstate}">
+                                <label>
+                                    <input type="checkbox" name="propertyTypes" th:value="${type}" th:text="${type}">
 
+                                </label>
+                            </li>
                         </ul>
                         <!--Search button for filtering-->
                         <div class="form-inline">

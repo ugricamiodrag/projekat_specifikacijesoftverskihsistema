@@ -2,6 +2,8 @@ package com.specifikacije.projekat.service.impl;
 
 import java.util.List;
 
+import com.specifikacije.projekat.dao.RealEstateDAO;
+import com.specifikacije.projekat.model.Agent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,7 @@ import com.specifikacije.projekat.service.RealEstateService;
 public class RealEstateServiceImpl implements RealEstateService{
 
 	@Autowired
-	private RealEstateDAOimpl realEstateDAO;
+	private RealEstateDAO realEstateDAO;
 	
 	
 	@Override
@@ -47,11 +49,15 @@ public class RealEstateServiceImpl implements RealEstateService{
 
 
 	@Override
-	public List<RealEstate> find(String location, Integer surfaceFrom, Integer surfaceTo, Integer priceMin,
-			Integer priceMax, String rent, String buy, boolean house, boolean apartment, boolean land,
-			boolean office) {
-		return realEstateDAO.find(location, surfaceFrom, surfaceTo, priceMin, priceMax, rent, buy, house, apartment, land, office);
+	public List<RealEstate> find(String location, Integer surfaceFrom, Integer surfaceTo, Double priceMin,
+			Double priceMax, String rent, String buy, List<String> propertyTypes) {
+		return realEstateDAO.find(location, surfaceFrom, surfaceTo, priceMin, priceMax, rent, buy, propertyTypes);
 
+	}
+
+	@Override
+	public List<RealEstate> findAgenciesEstate(Agent agent) {
+		return realEstateDAO.findAgenciesEstate(agent);
 	}
 
 }

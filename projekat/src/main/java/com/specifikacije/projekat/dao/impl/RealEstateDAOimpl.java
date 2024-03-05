@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.specifikacije.projekat.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,10 +23,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.specifikacije.projekat.dao.RealEstateDAO;
-import com.specifikacije.projekat.model.Agent;
-import com.specifikacije.projekat.model.RealEstate;
-import com.specifikacije.projekat.model.RealEstateType;
-import com.specifikacije.projekat.model.RentOrBuy;
 import com.specifikacije.projekat.service.AgentService;
 
 
@@ -56,11 +54,12 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 			String picture = resultSet.getString(index++);
 			Double price = resultSet.getDouble(index++);
 			RentOrBuy rentOrBuy = RentOrBuy.valueOf(resultSet.getString(index++));
+			Integer surface = resultSet.getInt(index++);
 			Integer numOfVisitReq = resultSet.getInt(index++);
 			Double grade = resultSet.getDouble(index++);
 			Double viewNumber = resultSet.getDouble(index++);
 			boolean isActive = resultSet.getBoolean(index++);
-			Integer surface = resultSet.getInt(index++);
+
 
 
 			RealEstate estate = estates.get(id);
@@ -153,165 +152,38 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 		String sql = "DELETE FROM estate WHERE id = ?";
 		jdbcTemplate.update(sql, id);	}
 
-	
-	@SuppressWarnings("deprecation")
-	public List<RealEstate> find(String location, Integer surfaceFrom, Integer surfaceTo, Integer priceMin,
-			Integer priceMax, String rent, String buy, boolean house, boolean apartment, boolean land,
-			boolean office) {
-		
-		ArrayList<Object> args = new ArrayList<Object>();
-		
-//		System.out.println(location);
-//		System.out.println(surfaceFrom);
-//		System.out.println(surfaceTo);
-//		System.out.println(priceMax);
-//		System.out.println(priceMin);
-//		System.out.println(rent);
-//		System.out.println(buy);
-//		System.out.println(house);
-//		System.out.println(apartment);
-//		System.out.println(land);
-//		System.out.println(office);
-		
-		String sql = "SELECT p.id, p.estate_type, p.agent_id, p.location, p.picture, p.price, p.rentOrBuy, p.numOfVisitReq, p.grade, p.viewNumber, p.isActive, p.surface FROM estate p";
-			
-		StringBuffer whereSql = new StringBuffer(" WHERE ");
-		boolean hasArgs = false;
-		
-		//dynamically make a sql request
-		if (location != null) {
-		    if (hasArgs)
-		        whereSql.append(" AND ");
-		    whereSql.append("p.location LIKE ?");
-		    hasArgs = true;
-		    args.add("%" + location + "%");
-		}
-		if (priceMax != null) {
-		    if (hasArgs)
-		        whereSql.append(" AND ");
-		    whereSql.append("p.price <= ?");
-		    hasArgs = true;
-		    args.add(priceMax);
-		}
-		if (priceMin != null) {
-		    if (hasArgs)
-		        whereSql.append(" AND ");
-		    whereSql.append("p.price >= ?");
-		    hasArgs = true;
-		    args.add(priceMin);
-		}
-		if (surfaceFrom != null) {
-		    if (hasArgs)
-		        whereSql.append(" AND ");
-		    whereSql.append("p.surface >= ?");
-		    hasArgs = true;
-		    args.add(surfaceFrom);
-		}
-		if (surfaceTo != null) {
-		    if (hasArgs)
-		        whereSql.append(" AND ");
-		    whereSql.append("p.surface <= ?");
-		    hasArgs = true;
-		    args.add(surfaceTo);
-		}
-		
-		if(rent != null) {
-			if(hasArgs)
-				whereSql.append(" AND ");
-			whereSql.append("p.rentOrBuy like 'Rent'");
-			hasArgs = true;
-		}else if(buy != null) {
-			if(hasArgs)
-				whereSql.append(" AND ");
-			whereSql.append("p.rentOrBuy like 'Buy'");
-			hasArgs = true;
-		}
-		
-		
-		if(house == true) {
-			if(hasArgs)
-				whereSql.append(" AND ");
-			whereSql.append("(p.estate_type LIKE 'House'");
-			hasArgs = true;
-			if(apartment == true) {
-				whereSql.append(" OR p.estate_type LIKE 'Apartment'");
-			}
-			if(office == true) {
-				whereSql.append(" OR p.estate_type LIKE 'Office'");
-			}
-			if(land == true) {
-				whereSql.append(" OR p.estate_type LIKE 'Land'");
-			}
-		    whereSql.append(")");
+	@Override
+	public List<RealEstate> find(String location, Integer surfaceFrom, Integer surfaceTo, Double priceMin, Double priceMax, String rent, String buy, List<String> propertyTypes) {
+		List<RealEstate> allEstate = findAll();
 
-		}
-		else if(apartment == true) {
-			if(hasArgs)
-				whereSql.append(" AND ");
-			whereSql.append("(p.estate_type like 'Apartment'");
-			hasArgs = true;
-			
-			if(house == true) {
-				whereSql.append(" OR p.estate_type LIKE 'House'");
-			}
-			if(office == true) {
-				whereSql.append(" OR p.estate_type LIKE 'Office'");
-			}
-			if(land == true) {
-				whereSql.append(" OR p.estate_type LIKE 'Land'");
-			}
-		    whereSql.append(")");
 
-		}
-		else if(office == true) {
-			if(hasArgs)
-				whereSql.append(" AND ");
-			whereSql.append("(p.estate_type like 'Office'");
-			hasArgs = true;
-			
-			if(house == true) {
-				whereSql.append(" OR p.estate_type LIKE 'House'");
-			}
-			if(apartment == true) {
-				whereSql.append(" OR p.estate_type LIKE 'Apartment'");
-			}
-			if(land == true) {
-				whereSql.append(" OR p.estate_type LIKE 'Land'");
-			}
-		    whereSql.append(")");
+		return allEstate.stream()
+				.filter(estate ->
+						(location == null || location.isEmpty() ||
+								estate.getLocation().contains(location))
+								&& (surfaceFrom == null || estate.getSurface() >= surfaceFrom)
+								&& (surfaceTo == null || estate.getSurface() <= surfaceTo)
+								&& (priceMin == null || estate.getPrice() >= priceMin)
+								&& (priceMax == null || estate.getPrice() <= priceMax)
+								&& (rent == null || rent.isEmpty() || estate.getRentOrBuy().toString().equalsIgnoreCase(rent))
+								&& (buy == null || buy.isEmpty() || estate.getRentOrBuy().toString().equalsIgnoreCase(buy))
+								&& (propertyTypes == null || propertyTypes.isEmpty() || propertyTypes.contains(estate.getEstateType().toString()))
+				)
+				.collect(Collectors.toList());
 
-		}
-		else if(land == true) {
-			if(hasArgs)
-				whereSql.append(" AND ");
-			whereSql.append("(p.estaet_type like 'Land'");
-			hasArgs = true;
-			
-			if(house == true) {
-				whereSql.append(" OR p.estate_type LIKE 'House'");
-			}
-			if(apartment == true) {
-				whereSql.append(" OR p.estate_type LIKE 'Apartment'");
-			}
-			if(office == true) {
-				whereSql.append(" OR p.estate_type LIKE 'Office'");
-			}
-		    whereSql.append(")");
-
-		}
-		
-		// add arguments if they exist
-		if(hasArgs)
-			sql=sql + whereSql.toString()+" ORDER BY p.id";
-		else
-			sql=sql + " ORDER BY p.id";
-		
-//		System.out.println("SQL");
-//		System.out.println(sql);
-		
-		return jdbcTemplate.query(sql.toString(), args.toArray(), new RealEstateCallBackHandler());
-		
 	}
 
-	
+	@Override
+	public List<RealEstate> findAgenciesEstate(Agent agent) {
+		Agency agency = agent.getAgency();
+		String sql = "SELECT * " +
+				"FROM estate " +
+				"WHERE agent_id IN (SELECT id FROM agent WHERE agency_id = ?)";
+		RealEstateCallBackHandler rowCallbackHandler = new RealEstateCallBackHandler();
+
+
+		return rowCallbackHandler.getRealEstates();
+	}
+
+
 }
