@@ -19,8 +19,11 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.specifikacije.projekat.dao.LikeDislikeDAO;
 import com.specifikacije.projekat.dao.UserDAO;
+import com.specifikacije.projekat.model.RealEstate;
 import com.specifikacije.projekat.model.User;
+import com.specifikacije.projekat.service.AgentService;
 
 @Repository
 @Primary
@@ -46,7 +49,7 @@ public class UserDAOimpl implements UserDAO {
 			String address = resultSet.getString(index++);
 			boolean isActive = resultSet.getBoolean(index++);
 			boolean isBlocked = resultSet.getBoolean(index++);
-
+			
 			User user = users.get(id);
 			if (user == null) {
 				user = new User(id, first_name, surname, username, password, phone, email, address, isActive, isBlocked);

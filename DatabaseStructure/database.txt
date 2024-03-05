@@ -127,7 +127,24 @@ ALTER TABLE agent ADD COLUMN isBlocked BOOLEAN
 ALTER TABLE agency_owner ADD COLUMN isBlocked BOOLEAN
 ALTER TABLE administrator ADD COLUMN isBlocked BOOLEAN
 
+
+
+CREATE TABLE like_dislike (
+    user_id INT(11) NOT NULL,
+    estate_id INT(11) NOT NULL,
+    liked_disliked TINYINT(1) NOT NULL,
+    PRIMARY KEY (user_id, estate_id),
+    FOREIGN KEY (user_id) REFERENCES users(id),  
+    FOREIGN KEY (estate_id) REFERENCES estates(id)
+);
+
 -- Test data :
+INSERT INTO like_dislike (user_id, estate_id, liked_disliked)
+VALUES
+    (1, 1, 1),  
+    (1, 1, 0); 
+   
+
 INSERT INTO administrator (first_name, surname, username, password, phone, email, address, isActive) 
 VALUES ('John', 'Doe', 'johndoe', 'password123', '123456789', 'john@example.com', '123 Main St', 1);
 

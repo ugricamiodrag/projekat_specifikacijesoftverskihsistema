@@ -4,6 +4,8 @@ import java.util.List;
 
 public class User extends Person{
 	private List<RealEstate> likedRealEstate;
+	private List<RealEstate> dislikedRealEstate;
+
 	private List<Rating> allRatings;
 
 	public User(Long id, String name, String surname, String username, String password, String phoneNumber, String email, String address, boolean isActive, boolean isBLocked) {
@@ -58,6 +60,16 @@ public class User extends Person{
 	}
 	
 	public void Registration() {
+	}
+
+
+	public List<RealEstate> getDislikedRealEstate() {
+		return dislikedRealEstate;
+	}
+
+
+	public void setDislikedRealEstate(List<RealEstate> dislikedRealEstate) {
+		this.dislikedRealEstate = dislikedRealEstate;
 	}
 
 

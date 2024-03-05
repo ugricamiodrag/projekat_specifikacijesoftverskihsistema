@@ -231,7 +231,7 @@ $(document).ready(function() {
 
             <!--Main content - nekretnine 0 -->
             <div class="col-md-9" id="searchResults">
-                <div class="card" th:each="estate : ${realEstate}">
+                <div class="card" th:each="estate, iterStat : ${realEstate}">
                     <div class="card-body d-flex flex-column"  >
                         <div class="row" >
                             <div class="col-md-4" >
@@ -242,16 +242,34 @@ $(document).ready(function() {
                                         <img class="card-img-top smaller" th:src="@{/images/} + ${estate.picture}"
                                             alt="Card image cap">
                                     </a>
-                                    <a href="" class="">
+                                    <a th:if="${isLoggedIn}" href="" class="">
                                         <!--Like/Dislike heart here-->
-                                        <img class="card-img-top small overlay" src="/images/heart.png" alt="Card image cap">
-                                       
+                                       <div th:each="disliked : ${dislikedEstates}"> <!-- go trough disliked estates and if match found set broken heart -->
+    										<div th:if="${estate.id eq disliked.id}">
+       										 <!-- Display content for disliked estate -->
+        										<img class="card-img-top small overlay" src="/images/heart_broken.png" alt="Card image cap">
+    										</div>
+										</div>
+										<div th:each="liked : ${likedEstates}">
+    										<div th:if="${estate.id eq liked.id}"><!-- go trough liked estates and if match found set broken heart -->
+       										 <!-- Display content for liked estate -->
+        										<img class="card-img-top small overlay" src="/images/heart_filled.png" alt="Card image cap">
+    										</div>
+										</div>
                                     </a>
-                                    <div class="like-dislike">
-  											<a><img class="card-img-top small low_opacity" src="images/heart_filled.png"
-                                            alt="Card image cap"></a>
-  											<a><img class="card-img-top small low_opacity" src="images/heart_broken.png"
-                                            alt="Card image cap"></a>
+                                    
+                                    <div th:if="${isLoggedIn == true and user != null}" class="like-dislike">
+                                    <form method="post" action="/like">
+  											
+  											<button type="submit" class="btn-like"><img class="card-img-top small low_opacity" src="images/heart_filled.png" alt="Card image cap"></button>
+ 											<input type="hidden" name="estateId" th:value="${estate.id}" /> 
+                                    </form>
+                                     <form method="post" action="/dislike">
+  											
+  											<button type="submit" class="btn-like"><img class="card-img-top small low_opacity" src="images/heart_broken.png" alt="Card image cap"></button>
+ 											<input type="hidden" name="estateId" th:value="${estate.id}" /> 
+                                    </form>
+                              
 									</div>
                                 </div>
                             </div>

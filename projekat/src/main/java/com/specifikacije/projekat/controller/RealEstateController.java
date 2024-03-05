@@ -2,14 +2,11 @@ package com.specifikacije.projekat.controller;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.specifikacije.projekat.dao.LikeDislikeDAO;
 import com.specifikacije.projekat.model.Administrator;
 import com.specifikacije.projekat.model.AgencyOwner;
 import com.specifikacije.projekat.model.Agent;
@@ -26,6 +24,7 @@ import com.specifikacije.projekat.model.RealEstateType;
 import com.specifikacije.projekat.model.RentOrBuy;
 import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.AgentService;
+import com.specifikacije.projekat.service.LikeDislikeService;
 import com.specifikacije.projekat.service.RealEstateService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,6 +36,9 @@ public class RealEstateController {
 
 	@Autowired
 	private RealEstateService realEstateService;
+
+	@Autowired
+	private LikeDislikeService likeDislikeService;
 	
 	@Autowired
 	private AgentService agentService;
@@ -59,16 +61,27 @@ public class RealEstateController {
 		Map<String, Object> response = new HashMap<>(); // for filtering
 		
 		
+		
 		boolean isLoggedIn = false;
 		// get user if exists
 		Object obj =  request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
 		
+		
 		// check if user is logged in and users type
 		if (obj instanceof User) {
 		    isLoggedIn = true;
-		
 		    Class<?> objClass = obj.getClass();
 		    model.addAttribute("user", objClass);
+		    User user = (User) obj;
+		    //get users lliked and disliked estates
+		    Map<String, List<RealEstate>> likedEstates = likeDislikeService.findAllLikedEstateForUserAndSetAttributes(user.getId());
+		    System.out.println("Liked Estates: " + likedEstates.get("likedEstates"));
+		    System.out.println("Disiked Estates: " + likedEstates.get("dislikedEstates"));
+		    //add to model
+		    model.addAttribute("likedEstates", likedEstates.get("likedEstates"));
+		    model.addAttribute("dislikedEstates", likedEstates.get("dislikedEstates"));
+		    
+		
 		    
 		}else if(obj instanceof Administrator){
 			    isLoggedIn = true;   
@@ -88,6 +101,9 @@ public class RealEstateController {
 		}else {
 		    isLoggedIn = false;
 		}
+		
+		
+		
 		
 		//add attribures
 		model.addAttribute("isLoggedIn", isLoggedIn);
@@ -118,7 +134,9 @@ public class RealEstateController {
 		
 		// if filters are added find trough filter --> in RealEstateDAO
 		List<RealEstate> realEstates = realEstateService.find(location, surfaceFrom, surfaceTo, priceMin, priceMax, rent, buy, house, apartment, land, office);
-
+		
+		
+		
 		model.addAttribute("realEstate", realEstates);
 
 		return "index";
@@ -165,10 +183,6 @@ public class RealEstateController {
 			priceMin = null;
 		if(priceMax != null && priceMax == 0)
 			priceMax = null;
-//		if(rent != null && rent.trim().equals(""))
-//			rent = null;
-//		if(buy != null && buy.trim().equals(""))
-//			buy = null;
 		
 		if(location == null && surfaceFrom == null && surfaceTo == null && priceMin == null && priceMax == null && house == false && apartment == false && land == false && office == false && rent == null && buy == null) {
 			
