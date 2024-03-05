@@ -4,6 +4,7 @@ import com.specifikacije.projekat.bean.SecondConfiguration;
 import com.specifikacije.projekat.model.Administrator;
 import com.specifikacije.projekat.model.Agency;
 import com.specifikacije.projekat.model.Agent;
+import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.*;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.BeansException;
@@ -72,6 +73,46 @@ public class AgentController  implements ApplicationContextAware {
 
 
     }
+    
+    
+    @GetMapping(value="/editAgent")
+	public String edit(@RequestParam Long id, HttpServletResponse response, Model model) throws IOException {
+		
+
+		Agent d = agentService.findOne(id);
+		
+		model.addAttribute("user",d);
+		model.addAttribute("entityType", "Agent");
+		model.addAttribute("entity", "agents");
+		
+		return "userEdit";
+		
+	}
+	
+	@PostMapping("/editAgent")
+	public void edit(@RequestParam Long id, @RequestParam String name, @RequestParam String surname, @RequestParam String username, @RequestParam String password, @RequestParam String phone, @RequestParam String email, @RequestParam String address, HttpServletResponse response) throws IOException {
+		
+//
+//		User d = userService.findOne(id);
+//
+//		d.setName(name);
+//		d.setSurname(surname);
+//		d.setUsername(username);
+//		d.setPassword(password);
+//		d.setEmail(email);
+//		d.setAddress(address);
+//		d.setPhoneNumber(phone);
+//
+//
+//		userService.update(d);
+//		
+//		
+//		response.sendRedirect("viewAllUsers");
+//		
+
+	}
+	
+
 
     @PostMapping("/deleteAgent")
     public String deleteAgent(@RequestParam Long id ) {

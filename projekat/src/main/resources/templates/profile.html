@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <base th:href="@{/}">
+</head>
+<body>
+     <!--navbar-->
+     <nav class="navbar navbar-expand-lg black-bg">
+      <img class="img" src="/images/keyToTheCastleLogoOrangeWhiteWithTitle.png">
+      <!-- add above logo -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+              <a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
+              <a class="nav-item nav-link white-font" href="#">Register</a>
+              <a class="nav-item nav-link white-font" href="#">Log in</a>
+              <a class="nav-item nav-link white-font" href="#"><img class="small" src="/images/cart.png"></img></a>
+
+          </div>
+      </div>
+  </nav>
+    
+  <section class="section about-section gray-bg" id="about">
+            <div class="container">
+                <div class="row align-items-center flex-row-reverse">
+                    <div class="col-lg-6">
+                        <div class="about-text go-to">
+                            <h3 style="text-transform: uppercase; font-size: 30pt;" th:text="${person.name} + ' ' + ${person.surname}" class="dark-color"></h3>
+                            <h6 th:text="${type}" class="theme-color lead"></h6>
+                            <br>
+                            <div class="row about-list">
+                                <div class="col-md-6">
+                                    <div class="media">
+                                        <label><b>Username:</b></label>
+                                    </div>
+                                    <div class="media">
+                                        <label><b>Phone Number:</b></label>
+                                    </div>
+                                    <div class="media">
+                                        <label><b>Email:</b></label>
+                                    </div>
+                                    <div class="media">
+                                        <label><b>Address:</b></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="media">
+                                        <label th:text="${person.username}"></label>
+                                    </div>
+                                    <div class="media">
+                                        <label th:text="${person.phoneNumber}"></label>
+                                    </div>
+                                    <div class="media">
+                                        <label th:text="${person.email}"></label>
+                                    </div>
+                                    <div class="media">
+                                        <label th:text="${person.address}"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    <a th:href="${theHref} + '?id=' + ${person.id}"><button class="btn">Edit</button></a>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="about-avatar">
+                            <img src="/images/userProfile.png" title="" alt="">
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+
+   <br/><br/><br/><br/>
+
+
+
+
+
+    <!--Footer -->
+    <div>
+        <nav class="navbar ">
+            <a class="navbar-brand" href="#">
+                <form class="form-inline red">
+                    <p>some information about agency such as mail phone number..etc</p>
+                </form>
+            </a>
+        </nav>
+    </div>
+
+</body>
+
+</html>

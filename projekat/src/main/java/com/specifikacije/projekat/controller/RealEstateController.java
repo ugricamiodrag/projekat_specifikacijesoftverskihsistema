@@ -102,7 +102,28 @@ public class RealEstateController {
 		return "adminPage";
 	}
 	
-	
+	@GetMapping("/profile")
+	public String profile(Model model, HttpServletRequest request) {
+		Object obj =  request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
+		String type = "";
+		String theHref = "users/editUser";
+		if (obj instanceof Administrator) {
+			type = "- Administrator -";
+			theHref = "admin/editAdmin";
+		}
+		if (obj instanceof Agent) {
+			type = "- Agent -";
+			theHref = "agents/editAgent";
+		}
+		if (obj instanceof AgencyOwner) {
+			type = "- Agency owner -";
+			theHref = "owner/editOwner";
+		}
+		model.addAttribute("person", obj);
+		model.addAttribute("type", type);
+		model.addAttribute("theHref", theHref);
+		return "profile";
+	}
 	
 	@PostMapping("/delete")
 	public String deleteRealEstate(@RequestParam Long id ) {
