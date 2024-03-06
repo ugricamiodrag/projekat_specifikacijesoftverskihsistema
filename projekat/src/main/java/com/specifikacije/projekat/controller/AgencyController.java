@@ -27,13 +27,17 @@ public class AgencyController {
 	
 	@GetMapping
 	public String showLoginPage(Model model, HttpServletRequest request) {
-		
-		AgencyOwner user = (AgencyOwner) request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
-		
-		Agency agency = agencyService.findOwnersAgency(user.getId());
-		
-		model.addAttribute("agency", agency);
-		return "myAgency";
+		Object obj = request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
+		if (obj instanceof AgencyOwner){
+			AgencyOwner user = (AgencyOwner) request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
+
+			Agency agency = agencyService.findOwnersAgency(user.getId());
+
+			model.addAttribute("agency", agency);
+			return "myAgency";
+		}
+		return "404NotFound";
+
 		
 	}
 	

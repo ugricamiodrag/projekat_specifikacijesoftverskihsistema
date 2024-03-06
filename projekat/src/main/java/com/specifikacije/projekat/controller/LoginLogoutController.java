@@ -141,7 +141,7 @@ public class LoginLogoutController {
 		}
        
 		if(admin != null) {
-			if(admin.isBlocked() == true) {
+			if(admin.isBlocked()) {
         		error="User is blocked.";
     			redirectAttributes.addFlashAttribute("errorPassword", error);
     			return "redirect:/login";

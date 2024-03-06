@@ -3,11 +3,13 @@ package com.specifikacije.projekat.controller;
 import com.specifikacije.projekat.bean.SecondConfiguration;
 import com.specifikacije.projekat.model.Administrator;
 import com.specifikacije.projekat.model.AgencyOwner;
+import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.AdministratorService;
 import com.specifikacije.projekat.service.AgencyOwnerService;
 import com.specifikacije.projekat.service.AgentService;
 import com.specifikacije.projekat.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -52,9 +54,13 @@ public class OwnerController implements ApplicationContextAware {
     }
 
     @GetMapping(value="addOwner")  // for showing users in admin page
-    public String addOwner()  throws IOException {
+    public String addOwner(HttpSession session)  throws IOException {
+        Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
+        if (!(obj instanceof User)){
+            return "ownerAdd";
+        }
+        return "404NotFound";
 
-        return "ownerAdd";
     }
 
 
@@ -98,15 +104,18 @@ public class OwnerController implements ApplicationContextAware {
     }
 
     @GetMapping(value="/editOwner")
-    public String edit(@RequestParam Long id, HttpServletResponse response, Model model) throws IOException {
+    public String edit(@RequestParam Long id, HttpServletResponse response, Model model, HttpSession session) throws IOException {
 
+        Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
+        if (!(obj instanceof User)){
+            AgencyOwner d = ownerService.findOne(id);
 
-        AgencyOwner d = ownerService.findOne(id);
-
-        model.addAttribute("user",d);
-        model.addAttribute("entityType", "Owner");
-        model.addAttribute("entity", "owner");
-        return "userEdit";
+            model.addAttribute("user",d);
+            model.addAttribute("entityType", "Owner");
+            model.addAttribute("entity", "owner");
+            return "userEdit";
+        }
+        return "404NotFound";
 
     }
 

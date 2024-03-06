@@ -8,6 +8,7 @@ import com.specifikacije.projekat.service.AgencyOwnerService;
 import com.specifikacije.projekat.service.AgentService;
 import com.specifikacije.projekat.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -52,9 +53,14 @@ public class AdministratorController implements ApplicationContextAware {
     }
 
     @GetMapping(value="addAdmin")  // for showing users in admin page
-    public String addAdmin()  throws IOException {
+    public String addAdmin(HttpSession session)  throws IOException {
+        Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
+        if (obj instanceof Administrator){
+            return "adminAdd";
+        }
+        return "404NotFound";
 
-        return "adminAdd";
+
     }
 
     @PostMapping("addAdmin")
@@ -97,15 +103,19 @@ public class AdministratorController implements ApplicationContextAware {
     }
 
     @GetMapping(value="/editAdmin")
-    public String edit(@RequestParam Long id, HttpServletResponse response, Model model) throws IOException {
+    public String edit(@RequestParam Long id, HttpSession session, HttpServletResponse response, Model model) throws IOException {
+        Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
+        if (obj instanceof Administrator){
+            Administrator d = adminService.findOne(id);
+
+            model.addAttribute("user",d);
+            model.addAttribute("entityType", "Admin");
+            model.addAttribute("entity", "admin");
+            return "userEdit";
+        }
+        return "404NotFound";
 
 
-        Administrator d = adminService.findOne(id);
-
-        model.addAttribute("user",d);
-        model.addAttribute("entityType", "Admin");
-        model.addAttribute("entity", "admin");
-        return "userEdit";
 
     }
 

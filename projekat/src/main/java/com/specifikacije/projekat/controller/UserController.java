@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -95,26 +96,37 @@ public class UserController implements ApplicationContextAware{
 	
 	
 	@GetMapping("viewAllUsers") // for showing users in admin page
-	public String viewAll(Model model) {
-		
-		List<User> usersList = userService.findAll();
-		List<Administrator> adminsList = adminService.findAll();
-		List<Agent> agentsList = agentService.findAll();
-		List<AgencyOwner> agencyOwnersList = ownerService.findAll();
+	public String viewAll(Model model, HttpSession session) {
+		Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
+		if (obj instanceof Administrator){
+			List<User> usersList = userService.findAll();
+			List<Administrator> adminsList = adminService.findAll();
+			List<Agent> agentsList = agentService.findAll();
+			List<AgencyOwner> agencyOwnersList = ownerService.findAll();
 
-		model.addAttribute("users", usersList);
-		model.addAttribute("admins", adminsList);
-		model.addAttribute("agents", agentsList);
-		model.addAttribute("owners", agencyOwnersList);
+			model.addAttribute("users", usersList);
+			model.addAttribute("admins", adminsList);
+			model.addAttribute("agents", agentsList);
+			model.addAttribute("owners", agencyOwnersList);
 
-		return "users";
+			return "users";
+		}
+		else {
+			return "404NotFound";
+		}
+
+
+
 	}
 	//TODO: other CRUD operations for every user type and add attribute in every user for blocking user function        
 
 	@GetMapping(value="addUser")  // for showing users in admin page
-	public String addUser ()  throws IOException{
-		
-		return "userAdd";
+	public String addUser (HttpSession session)  throws IOException{
+		Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
+		if (!(obj instanceof User)) {
+			return "userAdd";
+		}
+		return "404NotFound";
 	}
 	
 	
@@ -133,39 +145,20 @@ public class UserController implements ApplicationContextAware{
 	
 
 	
-	
-
-	
-
-	
-
-	
-	
-//	@PostMapping("addAgent")
-//	public void addAgent(HttpServletResponse response, @RequestParam String name, @RequestParam String surname, @RequestParam String username, @RequestParam String password, @RequestParam String phone, @RequestParam String email, @RequestParam String address) throws IOException {
-//		
-//		List<RealEstate> realEstate = new ArrayList<>(); 
-//		
-//		Agent d = new Agent(name, surname, username, password, phone, email, address, realEstate, null, true, false);
-//
-//		agentService.save(d);
-//		
-//		response.sendRedirect("viewAllUsers");
-//		
-//		
-//	}
-	
 	@GetMapping(value="/editUser")
-	public String edit(@RequestParam Long id, HttpServletResponse response, Model model) throws IOException {
-		
+	public String edit(@RequestParam Long id, HttpServletResponse response, Model model, HttpSession session) throws IOException {
+		Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
+		if (!(obj instanceof User)) {
 
-		User d = userService.findOne(id);
-		
-		model.addAttribute("user",d);
-		model.addAttribute("entityType", "User");
-		model.addAttribute("entity", "users");
-		
-		return "userEdit";
+			User d = userService.findOne(id);
+
+			model.addAttribute("user", d);
+			model.addAttribute("entityType", "User");
+			model.addAttribute("entity", "users");
+
+			return "userEdit";
+		}
+		return "404NotFound";
 		
 	}
 	

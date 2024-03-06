@@ -232,14 +232,19 @@ public class RealEstateController {
 	
 	
 	@GetMapping(value="/edit")
-	public String edit(@RequestParam Long id, HttpServletResponse response, Model model) throws IOException {
-		
+	public String edit(@RequestParam Long id, HttpServletResponse response, Model model, HttpSession session) throws IOException {
 
-		RealEstate d = realEstateService.findOne(id);
-		
-		model.addAttribute("realEstate",d);
-		
-		return "realEstateEdit";
+		Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
+		if (!(obj instanceof User)){
+			RealEstate d = realEstateService.findOne(id);
+
+			model.addAttribute("realEstate",d);
+
+			return "realEstateEdit";
+		}
+		return "404NotFound";
+
+
 		
 	}
 	
@@ -269,8 +274,8 @@ public class RealEstateController {
 	
 	@GetMapping(value="/add")
 	public String add(HttpServletResponse response, Model model, HttpSession session) throws IOException {
-		Agent agent = (Agent) session.getAttribute(LoginLogoutController.KORISNIK_KEY);
-		if (agent == null){
+		Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
+		if (obj == null || obj instanceof User){
 			return "404NotFound";
 		}
 		List<String> allTypes = new ArrayList<>();

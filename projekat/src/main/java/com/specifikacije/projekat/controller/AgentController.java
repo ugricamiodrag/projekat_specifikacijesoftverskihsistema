@@ -7,6 +7,7 @@ import com.specifikacije.projekat.model.Agent;
 import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.*;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -55,10 +56,15 @@ public class AgentController  implements ApplicationContextAware {
     }
 
     @GetMapping(value="addAgent")  // for showing users in admin page
-    public String addAgent(Model model)  throws IOException {
-        List<Agency> allAgencies = agencyService.findAll();
-        model.addAttribute("allAgencies", allAgencies);
-        return "agentAdd";
+    public String addAgent(Model model, HttpSession session)  throws IOException {
+        Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
+        if (!(obj instanceof User)){
+            List<Agency> allAgencies = agencyService.findAll();
+            model.addAttribute("allAgencies", allAgencies);
+            return "agentAdd";
+        }
+        return "404NotFound";
+
     }
 
     @PostMapping("addAgent")
@@ -76,39 +82,43 @@ public class AgentController  implements ApplicationContextAware {
     
     
     @GetMapping(value="/editAgent")
-	public String edit(@RequestParam Long id, HttpServletResponse response, Model model) throws IOException {
-		
+	public String edit(@RequestParam Long id, HttpServletResponse response, Model model, HttpSession session) throws IOException {
+        Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
+        if (!(obj instanceof User)){
+            Agent d = agentService.findOne(id);
 
-		Agent d = agentService.findOne(id);
-		
-		model.addAttribute("user",d);
-		model.addAttribute("entityType", "Agent");
-		model.addAttribute("entity", "agents");
-		
-		return "userEdit";
+            model.addAttribute("user",d);
+            model.addAttribute("entityType", "Agent");
+            model.addAttribute("entity", "agents");
+
+            return "userEdit";
+        }
+        return "404NotFound";
+
+
 		
 	}
 	
 	@PostMapping("/editAgent")
 	public void edit(@RequestParam Long id, @RequestParam String name, @RequestParam String surname, @RequestParam String username, @RequestParam String password, @RequestParam String phone, @RequestParam String email, @RequestParam String address, HttpServletResponse response) throws IOException {
 		
-//
-//		User d = userService.findOne(id);
-//
-//		d.setName(name);
-//		d.setSurname(surname);
-//		d.setUsername(username);
-//		d.setPassword(password);
-//		d.setEmail(email);
-//		d.setAddress(address);
-//		d.setPhoneNumber(phone);
-//
-//
-//		userService.update(d);
-//		
-//		
-//		response.sendRedirect("viewAllUsers");
-//		
+
+		Agent d = agentService.findOne(id);
+
+		d.setName(name);
+		d.setSurname(surname);
+		d.setUsername(username);
+		d.setPassword(password);
+		d.setEmail(email);
+		d.setAddress(address);
+		d.setPhoneNumber(phone);
+
+
+		agentService.update(d);
+
+
+		response.sendRedirect("viewAllUsers");
+
 
 	}
 	
