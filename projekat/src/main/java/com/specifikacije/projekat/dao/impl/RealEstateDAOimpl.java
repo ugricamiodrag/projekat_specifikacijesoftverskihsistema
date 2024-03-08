@@ -97,6 +97,20 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 	public List<RealEstate> findAll() {
 		String sql = 
 				"SELECT * FROM estate ck " +
+				"WHERE isActive = true " +
+				"ORDER BY ck.id";
+
+		RealEstateCallBackHandler rowCallbackHandler = new RealEstateCallBackHandler();
+		jdbcTemplate.query(sql, rowCallbackHandler);
+
+		return rowCallbackHandler.getRealEstates();
+	}
+	
+	
+	@Override
+	public List<RealEstate> findAllHidden() {
+		String sql = 
+				"SELECT * FROM estate ck " +
 				"ORDER BY ck.id";
 
 		RealEstateCallBackHandler rowCallbackHandler = new RealEstateCallBackHandler();

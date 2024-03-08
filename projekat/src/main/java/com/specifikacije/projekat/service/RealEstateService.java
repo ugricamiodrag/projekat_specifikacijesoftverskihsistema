@@ -10,6 +10,7 @@ public interface RealEstateService {
 
 	RealEstate findOne(Long id);
 	List<RealEstate> findAll();
+	List<RealEstate> findAllHidden();
 	RealEstate save(RealEstate realEstate);
 	void delete(Long id);
 	void update(RealEstate d);

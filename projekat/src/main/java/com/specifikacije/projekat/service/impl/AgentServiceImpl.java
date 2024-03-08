@@ -58,4 +58,11 @@ public class AgentServiceImpl implements AgentService{
 		return agentDAO.emailExists(email);
 	}
 
+	@Override
+	public List<Agent> findAgents(Long agencyid) {
+		return agentDAO.findAgents(agencyid);
+		
+	}
+
+
 }

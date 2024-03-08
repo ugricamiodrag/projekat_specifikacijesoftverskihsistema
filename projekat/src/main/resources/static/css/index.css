@@ -250,6 +250,12 @@ body{
     color: #FE7F2D;
 }
 
+.link_black:hover{
+	 color: #2A2B2E;
+	 text-decoration: none;
+	 
+}
+
 .btn a{
     color: white;
 }
@@ -415,10 +421,6 @@ body{
     margin: 0.5%;
 
 }
-
-
-
-
 
 
 

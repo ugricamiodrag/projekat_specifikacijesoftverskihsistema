@@ -15,4 +15,5 @@ public interface AgentService {
 	void update(Agent d);
 	public boolean usernameExists(String username);
 	public boolean emailExists(String email);
+	List<Agent> findAgents(Long id);
 }

@@ -33,20 +33,47 @@
 
  <div th:if="${agency != null}" class="col-md-12">
                 <!--Information about Agency-->
-                <div class="card ">
-                    <h3 class="card-header bolder text-orange" th:text="${agency.name}">  </h3>
-                   <!--  define other details about agency -->
-                   
-                   
-                   
-                   <!-- agents that work for agecy -->
+                <div class="card">
+                    <a href="agency/change"  class="link_black"><h3 class="card-header bolder text-orange link_black" th:text="${agency.name}">  </h3></a>
+                    <div th:each="agent: ${agents}"><br>
+                     <div class="text-container">
+                     				<form method="post" action="agency/deleteAgent">
+                     				
+                     				<h5 class="bolder" th:text="${agent.name + ' ' + agent.surname}"></h5>
+                     				<hr>
+                                    <p class="card-text"><span class="bolder">Username: </span><span th:text="${agent.username}"></span></p>
+                                    <p class="card-text"><span class="bolder">Password: </span><span th:text="${agent.password}"></span></p>
+                                    <p class="card-text"><span class="bolder">Phone Number: </span><span th:text="${agent.phoneNumber}"></span></p>
+                                    <p class="card-text"><span class="bolder">Email: </span><span th:text="${agent.email}"></span></p>
+                                    <p class="card-text"><span class="bolder">Address: </span><span th:text="${agent.address}"></span></p>
+                                    <input  name="agentId" class="hidden" th:value="${agent.id}"></input>
+                                    <button class="btn">Delete</button>
+                                    </form>
+                       </div>
+                    </div>
+                    <br><br>
+                    <a href="agency/addAgent" class="btn">Add Agent</a>
+                  
                 </div>
 </div>
-<div th:else="${agency != null}" class="col-md-12">
+<div th:if="${agency == null}" class="col-md-12">
         <div class="card ">
-                    <h3 class="card-header bolder text-orange"> Set Agency details to start </h3><br><br>
-                  	<button class="btn">Start</button>
+                    <h3 class="card-header bolder text-orange"> Set Agency details to start </h3>
+                     <form method="post" action="agency/create">
+                	<div class="card">
+                    <div class="form-group">
+            			<label class="bolder" for="name">Agency Name:</label>
+            			<input type="text" value="" name="name" class="form-control"  >
+            			
+        			</div>
+                    
+                    <br><br>
+                    <button class="btn">Create Agency</button>
+                 
                 </div>
+               
+               </form>
+               </div>
 </div>     
             
     

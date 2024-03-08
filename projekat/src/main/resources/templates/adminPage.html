@@ -46,14 +46,15 @@
           <th scope="col">Price</th>
           <th scope="col">Rent/Buy</th>
           <th scope="col">Surface</th>
+          <th scope="col">Is Active</th>
           <th scope="col"></th>
           <th scope="col"></th>
-
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr th:each="estate, iterStat : ${realEstates}">
-          <form method="post" action="delete">
+          <form method="post" action="/realestate/delete">
 
             <th scope="row" th:text="${iterStat.count}"></th>
             <td th:text="${estate.estateType}"></td>
@@ -61,8 +62,10 @@
             <td th:text="${estate.price}"></td>
             <td th:text="${estate.rentOrBuy}"></td>
             <td th:text="${estate.surface}"></td>
+            <td th:text="${estate.isActive}"></td>
 
-            <td><a th:href="@{edit(id=${estate.id})}" class="link bolder">Edit</a></td>
+            <td><a th:href="@{/realestate/edit(id=${estate.id})}" class="link bolder">Edit</a></td>
+            <td><a th:href="@{/realestate/hide(id=${estate.id})}" class="link bolder">Hide</a></td>
             <td><button class="btn">Delete</button></td>
             <input type="hidden" th:value="${estate.id}" name="id">
 

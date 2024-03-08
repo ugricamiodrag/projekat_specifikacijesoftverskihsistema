@@ -30,7 +30,7 @@
                 <a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="/login/logOut">Log out</a>
                 <a class="nav-item nav-link white-font" th:if="${admin != null}" href="/realestate/adminPage">Admin</a>
                 <a class="nav-item nav-link white-font" th:if="${owner != null}" href="/agency">My Agency</a>
-                <a class="nav-item nav-link white-font" th:if="${agent != null}" href="">Calendar</a>
+                <a class="nav-item nav-link white-font" th:if="${agent != null or owner != null}" href="">Calendar</a>
                 <a class="nav-item nav-link white-font" th:if="${agent != null}" href="/realestate/add">Add an estate</a>
 
                 <a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="#"><img class="small" src="/images/cart.png"></img></a>

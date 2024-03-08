@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.specifikacije.projekat.dao.AgencyDAO;
 import com.specifikacije.projekat.model.Agency;
 import com.specifikacije.projekat.model.AgencyOwner;
+import com.specifikacije.projekat.model.Agent;
 import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.AgencyOwnerService;
 import com.specifikacije.projekat.service.impl.AgencyOwnerServiceImpl;
@@ -140,6 +141,9 @@ public class AgencyDAOimpl implements AgencyDAO {
 	        return null; 
 	   }
 	}
+
+	
+	
 
 	
 }

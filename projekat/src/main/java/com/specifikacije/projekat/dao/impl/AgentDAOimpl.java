@@ -170,4 +170,18 @@ public class AgentDAOimpl implements AgentDAO {
 	    return count != null && count > 0;
 	}
 
+	public List<Agent> findAgents(Long agencyid) {
+		String sql = 
+				"SELECT * FROM agent "
+				+ "LEFT JOIN agency ON agent.agency_id = agency.id "
+				+ "WHERE agent.isActive = true"
+				+ " AND agency.id = ?";
+				
+
+		AgentCallBackHandler rowCallbackHandler = new AgentCallBackHandler();
+		jdbcTemplate.query(sql, rowCallbackHandler, agencyid);
+
+		return rowCallbackHandler.getAgents();
+	}
+
 }

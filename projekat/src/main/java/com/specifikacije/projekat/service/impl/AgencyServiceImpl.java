@@ -14,7 +14,7 @@ public class AgencyServiceImpl implements AgencyService {
 
 	@Autowired
 	private AgencyDAOimpl agencyDAO;
-	
+		
 	@Override
 	public Agency findOne(Long id) {
 		return agencyDAO.findOne(id);
@@ -46,4 +46,5 @@ public class AgencyServiceImpl implements AgencyService {
 		return agencyDAO.findOwner(ownerId);
 	}
 
+	
 }

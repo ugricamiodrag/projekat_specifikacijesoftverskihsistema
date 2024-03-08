@@ -23,6 +23,11 @@ public class RealEstateServiceImpl implements RealEstateService{
 		return realEstateDAO.findOne(id);
 	}
 	
+	@Override
+	public List<RealEstate> findAllHidden() {
+		return realEstateDAO.findAllHidden();
+	}
+	
 
 	@Override
 	public List<RealEstate> findAll() {

@@ -182,6 +182,9 @@ public class RealEstateController {
 		
 		RealEstate d = realEstateService.findOne(id);
 		
+		d.setViewNumber(d.getViewNumber()+ 1); // Everytime the user views the realestate add one to viewNumber
+		realEstateService.update(d); // Update that view
+		
 		model.addAttribute("oneRealEstate", d);
 
 		return "oneRealEstate";
@@ -190,7 +193,7 @@ public class RealEstateController {
 	@GetMapping("/adminPage")
 	public String adminPage(Model model) {
 		
-		List<RealEstate> realEstateList = realEstateService.findAll();
+		List<RealEstate> realEstateList = realEstateService.findAllHidden();
 
 		model.addAttribute("realEstates", realEstateList);
 		return "adminPage";
@@ -267,7 +270,7 @@ public class RealEstateController {
 		realEstateService.update(d);
 		
 		
-		response.sendRedirect("viewAllUsers");
+		response.sendRedirect("adminPage");
 		
 
 	}
@@ -313,6 +316,22 @@ public class RealEstateController {
 		
 	}
 	
+	
+	@GetMapping(value="/hide")
+	public String hideRealEstate(@RequestParam Long id, Model model) throws IOException {
+
+			RealEstate d = realEstateService.findOne(id);
+			if(d.getIsActive())
+				d.setIsActive(false);
+			else
+				d.setIsActive(true);
+			
+			realEstateService.update(d);
+
+			return "redirect:adminPage";
+		
+
+	}
 	
 	
 			

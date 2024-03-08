@@ -76,7 +76,7 @@
             <div class="col-md-8">
                 <!--Information about real estate-->
                 <div class="card card_less">
-                    <h3 class="card-header bolder text-orange" th:text="${oneRealEstate.location}">  </h3>
+                    <h3 class="card-header"><span class="text-orange bolder" th:text="${oneRealEstate.location}"></span> <span class="small">Grade:</span><span class="bolder" th:text="${oneRealEstate.grade}"></span></h3>
                    
 
                     <div class="card-body">
@@ -87,11 +87,15 @@
                     </div>
                     
                      <div class="card-body">
-                        <h5 class="card-title" >Najam/Prodaja: <span class="bolder" th:text="${oneRealEstate.rentOrBuy}"></span></h5>
+                        <h5 class="card-title" >Rent/Buy: <span class="bolder" th:text="${oneRealEstate.rentOrBuy}"></span></h5>
                     </div>
                      <div class="card-body">
-                        <h5 class="card-title" >Tip: <span class="bolder" th:text="${oneRealEstate.estateType}"></span></h5>
+                        <h5 class="card-title" >Surface: <span class="bolder" th:text="${oneRealEstate.surface}"></span></h5>
                     </div>
+                     <div class="card-body">
+                        <h5 class="card-title" >Views: <span class="bolder" th:text="${oneRealEstate.viewNumber}"></span></h5>
+                    </div>
+                     
                 </div>
             </div>
 
