@@ -192,11 +192,12 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 		Agency agency = agent.getAgency();
 		String sql = "SELECT * " +
 				"FROM estate " +
-				"WHERE agent_id IN (SELECT id FROM agent WHERE agency_id = ?)";
-		RealEstateCallBackHandler rowCallbackHandler = new RealEstateCallBackHandler();
+				"WHERE agent_id IN (SELECT id FROM agent WHERE agency_id = ? AND agent_id = ?)";
+//		RealEstateCallBackHandler rowCallbackHandler = new RealEstateCallBackHandler();
+		 Object[] params = { agency.getId(), agent.getId() };
+		return jdbcTemplate.query(sql, params, new RealEstateCallBackHandler());
 
-
-		return rowCallbackHandler.getRealEstates();
+//		return rowCallbackHandler.getRealEstates();
 	}
 
 

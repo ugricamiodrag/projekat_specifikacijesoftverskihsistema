@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Add realestate</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/index.css">
     <base th:href="@{/}">
@@ -20,21 +20,132 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
               <a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
-              <a class="nav-item nav-link white-font" href="#">Register</a>
-              <a class="nav-item nav-link white-font" href="#">Log in</a>
+ 			  <a class="nav-item nav-link white-font" href="">Calendar</a>
+              <a class="nav-item nav-link white-font" href="/realestate/add">Add an estate</a>
+              <a class="nav-item nav-link white-font" href="/login/logOut">Log out</a>
               <a class="nav-item nav-link white-font" href="#"><img class="small" src="/images/cart.png"></img></a>
 
           </div>
       </div>
   </nav>
-    
-   <div class="form">
+  
+  
+  
+   <!--Filters-->
+
+    <div class="container">
+        <div class="row full-height">
+            <div class="col-md-3">
+                <!--Sidebar - filters -->
+                <div class="sidebar">
+                    <h3 class="bolder text-orange">Filter Options</h3>
+                    <form action="/realestate/search" method="get" id="searchForm"> 
+                        <p><span class="bolder">Location:</span></p>
+
+                        <div class="form-inline" >
+                            <input class="shadow form-control mr-sm-2" type="search" id ="location" name="location">
+                        </div>
+
+                        <p><span class="bolder">Surface:</span></p>
+                        <p>Min.</p>
+                        <div class="form-inline">
+                            <input class=" form-control mr-sm-2" min="0" type="number" id="surfaceFrom" name="surfaceFrom">
+                        </div>
+                        <p>Max.</p>
+                        <div class="form-inline">
+
+                            <input class="form-control mr-sm-2" type="number" id="surfaceTo" name="surfaceTo">
+                        </div>
+
+                        <p><span class="bolder">Price:</span></p>
+
+                        <p>Min.</p>
+                        <div class="form-inline">
+
+                            <input class="form-control mr-sm-2" min="0" type="number" id="priceMin" name="priceMin">
+                        </div>
+                        <p>Max.</p>
+                        <div class="form-inline">
+
+                            <input class="form-control mr-sm-2" type="number" id="priceMax" name="priceMax">
+                        </div>
+
+                        <p><span class="bolder">Rent/Buy:</span></p>
+
+                        <ul>
+                            <li><label><input type="checkbox" id="rent" name="rent" value="Rent"> Rent</label></li>
+                            <li><label><input type="checkbox" id="buy" name="buy" value="Buy">
+                                    Buy</label></li>
+                        </ul>
+                        <p><span class="bolder">Type:</span></p>
+
+                        <ul>
+                            <li th:each="type : ${typesOfEstate}">
+                                <label>
+                                    <input type="checkbox" name="propertyTypes" th:value="${type}" th:text="${type}">
+
+                                </label>
+                            </li>
+                        </ul>
+                        <!--Search button for filtering-->
+                        <div class="form-inline">
+                            <button class="my-2 my-sm-0 btn" onclick="search()" type="button">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            
+            
+            
+  
+   <div class="col-md-9" id="searchResults">
+                <div class="card" th:each="estate, iterStat : ${realEstates}">
+                    <div class="card-body d-flex flex-column"  >
+                        <div class="row" >
+                            <div class="col-md-4" >
+
+                                <div class="overlay-container">
+                                    <a th:href="@{'/realestate/edit?id=' + ${estate.id}}">
+                                        <img class="card-img-top smaller" th:src="@{/images/} + ${estate.picture}"
+                                            alt="Card image cap">
+                                    </a>
+                                   
+                                </div>
+                            </div>
+                            
+                           
+
+                            <div class="col-md-8">
+                                <div class="text-container">
+                                    <a class="link" th:href="@{'/realestate/edit?id=' + ${estate.id}}">
+                                        <h5 class="card-title bolder text-orange" >Edit: <span th:text="${estate.location}"></span></h5>
+                                    </a>
+                                    
+                                    <p class="card-text"><span class="bolder">Price: </span><span th:text="${estate.price}"></span></p>
+                                    <p class="card-text"><span class="bolder">Surface: </span><span th:text="${estate.surface}"></span></p>
+                                    <p class="card-text"><span class="bolder">Rent/Buy: </span><span th:text="${estate.rentOrBuy}"></span></p>
+                                    <p class="card-text"><span class="bolder">Type: </span><span th:text="${estate.estateType}"></span></p>
+                                    
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+              
+  </div>
+  
+  
+      
+                 <div class="col-md-9 form">
+                 <h2 class="text-orange bolder">Add New Estate</h2>
     <form method="post" action="realestate/add" enctype="multipart/form-data">
         <div class="form-group">
     		<label class="bolder" for="type">Type:</label>
             <select name="type" id="type" class="form-control" aria-describedby="emailHelp">
                 <option value="">Select a type</option>
-                <option th:each="oneType : ${allTypes}" th:value="${oneType}" th:text="${oneType}"></option>
+                <option th:each="oneType : ${typesOfEstate}" th:value="${oneType}" th:text="${oneType}"></option>
             </select>
 
         </div>
@@ -74,22 +185,97 @@
     </form>
    </div>
 
+</script>
+
+            <!--For selecting and deselecting prodaja/izdavanje, when one is selected deselect other-->
+            <script>
+                // Get references to the checkboxes
+                const prodajaCheckbox = document.getElementById('rent');
+                const izdavanjeCheckbox = document.getElementById('buy');
+
+                // Add event listeners to checkboxes
+                prodajaCheckbox.addEventListener('change', function () {
+                    // If Prodaja checkbox is checked, uncheck Izdavanje checkbox
+                    if (this.checked) {
+                        izdavanjeCheckbox.checked = false;
+                    }
+                });
+
+                izdavanjeCheckbox.addEventListener('change', function () {
+                    // If Izdavanje checkbox is checked, uncheck Prodaja checkbox
+                    if (this.checked) {
+                        prodajaCheckbox.checked = false;
+                    }
+                });
+            </script>
+              
+<!-- For filtering trips -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script th:inline="javascript">
+    function search() {
+       
+        $.ajax({
+            type: 'GET',
+            url: '/realestate/search',
+            data: $('#searchForm').serialize(),
+            success: function(data) {
+            console.log(data);
+			console.log('Search success:', data);
+        	$('#searchResults').empty(); // Empty the searchResults div before appending new results
+                if (data.realEstate && data.realEstate.length) {
+
+                for (var i = 0; i < data.realEstate.length; i++) {
+                    var estate = data.realEstate[i];
+                    
+                    var resultHtml = '<div class="card" >' +
+                    '<div class="card-body d-flex flex-column">' +
+                    '<div class="row">' +
+                    '<div class="col-md-4">' +
+                    '<div class="overlay-container">' +
+                    '<a href="/realestate/edit?id=' + estate.id + '">' +
+                    '<img class="card-img-top smaller" src="/images/' + estate.picture + '" alt="Card image cap">' +
+                    '</a>' +
+                   
+                    '</div>' +
+                    '</div>' +
+                    '<div class="col-md-8">' +
+                    '<div class="text-container">' +
+                    '<a class="link" href="/realestate/edit?id=' + estate.id + '">' +
+                    '<h5 class="card-title bolder text-orange" th:text="${estate.location}">' + estate.location + '</h5>' +
+                    '</a>' +
+                    '<p class="card-text"><span class="bolder">Price: </span><span>' + estate.price + '</span></p>' +
+                    '<p class="card-text"><span class="bolder">Surface: </span><span>' + estate.surface + '</span></p>' +
+                    '<p class="card-text"><span class="bolder">Rent/Buy: </span><span>' + estate.rentOrBuy + '</span></p>' +
+                    '<p class="card-text"><span class="bolder">Type: </span><span>' + estate.estateType + '</span></p>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+                    
+                 
+                    $('#searchResults').append(resultHtml);
+                	
+
+            }
+                }
+                else {
+                    console.log('No putovanja data found');
+                }
+            }, 
+            error: function(error) {
+                console.log("Something went wrong");
+            }
+        });
+    }
+</script>
+  
+
    <br/><br/><br/><br/>
 
 
 
-
-
-    <!--Footer -->
-    <div>
-        <nav class="navbar ">
-            <a class="navbar-brand" href="#">
-                <form class="form-inline red">
-                    <p>some information about agency such as mail phone number..etc</p>
-                </form>
-            </a>
-        </nav>
-    </div>
 
 </body>
 

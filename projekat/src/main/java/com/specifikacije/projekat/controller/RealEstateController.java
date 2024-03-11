@@ -277,15 +277,22 @@ public class RealEstateController {
 	
 	@GetMapping(value="/add")
 	public String add(HttpServletResponse response, Model model, HttpSession session) throws IOException {
-		Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
-		if (obj == null || obj instanceof User){
+		
+		Agent obj = (Agent) session.getAttribute(LoginLogoutController.KORISNIK_KEY);
+		if (obj == null){
 			return "404NotFound";
 		}
 		List<String> allTypes = new ArrayList<>();
 		for (RealEstateType types : RealEstateType.values()){
 			allTypes.add(types.toString());
 		}
-		model.addAttribute("allTypes", allTypes);
+		List<RealEstate> realestates = realEstateService.findAgenciesEstate(obj);
+		for(RealEstate a: realestates) {
+			System.out.println(a.getId());
+		}
+		model.addAttribute("realEstates", realestates);
+		model.addAttribute("typesOfEstate", allTypes);
+		
 		return "realEstateAdd";
 		
 	}
