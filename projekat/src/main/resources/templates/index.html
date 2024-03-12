@@ -2,354 +2,379 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/index.css">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
-    <title>Agencija za Nekretnine</title>
-    <base th:href="@{/}">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/index.css">
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+	<title>Agencija za Nekretnine</title>
+	<base th:href="@{/}">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
 </head>
 
 <body>
-    <!--navbar-->
-    <nav class="navbar navbar-expand-lg black-bg">
-        <img class="img" src="/images/keyToTheCastleLogoOrangeWhiteWithTitle.png">
-        <!-- add above logo -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
-                <a class="nav-item nav-link white-font" th:if="${isLoggedIn == false}" href="registration">Register</a>
-                <a class="nav-item nav-link white-font" th:if="${isLoggedIn == false}" href="/login">Log in</a>
-                <a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="/login/logOut">Log out</a>
-                <a class="nav-item nav-link white-font" th:if="${admin != null}" href="/realestate/adminPage">Admin</a>
-                <a class="nav-item nav-link white-font" th:if="${owner != null}" href="/agency">My Agency</a>
-                <a class="nav-item nav-link white-font" th:if="${agent != null or owner != null}" href="">Calendar</a>
-                <a class="nav-item nav-link white-font" th:if="${agent != null}" href="/realestate/add">Add an estate</a>
+	<!--navbar-->
+	<nav class="navbar navbar-expand-lg black-bg">
+		<img class="img" src="/images/keyToTheCastleLogoOrangeWhiteWithTitle.png">
+		<!-- add above logo -->
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+			aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			<div class="navbar-nav">
+				<a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
+				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == false}" href="registration">Register</a>
+				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == false}" href="/login">Log in</a>
+				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="/login/logOut">Log out</a>
+				<a class="nav-item nav-link white-font" th:if="${admin != null}" href="/realestate/adminPage">Admin</a>
+				<a class="nav-item nav-link white-font" th:if="${owner != null}" href="/agency">My Agency</a>
+				<a class="nav-item nav-link white-font" th:if="${agent != null or owner != null}" href="">Calendar</a>
+				<a class="nav-item nav-link white-font" th:if="${agent != null}" href="/realestate/add">Add an
+					estate</a>
 
-                <a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="#"><img class="small" src="/images/cart.png"></img></a>
-               	
-               	<a class="nav-item nav-link white-font" style="position: absolute; margin-left: 83%;" th:if="${isLoggedIn == true}" href="realestate/profile"><img class="small" src="/images/user.png"></a>
+				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="#"><img class="small"
+						src="/images/cart.png"></img></a>
 
-            </div>
-        </div>
-    </nav>
+				<a class="nav-item nav-link white-font" style="position: absolute; margin-left: 83%;"
+					th:if="${isLoggedIn == true}" href="realestate/profile"><img class="small"
+						src="/images/user.png"></a>
 
-
-    <!--Filters-->
-
-    <div class="container">
-        <div class="row full-height">
-            <div class="col-md-3">
-                <!--Sidebar - filters -->
-                <div class="sidebar">
-                    <h3 class="bolder text-orange">Filter Options</h3>
-                    <form action="/realestate/search" method="get" id="searchForm"> 
-                        <p><span class="bolder">Location:</span></p>
-
-                        <div class="form-inline" >
-                            <input class="shadow form-control mr-sm-2" type="search" id ="location" name="location">
-                        </div>
-
-                        <p><span class="bolder">Surface:</span></p>
-                        <p>Min.</p>
-                        <div class="form-inline">
-                            <input class=" form-control mr-sm-2" min="0" type="number" id="surfaceFrom" name="surfaceFrom">
-                        </div>
-                        <p>Max.</p>
-                        <div class="form-inline">
-
-                            <input class="form-control mr-sm-2" type="number" id="surfaceTo" name="surfaceTo">
-                        </div>
-
-                        <p><span class="bolder">Price:</span></p>
-
-                        <p>Min.</p>
-                        <div class="form-inline">
-
-                            <input class="form-control mr-sm-2" min="0" type="number" id="priceMin" name="priceMin">
-                        </div>
-                        <p>Max.</p>
-                        <div class="form-inline">
-
-                            <input class="form-control mr-sm-2" type="number" id="priceMax" name="priceMax">
-                        </div>
-
-                        <p><span class="bolder">Rent/Buy:</span></p>
-
-                        <ul>
-                            <li><label><input type="checkbox" id="rent" name="rent" value="Rent"> Rent</label></li>
-                            <li><label><input type="checkbox" id="buy" name="buy" value="Buy">
-                                    Buy</label></li>
-                        </ul>
-                        <p><span class="bolder">Type:</span></p>
-
-                        <ul>
-                            <li th:each="type : ${typesOfEstate}">
-                                <label>
-                                    <input type="checkbox" name="propertyTypes" th:value="${type}" th:text="${type}">
-
-                                </label>
-                            </li>
-                        </ul>
-                        <!--Search button for filtering-->
-                        <div class="form-inline">
-                            <button class="my-2 my-sm-0 btn" onclick="search()" type="button">Search</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            
-            
-<!-- For filtering trips -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-<script th:inline="javascript">
-    function search() {
-       
-        $.ajax({
-            type: 'GET',
-            url: '/realestate/search',
-            data: $('#searchForm').serialize(),
-            success: function(data) {
-            console.log(data);
-			console.log('Search success:', data);
-        	$('#searchResults').empty(); // Empty the searchResults div before appending new results
-                if (data.realEstate && data.realEstate.length) {
-
-                for (var i = 0; i < data.realEstate.length; i++) {
-                    var estate = data.realEstate[i];
-                    
-                    var resultHtml = '<div class="card" >' +
-                    '<div class="card-body d-flex flex-column">' +
-                    '<div class="row">' +
-                    '<div class="col-md-4">' +
-                    '<div class="overlay-container">' +
-                    '<a href="/realestate/viewOne?id=' + estate.id + '">' +
-                    '<img class="card-img-top smaller" src="/images/' + estate.picture + '" alt="Card image cap">' +
-                    '</a>' +
-                    '<a href="" class="">' +
-                    '<img class="card-img-top small overlay" src="/images/heart.png" alt="Card image cap">' +
-                    '</a>' +
-                    '<div class="like-dislike">' +
-                    '<a><img class="card-img-top small low_opacity" src="images/heart_filled.png" alt="Card image cap"></a>' +
-                    '<a><img class="card-img-top small low_opacity" src="images/heart_broken.png" alt="Card image cap"></a>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="col-md-8">' +
-                    '<div class="text-container">' +
-                    '<a class="link" href="/realestate/viewOne?id=' + estate.id + '">' +
-                    '<h5 class="card-title bolder text-orange" th:text="${estate.location}">' + estate.location + '</h5>' +
-                    '</a>' +
-                    '<p class="card-text"><span class="bolder">Price: </span><span>' + estate.price + '</span></p>' +
-                    '<p class="card-text"><span class="bolder">Surface: </span><span>' + estate.surface + '</span></p>' +
-                    '<p class="card-text"><span class="bolder">Rent/Buy: </span><span>' + estate.rentOrBuy + '</span></p>' +
-                    '<p class="card-text"><span class="bolder">Type: </span><span>' + estate.estateType + '</span></p>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>';
-                    
-                 
-                    $('#searchResults').append(resultHtml);
-                	
-
-            }
-                }
-                else {
-                    console.log('No putovanja data found');
-                }
-            }, 
-            error: function(error) {
-                console.log("Something went wrong");
-            }
-        });
-    }
-</script>
+			</div>
+		</div>
+	</nav>
 
 
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<!-- For autocomplete in searchBar -->
-<script>
-$(document).ready(function() {
-    $("#location").autocomplete({
-        source: function(request, response) {
-            $.ajax({
-                url: '/autocomplete/estate',
-                type: 'GET',
-                success: function(data) {
-                    var term = request.term.toLowerCase();
-                    var filtered = data.filter(function(estate) {
-                        return estate.toLowerCase().includes(term);
-                    });
-                    response(filtered);
-                },
-                error: function(error) {
-                    console.log("Error fetching autocomplete data");
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	<!--Filters-->
 
-                }
-            });
-        },
-        minLength: 1
-    });
-});
+	<div class="container">
+		<div class="row full-height">
+			<div class="col-md-3">
+				<!--Sidebar - filters -->
+				<div class="sidebar">
+					<h3 class="bolder text-orange">Filter Options</h3>
+					<form action="/realestate/search" method="get" id="searchForm">
+						<p><span class="bolder">Location:</span></p>
+
+						<div class="form-inline">
+							<input class="shadow form-control mr-sm-2" type="search" id="location" name="location">
+						</div>
+
+						<p><span class="bolder">Surface:</span></p>
+						<p>Min.</p>
+						<div class="form-inline">
+							<input class=" form-control mr-sm-2" min="0" type="number" id="surfaceFrom"
+								name="surfaceFrom">
+						</div>
+						<p>Max.</p>
+						<div class="form-inline">
+
+							<input class="form-control mr-sm-2" type="number" id="surfaceTo" name="surfaceTo">
+						</div>
+
+						<p><span class="bolder">Price:</span></p>
+
+						<p>Min.</p>
+						<div class="form-inline">
+
+							<input class="form-control mr-sm-2" min="0" type="number" id="priceMin" name="priceMin">
+						</div>
+						<p>Max.</p>
+						<div class="form-inline">
+
+							<input class="form-control mr-sm-2" type="number" id="priceMax" name="priceMax">
+						</div>
+
+						<p><span class="bolder">Rent/Buy:</span></p>
+
+						<ul>
+							<li><label><input type="checkbox" id="rent" name="rent" value="Rent"> Rent</label></li>
+							<li><label><input type="checkbox" id="buy" name="buy" value="Buy">
+									Buy</label></li>
+						</ul>
+						<p><span class="bolder">Type:</span></p>
+
+						<ul>
+							<li th:each="type : ${typesOfEstate}">
+								<label>
+									<input type="checkbox" name="propertyTypes" th:value="${type}" th:text="${type}">
+
+								</label>
+							</li>
+						</ul>
+						<!--Search button for filtering-->
+						<div class="form-inline">
+							<button class="my-2 my-sm-0 btn" onclick="search()" type="button">Search</button>
+						</div>
+					</form>
+				</div>
+			</div>
 
 
+			<!-- For filtering trips -->
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-</script>
+			<script th:inline="javascript">
+				function search() {
 
-            <!--For selecting and deselecting prodaja/izdavanje, when one is selected deselect other-->
-            <script>
-                // Get references to the checkboxes
-                const prodajaCheckbox = document.getElementById('rent');
-                const izdavanjeCheckbox = document.getElementById('buy');
+					$.ajax({
+						type: 'GET',
+						url: '/realestate/search',
+						data: $('#searchForm').serialize(),
+						success: function (data) {
+							console.log(data);
+							console.log('Search success:', data);
+							$('#searchResults').empty(); // Empty the searchResults div before appending new results
+							if (data.realEstate && data.realEstate.length) {
 
-                // Add event listeners to checkboxes
-                prodajaCheckbox.addEventListener('change', function () {
-                    // If Prodaja checkbox is checked, uncheck Izdavanje checkbox
-                    if (this.checked) {
-                        izdavanjeCheckbox.checked = false;
-                    }
-                });
+								for (var i = 0; i < data.realEstate.length; i++) {
+									var estate = data.realEstate[i];
 
-                izdavanjeCheckbox.addEventListener('change', function () {
-                    // If Izdavanje checkbox is checked, uncheck Prodaja checkbox
-                    if (this.checked) {
-                        prodajaCheckbox.checked = false;
-                    }
-                });
-            </script>
+									var resultHtml = '<div class="card" >' +
+										'<div class="card-body d-flex flex-column">' +
+										'<div class="row">' +
+										'<div class="col-md-4">' +
+										'<div class="overlay-container">' +
+										'<a href="/realestate/viewOne?id=' + estate.id + '">' +
+										'<img class="card-img-top smaller" src="/images/' + estate.picture + '" alt="Card image cap">' +
+										'</a>' +
+										'<a href="" class="">' +
+										'<img class="card-img-top small overlay" src="/images/heart.png" alt="Card image cap">' +
+										'</a>' +
+										'<div class="like-dislike">' +
+										'<a><img class="card-img-top small low_opacity" src="images/heart_filled.png" alt="Card image cap"></a>' +
+										'<a><img class="card-img-top small low_opacity" src="images/heart_broken.png" alt="Card image cap"></a>' +
+										'</div>' +
+										'</div>' +
+										'</div>' +
+										'<div class="col-md-8">' +
+										'<div class="text-container">' +
+										'<a class="link" href="/realestate/viewOne?id=' + estate.id + '">' +
+										'<h5 class="card-title bolder text-orange" th:text="${estate.location}">' + estate.location + '</h5>' +
+										'</a>' +
+										'<p class="card-text"><span class="bolder">Price: </span><span>' + estate.price + '</span></p>' +
+										'<p class="card-text"><span class="bolder">Surface: </span><span>' + estate.surface + '</span></p>' +
+										'<p class="card-text"><span class="bolder">Rent/Buy: </span><span>' + estate.rentOrBuy + '</span></p>' +
+										'<p class="card-text"><span class="bolder">Type: </span><span>' + estate.estateType + '</span></p>' +
+										'</div>' +
+										'</div>' +
+										'</div>' +
+										'</div>' +
+										'</div>';
+
+
+									$('#searchResults').append(resultHtml);
+
+
+								}
+							}
+							else {
+								console.log('No putovanja data found');
+							}
+						},
+						error: function (error) {
+							console.log("Something went wrong");
+						}
+					});
+				}
+			</script>
+
+
+			<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+			<!-- For autocomplete in searchBar -->
+			<script>
+				$(document).ready(function () {
+					$("#location").autocomplete({
+						source: function (request, response) {
+							$.ajax({
+								url: '/autocomplete/estate',
+								type: 'GET',
+								success: function (data) {
+									var term = request.term.toLowerCase();
+									var filtered = data.filter(function (estate) {
+										return estate.toLowerCase().includes(term);
+									});
+									response(filtered);
+								},
+								error: function (error) {
+									console.log("Error fetching autocomplete data");
+									return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+
+								}
+							});
+						},
+						minLength: 1
+					});
+				});
 
 
 
-            <!--Main content - nekretnine 0 -->
-            <div class="col-md-9" id="searchResults">
-                <div class="card" th:each="estate, iterStat : ${realEstate}">
-                    <div class="card-body d-flex flex-column"  >
-                        <div class="row" >
-                            <div class="col-md-4" >
+			</script>
 
-                                <!--Images here-->
-                                <div class="overlay-container">
-                                    <a th:href="@{'/realestate/viewOne?id=' + ${estate.id}}">
-                                        <img class="card-img-top smaller" th:src="@{/images/} + ${estate.picture}"
-                                            alt="Card image cap">
-                                    </a>
-                                    <a th:if="${isLoggedIn}" href="" class="">
-                                        <!--Like/Dislike heart here-->
-                                       <div th:each="disliked : ${dislikedEstates}"> <!-- go trough disliked estates and if match found set broken heart -->
-    										<div th:if="${estate.id eq disliked.id}">
-       										 <!-- Display content for disliked estate -->
-        										<img class="card-img-top small overlay" src="/images/heart_broken.png" alt="Card image cap">
-    										</div>
+			<!--For selecting and deselecting prodaja/izdavanje, when one is selected deselect other-->
+			<script>
+				// Get references to the checkboxes
+				const prodajaCheckbox = document.getElementById('rent');
+				const izdavanjeCheckbox = document.getElementById('buy');
+
+				// Add event listeners to checkboxes
+				prodajaCheckbox.addEventListener('change', function () {
+					// If Prodaja checkbox is checked, uncheck Izdavanje checkbox
+					if (this.checked) {
+						izdavanjeCheckbox.checked = false;
+					}
+				});
+
+				izdavanjeCheckbox.addEventListener('change', function () {
+					// If Izdavanje checkbox is checked, uncheck Prodaja checkbox
+					if (this.checked) {
+						prodajaCheckbox.checked = false;
+					}
+				});
+			</script>
+
+
+
+			<!--Main content - nekretnine 0 -->
+			<div class="col-md-9" id="searchResults">
+				<div class="card" th:each="estate, iterStat : ${realEstate}">
+					<div class="card-body d-flex flex-column">
+						<div class="row">
+							<div class="col-md-4">
+
+								<!--Images here-->
+								<div class="overlay-container">
+									<a th:href="@{'/realestate/viewOne?id=' + ${estate.id}}">
+										<img class="card-img-top smaller" th:src="@{/images/} + ${estate.picture}"
+											alt="Card image cap">
+									</a>
+									<a th:if="${isLoggedIn}" href="" class="">
+										<!--Like/Dislike heart here-->
+										<div th:each="disliked : ${dislikedEstates}">
+											<!-- go trough disliked estates and if match found set broken heart -->
+											<div th:if="${estate.id eq disliked.id}">
+												<!-- Display content for disliked estate -->
+												<img class="card-img-top small overlay" src="/images/heart_broken.png"
+													alt="Card image cap">
+											</div>
 										</div>
 										<div th:each="liked : ${likedEstates}">
-    										<div th:if="${estate.id eq liked.id}"><!-- go trough liked estates and if match found set broken heart -->
-       										 <!-- Display content for liked estate -->
-        										<img class="card-img-top small overlay" src="/images/heart_filled.png" alt="Card image cap">
-    										</div>
+											<div th:if="${estate.id eq liked.id}">
+												<!-- go trough liked estates and if match found set broken heart -->
+												<!-- Display content for liked estate -->
+												<img class="card-img-top small overlay" src="/images/heart_filled.png"
+													alt="Card image cap">
+											</div>
 										</div>
-                                    </a>
-                                    
-                                    <div th:if="${isLoggedIn == true and user != null}" class="like-dislike">
-                                    <form method="post" action="/like">
-  											
-  											<button type="submit" class="btn-like"><img class="card-img-top small low_opacity" src="images/heart_filled.png" alt="Card image cap"></button>
- 											<input type="hidden" name="estateId" th:value="${estate.id}" /> 
-                                    </form>
-                                     <form method="post" action="/dislike">
-  											
-  											<button type="submit" class="btn-like"><img class="card-img-top small low_opacity" src="images/heart_broken.png" alt="Card image cap"></button>
- 											<input type="hidden" name="estateId" th:value="${estate.id}" /> 
-                                    </form>
-                              
+									</a>
+
+									<div th:if="${isLoggedIn == true and user != null}" class="like-dislike">
+										<form method="post" action="/like">
+
+											<button type="submit" class="btn-like"><img
+													class="card-img-top small low_opacity" src="images/heart_filled.png"
+													alt="Card image cap"></button>
+											<input type="hidden" name="estateId" th:value="${estate.id}" />
+										</form>
+										<form method="post" action="/dislike">
+
+											<button type="submit" class="btn-like"><img
+													class="card-img-top small low_opacity" src="images/heart_broken.png"
+													alt="Card image cap"></button>
+											<input type="hidden" name="estateId" th:value="${estate.id}" />
+										</form>
+
+
 									</div>
-                                </div>
-                            </div>
-                            
-                           
 
-                            <!--Information about nekretnina-->
-                            <div class="col-md-8">
-                                <div class="text-container">
-                                    <a class="link" th:href="@{'/realestate/viewOne?id=' + ${estate.id}}">
-                                        <h5 class="card-title bolder text-orange" th:text="${estate.location}">Novi Sad, Novo Naselje</h5>
-                                    </a>
-                                    
-                                    <p class="card-text"><span class="bolder">Price: </span><span th:text="${estate.price}"></span></p>
-                                    <p class="card-text"><span class="bolder">Surface: </span><span th:text="${estate.surface}"></span></p>
-                                    <p class="card-text"><span class="bolder">Rent/Buy: </span><span th:text="${estate.rentOrBuy}"></span></p>
-                                    <p class="card-text"><span class="bolder">Type: </span><span th:text="${estate.estateType}"></span></p>
-                                    
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-               
-                
-                <script>
-                $(document).ready(function() {
-                	  $(".like-btn").click(function() {
-                	    // Send a request to the server to increment the like count
-                	    updateCount('like');
-                	  });
-
-                	  $(".dislike-btn").click(function() {
-                	    // Send a request to the server to increment the dislike count
-                	    updateCount('dislike');
-                	  });
-
-                	  function updateCount(action) {
-                	    // Send an AJAX request to the server to update the count
-                	    $.ajax({
-                	      type: "POST",
-                	      url: "update_count.php", // URL to your server-side script
-                	      data: { action: action }, // Send the action (like or dislike) to the server
-                	      success: function(response) {
-                	        // Update the count on the front-end based on the server response
-                	        $(".like-count").text(response.likes);
-                	        $(".dislike-count").text(response.dislikes);
-                	      },
-                	      error: function(xhr, status, error) {
-                	        // Handle errors
-                	        console.error(error);
-                	      }
-                	    });
-                	  }
-                	});
-</script>
-               
-                  
-            </div>
-        </div>
-    </div>
+								</div>
+							</div>
 
 
 
-    <!--Footer -->
-    <div>
-        <nav class="navbar ">
-            <a class="navbar-brand" href="#">
-                <form class="form-inline red">
-                    <p>some information about agency such as mail phone number..etc</p>
-                </form>
-            </a>
-        </nav>
-    </div>
+							<div class="col-md-8">
+								<div class="text-container">
+									<a class="link" th:href="@{'/realestate/viewOne?id=' + ${estate.id}}">
+										<h5 class="card-title bolder text-orange" th:text="${estate.location}">Novi Sad,
+											Novo Naselje</h5>
+									</a>
 
-          
+									<p class="card-text"><span class="bolder">Price: </span><span
+											th:text="${estate.price}"></span></p>
+									<p class="card-text"><span class="bolder">Surface: </span><span
+											th:text="${estate.surface}"></span></p>
+									<p class="card-text"><span class="bolder">Rent/Buy: </span><span
+											th:text="${estate.rentOrBuy}"></span></p>
+									<p class="card-text"><span class="bolder">Type: </span><span
+											th:text="${estate.estateType}"></span></p>
+
+								</div>
+							</div>
+							<div th:if="${isLoggedIn == true and user != null}"
+								style="position: relative; margin-right: 2%; margin-left: auto;">
+								
+									<a href="/scheduledTour"><button type="submit" class="btn tour">Schedule a Tour</button></a>
+								
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+
+
+				<script>
+					$(document).ready(function () {
+						$(".like-btn").click(function () {
+							// Send a request to the server to increment the like count
+							updateCount('like');
+						});
+
+						$(".dislike-btn").click(function () {
+							// Send a request to the server to increment the dislike count
+							updateCount('dislike');
+						});
+
+						function updateCount(action) {
+							// Send an AJAX request to the server to update the count
+							$.ajax({
+								type: "POST",
+								url: "update_count.php", // URL to your server-side script
+								data: {action: action}, // Send the action (like or dislike) to the server
+								success: function (response) {
+									// Update the count on the front-end based on the server response
+									$(".like-count").text(response.likes);
+									$(".dislike-count").text(response.dislikes);
+								},
+								error: function (xhr, status, error) {
+									// Handle errors
+									console.error(error);
+								}
+							});
+						}
+					});
+				</script>
+
+
+			</div>
+		</div>
+	</div>
+
+
+
+	<!--Footer -->
+	<div>
+		<nav class="navbar ">
+			<a class="navbar-brand" href="#">
+				<form class="form-inline red">
+					<p>some information about agency such as mail phone number..etc</p>
+				</form>
+			</a>
+		</nav>
+	</div>
+
+
 
 
 

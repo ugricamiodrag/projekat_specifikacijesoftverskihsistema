@@ -38,7 +38,13 @@ public class ScheduledTour {
 		this.isApproved = isApproved;
 	}
 
-
+	public ScheduledTour(LocalDateTime startTime, LocalDateTime endTime, User user, RealEstate realEstate) {
+		super();
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.user = user;
+		this.realEstate = realEstate;
+	}
 
 	public Long getId() {
 		return id;

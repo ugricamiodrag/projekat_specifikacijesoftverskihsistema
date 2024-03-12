@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Schedule a Tour</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/index.css">
+	<link rel="stylesheet" href="/css/calendar.css">
+	<base th:href="@{/}">
+</head>
+
+<body>
+	<!--navbar-->
+	<nav class="navbar navbar-expand-lg black-bg">
+		<img class="img" src="/images/keyToTheCastleLogoOrangeWhiteWithTitle.png">
+		<!-- add above logo -->
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+			aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			<div class="navbar-nav">
+				<a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
+				<a class="nav-item nav-link white-font" href="/login/logOut">Log out<span class="sr-only"></span></a>
+				<a class="nav-item nav-link white-font" href="#"><img class="small" src="/images/cart.png"></img></a>
+
+			</div>
+		</div>
+	</nav>
+	<br>
+	<div class="contianer">
+		
+		<div class="calendar">
+			<div class="calendar-header">
+				<span class="month-picker" id="month-picker"> May </span>
+				<div class="year-picker" id="year-picker">
+					<span class="year-change" id="pre-year">
+						<pre style="margin-top: 12px; font-size: 20px;"><</pre>
+					</span>
+					<span id="year">2020 </span>
+					<span class="year-change" id="next-year">
+						<pre style="margin-top: 12px; font-size: 20px;">></pre>
+					</span>
+				</div>
+			</div>
+			
+
+			<div class="calendar-body">
+				<div class="calendar-week-days">
+					<div>Mon</div>
+					<div>Tue</div>
+					<div>Wed</div>
+					<div>Thu</div>
+					<div>Fri</div>
+					<div>Sat</div>
+					<div>Sun</div>
+				</div>
+				<div class="calendar-days">
+				</div>
+			</div>
+			<div class="calendar-footer">
+			</div>
+
+			<div class="month-list"></div>
+		</div>
+		<!-- Form to choose available time -->
+		<div id="timeForm" style="display: block;">
+			<h3>Choose Available Time</h3>
+			<!-- Add your form fields here -->
+			<table>
+				<tr>
+					<td>Available time</td>
+				</tr>
+				<tr>
+					<td>Available time</td>
+				</tr>
+				<tr>
+					<td>Available time</td>
+				</tr>
+				<tr>
+					<td>Available time</td>
+				</tr>
+				<tr>
+					<td>Available time</td>
+				</tr>
+				<tr>
+					<td>Available time</td>
+				</tr>
+				<tr>
+					<td>Available time</td>
+				</tr>
+				<tr>
+					<td>Available time</td>
+				</tr>
+				<tr>
+					<td>Available time</td>
+				</tr>
+				<tr>
+					<td>Available time</td>
+				</tr>
+			</table>
+			<button class="ok btn" type="submit">Submit</button>
+		</div>
+	</div>
+
+
+	<br><br><br>
+
+	<!--Footer -->
+	<div>
+		<nav class="navbar ">
+			<a class="navbar-brand" href="#">
+				<form class="form-inline red">
+					<p>some information about agency such as mail phone number..etc</p>
+				</form>
+			</a>
+		</nav>
+	</div>
+
+</body>
+
+<script>
+	const isLeapYear = (year) => {
+		return (
+			(year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) ||
+			(year % 100 === 0 && year % 400 === 0)
+		);
+	};
+	const getFebDays = (year) => {
+		return isLeapYear(year) ? 29 : 28;
+	};
+	let calendar = document.querySelector('.calendar');
+	const month_names = [
+		'January',
+		'February',
+		'March',
+		'April',
+		'May',
+		'June',
+		'July',
+		'August',
+		'September',
+		'October',
+		'November',
+		'December',
+	];
+	let month_picker = document.querySelector('#month-picker');
+	const dayTextFormate = document.querySelector('.day-text-formate');
+	const timeFormate = document.querySelector('.time-formate');
+	const dateFormate = document.querySelector('.date-formate');
+
+	month_picker.onclick = () => {
+		month_list.classList.remove('hideonce');
+		month_list.classList.remove('hide');
+		month_list.classList.add('show');
+		dayTextFormate.classList.remove('showtime');
+		dayTextFormate.classList.add('hidetime');
+		timeFormate.classList.remove('showtime');
+		timeFormate.classList.add('hideTime');
+		dateFormate.classList.remove('showtime');
+		dateFormate.classList.add('hideTime');
+	};
+
+	const generateCalendar = (month, year) => {
+		let calendar_days = document.querySelector('.calendar-days');
+		calendar_days.innerHTML = '';
+		let calendar_header_year = document.querySelector('#year');
+		let days_of_month = [
+			31,
+			getFebDays(year),
+			31,
+			30,
+			31,
+			30,
+			31,
+			31,
+			30,
+			31,
+			30,
+			31,
+		];
+
+		let currentDate = new Date();
+
+		month_picker.innerHTML = month_names[month];
+
+		calendar_header_year.innerHTML = year;
+
+		let first_day = new Date(year, month);
+
+
+		for (let i = 1; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
+
+			let day = document.createElement('div');
+
+			if (i >= first_day.getDay()) {
+				day.innerHTML = i - first_day.getDay() + 1;
+
+				if (i - first_day.getDay() + 1 === currentDate.getDate() &&
+					year === currentDate.getFullYear() &&
+					month === currentDate.getMonth()
+				) {
+					day.classList.add('current-date');
+				}
+			}
+			calendar_days.appendChild(day);
+		}
+	};
+
+	let month_list = calendar.querySelector('.month-list');
+	month_names.forEach((e, index) => {
+		let month = document.createElement('div');
+		month.innerHTML = `<div>${e}</div>`;
+
+		month_list.append(month);
+		month.onclick = () => {
+			currentMonth.value = index;
+			generateCalendar(currentMonth.value, currentYear.value);
+			month_list.classList.replace('show', 'hide');
+			dayTextFormate.classList.remove('hideTime');
+			dayTextFormate.classList.add('showtime');
+			timeFormate.classList.remove('hideTime');
+			timeFormate.classList.add('showtime');
+			dateFormate.classList.remove('hideTime');
+			dateFormate.classList.add('showtime');
+		};
+	});
+
+	(function () {
+		month_list.classList.add('hideonce');
+	})();
+	document.querySelector('#pre-year').onclick = () => {
+		--currentYear.value;
+		generateCalendar(currentMonth.value, currentYear.value);
+	};
+	document.querySelector('#next-year').onclick = () => {
+		++currentYear.value;
+		generateCalendar(currentMonth.value, currentYear.value);
+	};
+
+	let currentDate = new Date();
+	let currentMonth = {value: currentDate.getMonth()};
+	let currentYear = {value: currentDate.getFullYear()};
+	generateCalendar(currentMonth.value, currentYear.value);
+
+	const todayShowTime = document.querySelector('.time-formate');
+	const todayShowDate = document.querySelector('.date-formate');
+
+	let dates = document.querySelectorAll('.calendar-days');
+
+	// Add click event listener to each date element
+	dates.forEach(date => {
+		date.addEventListener('click', () => {
+			// Display the time form when a date is clicked
+			document.getElementById('timeForm').style.display = 'block';
+		});
+	});
+</script>
+
+</html>
