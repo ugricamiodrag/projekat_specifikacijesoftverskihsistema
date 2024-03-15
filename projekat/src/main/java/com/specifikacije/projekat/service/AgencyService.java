@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.specifikacije.projekat.model.Agency;
 import com.specifikacije.projekat.model.Agent;
+import com.specifikacije.projekat.model.RealEstate;
 
 
 public interface AgencyService {

@@ -131,7 +131,9 @@ public class RealEstateController {
 									   @RequestParam(required=false) String priceMax,
 									   @RequestParam(required=false) String rent,
 									   @RequestParam(required=false) String buy,
+									   @RequestParam(required=false) String popularity,
 									   @RequestParam(required=false) List<String> propertyTypes) throws ParseException {
+									   
 
 
 //		System.out.println(location);
@@ -155,7 +157,7 @@ public class RealEstateController {
 				parseInteger(surfaceTo),
 				parseDouble(priceMin),
 				parseDouble(priceMax),
-				rent, buy, propertyTypes);
+				rent, buy, popularity, propertyTypes);
 
 		model.addAttribute("realEstate", realEstates);
 
@@ -178,12 +180,19 @@ public class RealEstateController {
 	}
 	
 	@GetMapping("/viewOne")
-	public String viewOne(@RequestParam Long id, Model model) {
+	public String viewOne(@RequestParam Long id, Model model, HttpServletRequest request) {
 		
 		RealEstate d = realEstateService.findOne(id);
 		
 		d.setViewNumber(d.getViewNumber()+ 1); // Everytime the user views the realestate add one to viewNumber
 		realEstateService.update(d); // Update that view
+		
+		Object obj =  request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
+
+		if (obj instanceof User) {
+		    Class<?> objClass = obj.getClass();
+		    model.addAttribute("user", objClass);
+		}
 		
 		model.addAttribute("oneRealEstate", d);
 

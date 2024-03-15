@@ -18,10 +18,10 @@ public interface RealEstateDAO {
 
 	public void delete(Long id);
 
-	List<RealEstate> find(String location, Integer surfaceFrom, Integer surfaceTo, Double priceMin,
-						  Double priceMax, String rent, String buy, List<String> propertyTypes);
-
 	List<RealEstate> findAgenciesEstate(Agent agent);
 
 	List<RealEstate> findAllHidden();
+
+	public List<RealEstate> find(String location, Integer surfaceFrom, Integer surfaceTo, Double priceMin,
+			Double priceMax, String rent, String buy, String popularity, List<String> propertyTypes);
 }

@@ -28,7 +28,7 @@ public class ScheduledTourController {
 	@GetMapping
 	public String showSchedulingPage() {
 		
-		return "scheduledTour.html";
+		return "scheduledTour";
 		
 	}
 	

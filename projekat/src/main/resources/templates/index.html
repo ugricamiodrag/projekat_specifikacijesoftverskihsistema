@@ -103,6 +103,10 @@
 								</label>
 							</li>
 						</ul>
+						<hr>
+						<ul th:if="${owner != null}">
+							 <li><label><input type="checkbox" id="popularity" name="popularity" value="popularity"> Sort By Popularity</label></li>
+						</ul>
 						<!--Search button for filtering-->
 						<div class="form-inline">
 							<button class="my-2 my-sm-0 btn" onclick="search()" type="button">Search</button>

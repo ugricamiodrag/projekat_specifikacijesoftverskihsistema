@@ -14,7 +14,7 @@ public interface RealEstateService {
 	RealEstate save(RealEstate realEstate);
 	void delete(Long id);
 	void update(RealEstate d);
-	List<RealEstate> find(String location, Integer surfaceFrom, Integer surfaceTo, Double priceMin, Double priceMax,
-			String rent, String buy, List<String> propertyTypes);
 	List<RealEstate> findAgenciesEstate(Agent agent);
+	List<RealEstate> find(String location, Integer parseInteger, Integer parseInteger2, Double parseDouble,
+			Double parseDouble2, String rent, String buy, String popularity, List<String> propertyTypes);
 }
