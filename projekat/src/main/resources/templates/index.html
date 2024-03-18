@@ -38,6 +38,9 @@
 				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="#"><img class="small"
 						src="/images/cart.png"></img></a>
 
+				<a class="nav-item nav-link white-font" th:if="${agent != null or owner != null}" href="/notifications/unread" style="position: absolute; margin-left: 78%;"><img class="small"
+						src="/images/bell.png"></img></a>
+
 				<a class="nav-item nav-link white-font" style="position: absolute; margin-left: 83%;"
 					th:if="${isLoggedIn == true}" href="realestate/profile"><img class="small"
 						src="/images/user.png"></a>

@@ -56,6 +56,7 @@ public class ScheduledTourController {
 		Notification notification = notificationService.findOne(notificationId);
 		ScheduledTour tour = notification.getTour();
 		tour.setIsApproved(false);
+		scheduledTourService.update(tour);
 		response.sendRedirect("/notifications/unread");
 	}
 
@@ -64,6 +65,7 @@ public class ScheduledTourController {
 		Notification notification = notificationService.findOne(notificationId);
 		ScheduledTour tour = notification.getTour();
 		tour.setIsApproved(true);
+		scheduledTourService.update(tour);
 		response.sendRedirect("/notifications/unread");
 	}
 }

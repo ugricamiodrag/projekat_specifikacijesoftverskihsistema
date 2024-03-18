@@ -38,6 +38,14 @@
     </div>
 </nav>
 
+<div class="main-content">
+<h3>Notifications</h3>
+
+<ul class="notification-list"></ul>
+
+
+</div>
+
 <script>
 
 
@@ -46,18 +54,26 @@
         function fetchNotifications() {
             $.ajax({
                 type: "GET",
-                url: "/notifications/unread",
+                url: "/notifications/Unread",
                 success: function(unreadNotifications) {
-
                     $('.notification-list').empty();
                     unreadNotifications.forEach(function(notification) {
+				console.log(notification);
+						if(notification.read){
+	                        var listItem = $('<li class="notification"><a class="read-link" href="/notifications/readOne?id='+notification.id +'">' + "Agent: " + notification.agent.name + " " + notification.agent.surname + " For:" + notification.tour.realEstate.location + ": " + notification.tour.startTime + "|" + notification.tour.endTime.split('T')[1] + " IsApropved: "+ notification.tour.isApproved + '</a></li>');
 
-                        var listItem = $('<li class="notification">' + notification.message + '</li>');
+						}else{
+	                        var listItem = $('<li class="notification"><a class="unread-link" href="/notifications/readOne?id='+notification.id +'">' + "Agent: " + notification.agent.name + " " + notification.agent.surname + " For:" + notification.tour.realEstate.location + ": " + notification.tour.startTime + "|" + notification.tour.endTime.split('T')[1] + " IsApropved: "+ notification.tour.isApproved + " NEW " + '</a></li>');
+
+						}
                         listItem.click(function() {
 
                             handleNotificationClick(notification.id);
                         });
-                        $('.notification-list').append(listItem);
+                        
+                        	$('.notification-list').append(listItem);
+                        
+                        
                     });
                 },
                 error: function(xhr, status, error) {
@@ -72,7 +88,7 @@
 
         setInterval(fetchNotifications, 5000);
 
-        function handleNotificationClick(id) {
+       /* function handleNotificationClick(id) {
             $.ajax({
                 type: "POST",
                 url: "/notifications/readOne",
@@ -84,8 +100,10 @@
                     console.error("Error retrieving unread notifications: " + error);
                 }
             });
-        }
+        }*/
     });
+    
+    
 </script>
 
 </body>

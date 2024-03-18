@@ -77,7 +77,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 
     @Override
     public List<Notification> findAll() {
-        String sql = "select * from notifications";
+        String sql = "select * from notifications order by is_read ";
         NotificationCallBackHandler handler = new NotificationCallBackHandler();
         jdbcTemplate.query(sql, handler);
         return handler.getNotifications();
