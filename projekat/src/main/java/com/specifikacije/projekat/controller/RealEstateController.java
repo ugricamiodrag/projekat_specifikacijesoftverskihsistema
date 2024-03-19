@@ -21,13 +21,18 @@ import com.specifikacije.projekat.dao.LikeDislikeDAO;
 import com.specifikacije.projekat.model.Administrator;
 import com.specifikacije.projekat.model.AgencyOwner;
 import com.specifikacije.projekat.model.Agent;
+import com.specifikacije.projekat.model.Rating;
 import com.specifikacije.projekat.model.RealEstate;
 import com.specifikacije.projekat.model.RealEstateType;
 import com.specifikacije.projekat.model.RentOrBuy;
+import com.specifikacije.projekat.model.ScheduledTour;
 import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.AgentService;
 import com.specifikacije.projekat.service.LikeDislikeService;
+import com.specifikacije.projekat.service.NotificationService;
+import com.specifikacije.projekat.service.RatingService;
 import com.specifikacije.projekat.service.RealEstateService;
+import com.specifikacije.projekat.service.ScheduledTourService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -44,7 +49,13 @@ public class RealEstateController {
 	private LikeDislikeService likeDislikeService;
 	
 	@Autowired
+	private ScheduledTourService tourService;
+	
+	@Autowired
 	private AgentService agentService;
+	
+	@Autowired
+	RatingService ratingService;
 	
 	@GetMapping
 	public String showRealEstate(HttpServletRequest request, Model model) {
@@ -187,13 +198,19 @@ public class RealEstateController {
 		d.setViewNumber(d.getViewNumber()+ 1); // Everytime the user views the realestate add one to viewNumber
 		realEstateService.update(d); // Update that view
 		
+		
 		Object obj =  request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
 
 		if (obj instanceof User) {
 		    Class<?> objClass = obj.getClass();
+		    User user = (User) obj;
+		    ScheduledTour tour = tourService.findByUserAndEstate(user.getId(), id);
+		    model.addAttribute("tour", tour);
 		    model.addAttribute("user", objClass);
 		}
 		
+		List<Rating> ratings = ratingService.findByAgent(d.getAgent().getId());
+		model.addAttribute("ratings", ratings);
 		model.addAttribute("oneRealEstate", d);
 
 		return "oneRealEstate";
