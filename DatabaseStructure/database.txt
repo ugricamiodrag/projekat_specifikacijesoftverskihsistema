@@ -151,6 +151,15 @@ CREATE TABLE like_dislike (
     FOREIGN KEY (estate_id) REFERENCES estates(id)
 );
 
+CREATE TABLE purchase (
+    id BIGINT NOT NULL auto_increment,
+    user_id INT,
+    estate_id INT,
+    purchase_date date not null,
+    PRIMARY KEY(id)
+    
+    )
+
 -- Test data :
 INSERT INTO like_dislike (user_id, estate_id, liked_disliked)
 VALUES

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <base th:href="@{/}">
+</head>
+
+<body>
+ <!--navbar-->
+    <nav class="navbar navbar-expand-lg black-bg">
+        <img class="img" src="/images/keyToTheCastleLogoOrangeWhiteWithTitle.png">
+        <!-- add above logo -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
+                <a class="nav-item nav-link white-font" href="/registration">Register</a>
+                <a class="nav-item nav-link white-font" href="/login/logOut">Log out</a>
+                <a class="nav-item nav-link white-font" href="/users/viewAllUsers">Users</a>
+                <a class="nav-item nav-link white-font" href="/realestate/adminPage">Real Estates</a>
+                <a class="nav-item nav-link white-font" href="/report">Reports</a>
+
+            </div>
+        </div>
+    </nav>
+    
+    
+    <div id="mainContent" class="main-content margin-bottom">
+    		<button id="getReportBtn" type="button" class="btn tour">Get Report for this month</button>
+
+    </div>
+	
+	<div class="main-content" id="reports">
+
+    </div>
+	
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<script>
+	$(document).ready(function() {
+	    $('#getReportBtn').click(function() {
+	        $.ajax({
+	            type: 'GET',
+	            url: '/report/monthlyReport',
+	            dataType: 'json', // Expect JSON response
+	            success: function(data) {
+	            	$('#mainContent').removeClass('margin-bottom');
+	            	
+	            	$('#reports').html('<div class="card space mx-auto" style="width: 34rem;">' +
+	            			  '<div class="card-body ">' +
+	            			    '<h5 class="card-title bolder">Monthly Report</h5>' +
+	            			    '<hr>' +
+	            			    '<h6 class="card-subtitle mb-2 text-muted">Total: <span class="bolder">'+ data.income +'</span></h6>' +
+	            			    '<h6 class="card-subtitle mb-2 text-muted">Date: <span class="bolder">'+ data.date +'</span></h6>' +
+	            			  '</div>' +
+	            			'</div>' );
+	            },
+	            error: function(xhr, status, error) {
+	                console.error('Error:', status, error);
+	                
+	            }
+	        });
+	    });
+	});
+	</script>
+    <!--Footer -->
+    <div>
+        <nav class="navbar ">
+            <a class="navbar-brand" href="#">
+                <form class="form-inline red">
+                    <p>some information about agency such as mail phone number..etc</p>
+                </form>
+            </a>
+        </nav>
+    </div>
+    
+    
+
+</body>
+
+</html>

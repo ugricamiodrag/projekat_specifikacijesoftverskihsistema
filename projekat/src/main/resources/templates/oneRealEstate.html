@@ -109,7 +109,7 @@
 			</div>
                 <div class="col-md-3" th:if="${user != null}">
 
-                    <button type="button" class="btn btn-bigger">Buy Real Estate</button>
+                    <a th:href="@{realestate/buyRealEstate(id=${oneRealEstate.id})}"><button type="submit" class="btn btn-bigger">Buy Real Estate</button></a>
                 </div>
 
           <!--   <div id="map"></div>

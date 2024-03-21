@@ -53,8 +53,10 @@
 	<!--Filters-->
 
 	<div class="container">
+	
 		<div class="row full-height">
 			<div class="col-md-3">
+			
 				<!--Sidebar - filters -->
 				<div class="sidebar">
 					<h3 class="bolder text-orange">Filter Options</h3>
@@ -245,8 +247,11 @@
 
 
 			<!--Main content - nekretnine 0 -->
+			
 			<div class="col-md-9" id="searchResults">
+			<div th:if="${message}"   role="alert">  <p th:text="${message}" class="small-margin alert alert-success"></p> </div>
 				<div class="card" th:each="estate, iterStat : ${realEstate}">
+				
 					<div class="card-body d-flex flex-column">
 						<div class="row">
 							<div class="col-md-4">
