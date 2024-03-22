@@ -31,7 +31,7 @@
 	</nav>
 	<br>
 	<div class="contianer">
-		
+
 		<div class="calendar">
 			<div class="calendar-header">
 				<span class="month-picker" id="month-picker"> May </span>
@@ -45,7 +45,7 @@
 					</span>
 				</div>
 			</div>
-			
+
 
 			<div class="calendar-body">
 				<div class="calendar-week-days">
@@ -68,38 +68,10 @@
 		<!-- Form to choose available time -->
 		<div id="timeForm" style="display: block;">
 			<h3>Choose Available Time</h3>
-			<!-- Add your form fields here -->
-			<table>
-				<tr>
-					<td>Available time</td>
-				</tr>
-				<tr>
-					<td>Available time</td>
-				</tr>
-				<tr>
-					<td>Available time</td>
-				</tr>
-				<tr>
-					<td>Available time</td>
-				</tr>
-				<tr>
-					<td>Available time</td>
-				</tr>
-				<tr>
-					<td>Available time</td>
-				</tr>
-				<tr>
-					<td>Available time</td>
-				</tr>
-				<tr>
-					<td>Available time</td>
-				</tr>
-				<tr>
-					<td>Available time</td>
-				</tr>
-				<tr>
-					<td>Available time</td>
-				</tr>
+
+			<table id="availableTimes">
+				<tbody>
+				</tbody>
 			</table>
 			<button class="ok btn" type="submit">Submit</button>
 		</div>
@@ -146,21 +118,24 @@
 		'November',
 		'December',
 	];
-	let month_picker = document.querySelector('#month-picker');
-	const dayTextFormate = document.querySelector('.day-text-formate');
-	const timeFormate = document.querySelector('.time-formate');
-	const dateFormate = document.querySelector('.date-formate');
 
+
+	let month_picker = document.querySelector('#month-picker');
+
+
+	let isMonthListOpen = false;
 	month_picker.onclick = () => {
-		month_list.classList.remove('hideonce');
-		month_list.classList.remove('hide');
-		month_list.classList.add('show');
-		dayTextFormate.classList.remove('showtime');
-		dayTextFormate.classList.add('hidetime');
-		timeFormate.classList.remove('showtime');
-		timeFormate.classList.add('hideTime');
-		dateFormate.classList.remove('showtime');
-		dateFormate.classList.add('hideTime');
+		if (isMonthListOpen) {
+			month_list.classList.remove('show');
+			month_list.classList.add('hide');
+
+		} else {
+			month_list.classList.remove('hideonce');
+			month_list.classList.remove('hide');
+			month_list.classList.add('show');
+		}
+		isMonthListOpen = !isMonthListOpen;
+		console.log(isMonthListOpen)
 	};
 
 	const generateCalendar = (month, year) => {
@@ -183,13 +158,9 @@
 		];
 
 		let currentDate = new Date();
-
 		month_picker.innerHTML = month_names[month];
-
 		calendar_header_year.innerHTML = year;
-
 		let first_day = new Date(year, month);
-
 
 		for (let i = 1; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
 
@@ -219,12 +190,7 @@
 			currentMonth.value = index;
 			generateCalendar(currentMonth.value, currentYear.value);
 			month_list.classList.replace('show', 'hide');
-			dayTextFormate.classList.remove('hideTime');
-			dayTextFormate.classList.add('showtime');
-			timeFormate.classList.remove('hideTime');
-			timeFormate.classList.add('showtime');
-			dateFormate.classList.remove('hideTime');
-			dateFormate.classList.add('showtime');
+			isMonthListOpen = false;
 		};
 	});
 
@@ -250,13 +216,49 @@
 
 	let dates = document.querySelectorAll('.calendar-days');
 
+	function generateAvailableTimes() {
+		let availableTimesTable = document.getElementById('availableTimes');
+		let tbody = availableTimesTable.querySelector('tbody');
+		tbody.innerHTML = '';
+
+		for (let hour = 8; hour <= 18; hour++) {
+			let row = document.createElement('tr');
+			let time = hour < 10 ? '0' + hour : hour;
+			let timeString = `${time}:00`;
+			let cell = document.createElement('td');
+			cell.textContent = timeString;
+			row.appendChild(cell);
+			tbody.appendChild(row);
+			row.classList.add('slide-in-row');
+		}
+	}
+	
+	function toggleRowsDown() {
+    let table = document.querySelector('tbody');
+    let rows = table.querySelectorAll('tr');
+
+    // Iterate over each row and toggle it down
+    rows.forEach((row, index) => {
+        setTimeout(() => {
+            row.style.transition = 'transform 0.5s ease-in-out';
+            row.style.transform = `translateY(${index * 50}px)`; // Adjust the value as needed
+        }, index * 100); // Adjust the delay between each row
+    });
+}
+	
 	// Add click event listener to each date element
 	dates.forEach(date => {
 		date.addEventListener('click', () => {
-			// Display the time form when a date is clicked
 			document.getElementById('timeForm').style.display = 'block';
+			generateAvailableTimes();
+			toggleRowsDown();
 		});
 	});
+
+	
+
+
+
 </script>
 
 </html>

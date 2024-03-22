@@ -34,15 +34,10 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   font-weight: 600;
-  cursor: pointer;
   color: rgb(104, 104, 104);
 }
 
-.calendar-week-days div:hover {
-  color: black;
-  transform: scale(1.2);
-  transition: all .2s ease-in-out;
-}
+
 
 .calendar-week-days div {
   display: grid;
@@ -92,7 +87,7 @@
 }
 
 .year-change:hover {
-  background-color: #9796f0;
+  background-color: rgb(245, 205, 156);
   transition: all .2s ease-in-out;
   transform: scale(1.12);
 }
@@ -104,11 +99,7 @@
   align-items: center;
 }
 
-#year:hover {
-  cursor: pointer;
-  transform: scale(1.2);
-  transition: all 0.2 ease-in-out;
-}
+
 
 .calendar-days div span {
   position: absolute;
@@ -137,6 +128,7 @@
   grid-template-columns: repeat(3, auto);
   gap: 5px;
   border-radius: 20px;
+  width: 115%;
 }
 
 .month-list>div {
@@ -153,7 +145,7 @@
 }
 
 .month-list>div>div:hover {
-  background-color: #9796f0;
+  background-color: #E98A15;
   color: #f8fbff;
   transform: scale(0.9);
   transition: all 0.2s ease-in-out;
@@ -299,4 +291,19 @@
   }
   
 
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.slide-in-row {
+    animation: slideIn 2.5s ease forwards;
 }
