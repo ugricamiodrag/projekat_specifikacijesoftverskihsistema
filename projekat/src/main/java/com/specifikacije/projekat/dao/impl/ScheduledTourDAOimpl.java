@@ -138,4 +138,22 @@ public class ScheduledTourDAOimpl implements ScheduledTourDAO {
 		String sql = "DELETE FROM scheduled_tour WHERE id = ?";
 		jdbcTemplate.update(sql, id);
 	}
+
+	public ScheduledTour findByUserAndEstate(Long userid, Long estateid) {
+		String sql = 
+				"SELECT * FROM scheduled_tour ck " +
+				"WHERE ck.user_id = ? AND ck.estate_id = ?";
+				
+
+		ScheduledTourCallBackHandler rowCallbackHandler = new ScheduledTourCallBackHandler();
+		jdbcTemplate.query(sql, rowCallbackHandler, userid, estateid);
+
+		 List<ScheduledTour> scheduledTours = rowCallbackHandler.getScheduledTours();
+		    if (scheduledTours.isEmpty()) {
+		        return null; 
+		    } else {
+		        return scheduledTours.get(0); 
+		    }
+		
+	}
 }

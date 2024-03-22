@@ -41,4 +41,10 @@ public class ScheduledTourServiceImpl implements ScheduledTourService {
 		scheduledTourDAO.update(d);
 	}
 
+	@Override
+	public ScheduledTour findByUserAndEstate(Long id, Long id2) {
+		return scheduledTourDAO.findByUserAndEstate(id, id2);
+		
+	}
+
 }

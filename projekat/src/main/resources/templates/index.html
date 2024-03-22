@@ -10,6 +10,7 @@
 	<title>Agencija za Nekretnine</title>
 	<base th:href="@{/}">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
 
@@ -37,6 +38,9 @@
 				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="#"><img class="small"
 						src="/images/cart.png"></img></a>
 
+				<a class="nav-item nav-link white-font" th:if="${agent != null or owner != null}" href="/notifications/unread" style="position: absolute; margin-left: 78%;"><img class="small"
+						src="/images/bell.png"></img></a>
+
 				<a class="nav-item nav-link white-font" style="position: absolute; margin-left: 83%;"
 					th:if="${isLoggedIn == true}" href="realestate/profile"><img class="small"
 						src="/images/user.png"></a>
@@ -49,8 +53,10 @@
 	<!--Filters-->
 
 	<div class="container">
+	
 		<div class="row full-height">
 			<div class="col-md-3">
+			
 				<!--Sidebar - filters -->
 				<div class="sidebar">
 					<h3 class="bolder text-orange">Filter Options</h3>
@@ -102,6 +108,10 @@
 
 								</label>
 							</li>
+						</ul>
+						<hr>
+						<ul th:if="${owner != null}">
+							 <li><label><input type="checkbox" id="popularity" name="popularity" value="popularity"> Sort By Popularity</label></li>
 						</ul>
 						<!--Search button for filtering-->
 						<div class="form-inline">
@@ -237,8 +247,11 @@
 
 
 			<!--Main content - nekretnine 0 -->
+			
 			<div class="col-md-9" id="searchResults">
+			<div th:if="${message}"   role="alert">  <p th:text="${message}" class="small-margin alert alert-success"></p> </div>
 				<div class="card" th:each="estate, iterStat : ${realEstate}">
+				
 					<div class="card-body d-flex flex-column">
 						<div class="row">
 							<div class="col-md-4">

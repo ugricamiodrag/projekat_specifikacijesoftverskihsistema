@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/notifications.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <title>Notifications</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg black-bg">
+    <img class="img" src="/images/keyToTheCastleLogoOrangeWhiteWithTitle.png">
+    <!-- add above logo -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
+            <a class="nav-item nav-link white-font" href="/login/logOut">Log out</a>
+            <a class="nav-item nav-link white-font" href="">Calendar</a>
+            <a class="nav-item nav-link white-font" href="/realestate/add">Add an
+                estate</a>
+
+            <a class="nav-item nav-link white-font" href="#"><img class="small"
+                                                                  src="/images/cart.png"></img></a>
+
+            <a class="nav-item nav-link white-font" style="position: absolute; margin-left: 83%;"
+               href="realestate/profile"><img class="small"
+                                              src="/images/user.png"></a>
+
+        </div>
+    </div>
+</nav>
+
+
+<div class="notification-container main-content">
+    <p>User <span th:text="${notification.tour.user.username}"></span> wants to schedule a tour for <span th:text="${notification.tour.realEstate.location + ', ID: ' + notification.tour.realEstate.id}"></span>.</p>
+    <p>Start time: <span th:text="${notification.tour.startTime}"></span></p>
+    <p>End time: <span th:text="${notification.tour.endTime}"></span></p>
+    <div class="notif-btn-group">
+        <form method="post" action="/scheduledTour/approve">
+            <input type="hidden" name="notificationId" th:value="${notification.id}">
+            <button type="submit" class="notif-btn">Approve</button>
+        </form>
+        <form method="post" action="/scheduledTour/decline">
+            <input type="hidden" name="notificationId" th:value="${notification.id}">
+            <button type="submit" class="notif-btn">Decline</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

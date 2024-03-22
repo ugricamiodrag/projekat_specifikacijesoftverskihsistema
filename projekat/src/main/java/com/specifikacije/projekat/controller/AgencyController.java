@@ -1,8 +1,11 @@
 package com.specifikacije.projekat.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -41,6 +45,9 @@ public class AgencyController {
 	
 	@Autowired
 	AgencyService agencyService;
+	
+	@Autowired
+	RealEstateService realEstateService;
 	
 	@GetMapping
 	public String MyAgency(Model model, HttpServletRequest request) {
@@ -152,6 +159,61 @@ public class AgencyController {
 
 
 	    }
+	 
+	 
+	 
+	 @GetMapping(value="/search")
+		@ResponseBody
+		public Map<String, Object>  search(HttpServletRequest request, Model model,
+										   @RequestParam(required=false) String popularity) throws ParseException {
+										   
+
+
+//			System.out.println(location);
+//			System.out.println(surfaceFrom);
+//			System.out.println(surfaceTo);
+//			System.out.println(priceMax);
+//			System.out.println(priceMin);
+//			System.out.println(rent);
+//			System.out.println(buy);
+//			System.out.println(house);
+//			System.out.println(apartment);
+//			System.out.println(land);
+//			System.out.println(office);
+
+			Map<String, Object> response = new HashMap<>();
+
+
+
+			List<RealEstate> realEstates = realEstateService.find(null,
+					parseInteger(null),
+					parseInteger(null),
+					parseDouble(null),
+					parseDouble(null),
+					null, null, popularity, null);
+
+			List<Agent> agents = agentService.findAll(realEstates);
+			model.addAttribute("agents", agents);
+
+			response.put("agents", agents);
+			return response;
+
+		}
+		private Integer parseInteger(String value) {
+			if (value != null && !value.isEmpty()) {
+				return Integer.parseInt(value);
+			}
+			return null;
+		}
+
+		private Double parseDouble(String value) {
+			if (value != null && !value.isEmpty()) {
+				return Double.parseDouble(value);
+			}
+			return null;
+		}
+		
+		
 	
 	
 }

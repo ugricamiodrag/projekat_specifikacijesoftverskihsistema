@@ -6,10 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.specifikacije.projekat.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -167,23 +169,47 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 		jdbcTemplate.update(sql, id);	}
 
 	@Override
-	public List<RealEstate> find(String location, Integer surfaceFrom, Integer surfaceTo, Double priceMin, Double priceMax, String rent, String buy, List<String> propertyTypes) {
+	public List<RealEstate> find(String location, Integer surfaceFrom, Integer surfaceTo, Double priceMin, Double priceMax, String rent, String buy, String popularity, List<String> propertyTypes) {
 		List<RealEstate> allEstate = findAll();
 
+		 Stream<RealEstate> filteredStream = allEstate.stream()
+		            .filter(estate ->
+		                    (location == null || location.isEmpty() || estate.getLocation().contains(location))
+		                            && (surfaceFrom == null || estate.getSurface() >= surfaceFrom)
+		                            && (surfaceTo == null || estate.getSurface() <= surfaceTo)
+		                            && (priceMin == null || estate.getPrice() >= priceMin)
+		                            && (priceMax == null || estate.getPrice() <= priceMax)
+		                            && (rent == null || rent.isEmpty() || estate.getRentOrBuy().toString().equalsIgnoreCase(rent))
+		                            && (buy == null || buy.isEmpty() || estate.getRentOrBuy().toString().equalsIgnoreCase(buy))
+		                            && (propertyTypes == null || propertyTypes.isEmpty() || propertyTypes.contains(estate.getEstateType().toString()))
+		            );
+		 
+		 if (popularity != null) {
+		        filteredStream = filteredStream
+		                .sorted(Comparator.comparingDouble(RealEstate::getViewNumber).reversed())
+		                .sorted(Comparator.comparingDouble(RealEstate::getGrade).reversed())
+		                .sorted(Comparator.comparingDouble(RealEstate::getNumberOfVisitRequests).reversed());
+		    }
 
-		return allEstate.stream()
-				.filter(estate ->
-						(location == null || location.isEmpty() ||
-								estate.getLocation().contains(location))
-								&& (surfaceFrom == null || estate.getSurface() >= surfaceFrom)
-								&& (surfaceTo == null || estate.getSurface() <= surfaceTo)
-								&& (priceMin == null || estate.getPrice() >= priceMin)
-								&& (priceMax == null || estate.getPrice() <= priceMax)
-								&& (rent == null || rent.isEmpty() || estate.getRentOrBuy().toString().equalsIgnoreCase(rent))
-								&& (buy == null || buy.isEmpty() || estate.getRentOrBuy().toString().equalsIgnoreCase(buy))
-								&& (propertyTypes == null || propertyTypes.isEmpty() || propertyTypes.contains(estate.getEstateType().toString()))
-				)
-				.collect(Collectors.toList());
+		 return filteredStream.collect(Collectors.toList());
+		    
+		    
+//		return allEstate.stream()
+//				.filter(estate ->
+//						(location == null || location.isEmpty() ||
+//								estate.getLocation().contains(location))
+//								&& (surfaceFrom == null || estate.getSurface() >= surfaceFrom)
+//								&& (surfaceTo == null || estate.getSurface() <= surfaceTo)
+//								&& (priceMin == null || estate.getPrice() >= priceMin)
+//								&& (priceMax == null || estate.getPrice() <= priceMax)
+//								&& (rent == null || rent.isEmpty() || estate.getRentOrBuy().toString().equalsIgnoreCase(rent))
+//								&& (buy == null || buy.isEmpty() || estate.getRentOrBuy().toString().equalsIgnoreCase(buy))
+//								&& (propertyTypes == null || propertyTypes.isEmpty() || propertyTypes.contains(estate.getEstateType().toString())
+//								)
+//				)
+//				.sorted(Comparator.comparingDouble(RealEstate::getViewNumber).reversed())
+//				.sorted(Comparator.comparingDouble(RealEstate::getNumberOfVisitRequests).reversed())
+//				.collect(Collectors.toList());
 
 	}
 

@@ -1,5 +1,4 @@
 package com.specifikacije.projekat.service.impl;
-
 import java.util.List;
 
 
@@ -8,6 +7,19 @@ import org.springframework.stereotype.Service;
 
 import com.specifikacije.projekat.dao.impl.AgentDAOimpl;
 import com.specifikacije.projekat.model.Agent;
+import com.specifikacije.projekat.model.RealEstate;
+import com.specifikacije.projekat.service.AgentService;
+
+import java.util.ArrayList;
+
+import java.util.Set;
+import java.util.HashSet;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.specifikacije.projekat.dao.impl.AgentDAOimpl;
+import com.specifikacije.projekat.model.Agent;
+import com.specifikacije.projekat.model.RealEstate;
 import com.specifikacije.projekat.service.AgentService;
 
 @Service
@@ -24,6 +36,21 @@ public class AgentServiceImpl implements AgentService{
 	@Override
 	public List<Agent> findAll() {
 		return agentDAO.findAll();
+	}
+	
+	@Override
+	public List<Agent> findAll(List<RealEstate> realEstates) {
+		 	
+		 List<Agent> agents = new ArrayList<>();
+		 List<Agent> agentSet = findAll();
+		 
+		 for (Agent agent : agentSet) {
+		        if (!agents.contains(agent)) {
+		            agents.add(agent);
+		            System.out.println(agent.getId());
+		        }
+		    }
+		return agents;
 	}
 
 	@Override
@@ -63,6 +90,8 @@ public class AgentServiceImpl implements AgentService{
 		return agentDAO.findAgents(agencyid);
 		
 	}
+
+	
 
 
 }

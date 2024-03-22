@@ -10,4 +10,5 @@ public interface RatingService {
 	Rating save(Rating rating);
 	void delete(Long id);
 	void update(Rating d);
+	List<Rating> findByAgent(Long id);
 }

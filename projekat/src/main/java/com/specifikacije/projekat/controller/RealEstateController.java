@@ -1,9 +1,13 @@
 package com.specifikacije.projekat.controller;
 
+import java.util.Date;
+
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -21,17 +25,25 @@ import com.specifikacije.projekat.dao.LikeDislikeDAO;
 import com.specifikacije.projekat.model.Administrator;
 import com.specifikacije.projekat.model.AgencyOwner;
 import com.specifikacije.projekat.model.Agent;
+import com.specifikacije.projekat.model.Purchase;
+import com.specifikacije.projekat.model.Rating;
 import com.specifikacije.projekat.model.RealEstate;
 import com.specifikacije.projekat.model.RealEstateType;
 import com.specifikacije.projekat.model.RentOrBuy;
+import com.specifikacije.projekat.model.ScheduledTour;
 import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.AgentService;
 import com.specifikacije.projekat.service.LikeDislikeService;
+import com.specifikacije.projekat.service.NotificationService;
+import com.specifikacije.projekat.service.PurchaseService;
+import com.specifikacije.projekat.service.RatingService;
 import com.specifikacije.projekat.service.RealEstateService;
+import com.specifikacije.projekat.service.ScheduledTourService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/realestate")
@@ -39,12 +51,22 @@ public class RealEstateController {
 
 	@Autowired
 	private RealEstateService realEstateService;
+	
+	@Autowired
+	private PurchaseService purchaseService;
+	
 
 	@Autowired
 	private LikeDislikeService likeDislikeService;
 	
 	@Autowired
+	private ScheduledTourService tourService;
+	
+	@Autowired
 	private AgentService agentService;
+	
+	@Autowired
+	RatingService ratingService;
 	
 	@GetMapping
 	public String showRealEstate(HttpServletRequest request, Model model) {
@@ -52,6 +74,15 @@ public class RealEstateController {
 		
 		Map<String, Object> response = new HashMap<>();
 		List<RealEstate> realEstateList = realEstateService.findAll();
+		
+		// check if somebody already purchased that realestate, if so dont show it to other buyers
+		Iterator<RealEstate> iterator = realEstateList.iterator();
+		while (iterator.hasNext()) {
+		    RealEstate e = iterator.next();
+		    if (purchaseService.purchaseExists(e)) {
+		        iterator.remove();
+		    }
+		}
 		
 		
 		boolean isLoggedIn = false;
@@ -67,8 +98,8 @@ public class RealEstateController {
 		    User user = (User) obj;
 		    //get users lliked and disliked estates
 		    Map<String, List<RealEstate>> likedEstates = likeDislikeService.findAllLikedEstateForUserAndSetAttributes(user.getId());
-		    System.out.println("Liked Estates: " + likedEstates.get("likedEstates"));
-		    System.out.println("Disiked Estates: " + likedEstates.get("dislikedEstates"));
+//		    System.out.println("Liked Estates: " + likedEstates.get("likedEstates"));
+//		    System.out.println("Disiked Estates: " + likedEstates.get("dislikedEstates"));
 		    //add to model
 		    model.addAttribute("likedEstates", likedEstates.get("likedEstates"));
 		    model.addAttribute("dislikedEstates", likedEstates.get("dislikedEstates"));
@@ -131,7 +162,9 @@ public class RealEstateController {
 									   @RequestParam(required=false) String priceMax,
 									   @RequestParam(required=false) String rent,
 									   @RequestParam(required=false) String buy,
+									   @RequestParam(required=false) String popularity,
 									   @RequestParam(required=false) List<String> propertyTypes) throws ParseException {
+									   
 
 
 //		System.out.println(location);
@@ -155,7 +188,7 @@ public class RealEstateController {
 				parseInteger(surfaceTo),
 				parseDouble(priceMin),
 				parseDouble(priceMax),
-				rent, buy, propertyTypes);
+				rent, buy, popularity, propertyTypes);
 
 		model.addAttribute("realEstate", realEstates);
 
@@ -178,13 +211,26 @@ public class RealEstateController {
 	}
 	
 	@GetMapping("/viewOne")
-	public String viewOne(@RequestParam Long id, Model model) {
+	public String viewOne(@RequestParam Long id, Model model, HttpServletRequest request) {
 		
 		RealEstate d = realEstateService.findOne(id);
 		
 		d.setViewNumber(d.getViewNumber()+ 1); // Everytime the user views the realestate add one to viewNumber
 		realEstateService.update(d); // Update that view
 		
+		
+		Object obj =  request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
+
+		if (obj instanceof User) {
+		    Class<?> objClass = obj.getClass();
+		    User user = (User) obj;
+		    ScheduledTour tour = tourService.findByUserAndEstate(user.getId(), id);
+		    model.addAttribute("tour", tour);
+		    model.addAttribute("user", objClass);
+		}
+		
+		List<Rating> ratings = ratingService.findByAgent(d.getAgent().getId());
+		model.addAttribute("ratings", ratings);
 		model.addAttribute("oneRealEstate", d);
 
 		return "oneRealEstate";
@@ -332,6 +378,35 @@ public class RealEstateController {
 		
 
 	}
+	
+	// user needs to buy realesestate so we can make reports from those purchases
+	@GetMapping(value="/buyRealEstate")
+	public String buyRealEstate(@RequestParam Long id, Model model, HttpSession session, RedirectAttributes redirectAttributes) throws IOException {
+
+			RealEstate estate = realEstateService.findOne(id);
+			
+			User user = (User) session.getAttribute(LoginLogoutController.KORISNIK_KEY); // convert it to user because only user can see that button and make a purchase
+			if (user == null){
+				return "404NotFound"; // if session expired return not found
+			}
+			
+			Date currentDateUtil = new Date();
+			// Convert java.util.Date to java.sql.Date
+			java.sql.Date currentDateSql = new java.sql.Date(currentDateUtil.getTime());
+			
+			Purchase purchase = new Purchase (user, estate, currentDateSql);
+			
+			purchaseService.save(purchase);
+			
+		    redirectAttributes.addFlashAttribute("message", "Your purchase have been finished successfully!"); // display this message on index page when user make a purchase
+
+			return "redirect:/realestate";
+		
+
+	}
+	
+	
+	
 	
 	
 			

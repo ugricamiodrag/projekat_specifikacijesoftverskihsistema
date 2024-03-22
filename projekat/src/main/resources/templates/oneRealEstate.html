@@ -23,9 +23,10 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
                 <a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
-                <a class="nav-item nav-link white-font" href="#">Register</a>
-                <a class="nav-item nav-link white-font" href="#">Log in</a>
-                <a class="nav-item nav-link white-font" href="#"><img class="small" src="/images/cart.png"></img></a>
+                <a class="nav-item nav-link white-font" href="registration">Register</a>
+				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == false}" href="/login">Log in</a>
+				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="/login/logOut">Log out</a>
+				<a class="nav-item nav-link white-font" href="#"><img class="small" src="/images/cart.png"></img></a>
 
             </div>
         </div>
@@ -101,13 +102,14 @@
 
 
             <!--Buttons for buyers-->
-                <div class="col-md-3">
+            <div class="col-md-3" th:if="${user != null}">
+								
+									<a href="/scheduledTour"><button type="submit" class="btn btn-bigger">Schedule a Tour</button></a>
+								
+			</div>
+                <div class="col-md-3" th:if="${user != null}">
 
-                    <button type="button" class="btn btn-bigger">Zakazi obilazak</button>
-                </div>
-                <div class="col-md-3">
-
-                    <button type="button" class="btn btn-bigger">Kupi nekretninu</button>
+                    <a th:href="@{realestate/buyRealEstate(id=${oneRealEstate.id})}"><button type="submit" class="btn btn-bigger">Buy Real Estate</button></a>
                 </div>
 
           <!--   <div id="map"></div>
@@ -155,16 +157,17 @@
            <!--  <script src="/js/map_functionality.js"></script> -->
 
 
-            <div class="container rating-container">
+            <div class="container rating-container" th:if="${tour != null and tour.isApproved}">
+            <form id="rateAgentForm" method="get" action="/rateAgent">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="comment" class="form-label bolder">Ostavite komentar i ocenu agentu:</label>
-                            <textarea class="form-control" id="comment" rows="4"></textarea>
+                            <label for="comment" class="form-label bolder">Leave a comment and rate agent:</label>
+                            <textarea class="form-control" name="comment" id="comment" rows="4"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="rating" class="form-label">Ocena:</label>
-                            <select class="form-select" id="rating">
+                            <label for="rating" class="form-label">Grade:</label>
+                            <select class="form-select" name="rating" id="rating">
                                 <option value="5">5 Stars</option>
                                 <option value="4">4 Stars</option>
                                 <option value="3">3 Stars</option>
@@ -173,19 +176,61 @@
                             </select>
                         </div>
                     </div>
-
+						<input class="hidden" name="agentId" id="agentId" th:value="${oneRealEstate.agent.id}"></input>
                     <div class="col-md-8">
-                        <button type="button" class="btn btn-bigger">Sacuvaj</button>
-                    </div>
+                        <button type="button" id="saveButton" class="btn btn-bigger">Save</button>
+                    </div>  
                 </div>
+                </form>
+                
             </div>
-
-
-
+			
+			
+			
+			<div th:if="${!ratings.isEmpty}" id="commentsContainer">
+			<h3>What other people think about agent:</h3>
+			<div class="card small-margin"  th:each="rating : ${ratings}">
+  				<div class="card-body">
+    				<p th:text="${rating.comment}"></p><span th:text="${rating.grade}"></span>
+  				</div>
+			</div>
+			
+			
+			</div>
 
         </div>
 
 </div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function () {
+
+    $("#saveButton").click(function () {
+        var formData = {
+            comment: $("#comment").val(),
+            rating: $("#rating").val(),
+            agentId: $("#agentId").val()
+        };
+
+        $.ajax({
+            type: "GET",
+            url: "/rateAgent",
+            data: formData,
+            success: function (response) {
+                alert("Your message has been saved, thank you for commenting!");
+                var newCommentHtml = "<div class='card small-margin'><div class='card-body'><p>" + response.comment + "</p><span>" + response.grade + "</span></div></div>";
+                $("#commentsContainer").append(newCommentHtml);
+                
+            },
+            error: function (xhr, status, error) {
+                alert("Error: " + xhr.responseText);
+            }
+        });
+    });
+});
+</script>
 
 
         <!--Footer -->

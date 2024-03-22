@@ -122,10 +122,23 @@ create table report(
 );
 
 
-ALTER TABLE users ADD COLUMN isBlocked BOOLEAN
-ALTER TABLE agent ADD COLUMN isBlocked BOOLEAN
-ALTER TABLE agency_owner ADD COLUMN isBlocked BOOLEAN
-ALTER TABLE administrator ADD COLUMN isBlocked BOOLEAN
+create table notifications(
+	id BIGINT NOT NULL auto_increment,
+    agent_id BIGINT NOT NULL,
+    tour_id BIGINT NOT NULL,
+    is_read bit NOT NULL,
+	primary key(id),
+	foreign key(agent_id) references agent(id),
+    foreign key(tour_id) references scheduled_tour(id)
+
+);
+
+
+
+ALTER TABLE users ADD COLUMN isBlocked BOOLEAN;
+ALTER TABLE agent ADD COLUMN isBlocked BOOLEAN;
+ALTER TABLE agency_owner ADD COLUMN isBlocked BOOLEAN;
+ALTER TABLE administrator ADD COLUMN isBlocked BOOLEAN;
 
 
 
@@ -137,6 +150,15 @@ CREATE TABLE like_dislike (
     FOREIGN KEY (user_id) REFERENCES users(id),  
     FOREIGN KEY (estate_id) REFERENCES estates(id)
 );
+
+CREATE TABLE purchase (
+    id BIGINT NOT NULL auto_increment,
+    user_id INT,
+    estate_id INT,
+    purchase_date date not null,
+    PRIMARY KEY(id)
+    
+    )
 
 -- Test data :
 INSERT INTO like_dislike (user_id, estate_id, liked_disliked)

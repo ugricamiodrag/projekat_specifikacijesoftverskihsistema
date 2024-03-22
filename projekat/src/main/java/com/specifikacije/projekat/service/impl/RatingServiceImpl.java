@@ -41,4 +41,10 @@ public class RatingServiceImpl implements RatingService {
 		ratingDAO.update(d);
 	}
 
+	@Override
+	public List<Rating> findByAgent(Long id) {
+		
+		return ratingDAO.findByAgent(id);
+	}
+
 }

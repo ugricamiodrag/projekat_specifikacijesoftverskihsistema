@@ -52,7 +52,7 @@ public class RatingDAOimpl implements RatingDAO {
 			Long id = resultSet.getLong(index++);
 			Long user_id = resultSet.getLong(index++);
 			
-			UserService userService = new UserServiceImpl();
+//			UserService userService = new UserServiceImpl();
 			User user = userService.findOne(user_id);
 			
 			Long agent_id = resultSet.getLong(index++);
@@ -136,6 +136,17 @@ public class RatingDAOimpl implements RatingDAO {
 	public void delete(Long id) {
 		String sql = "DELETE FROM rating WHERE id = ?";
 		jdbcTemplate.update(sql, id);	
+	}
+
+	public List<Rating> findByAgent(Long id) {
+		String sql = 
+				"SELECT * FROM rating ck " +
+				"WHERE ck.agent_id = ?";
+
+		RatingCallBackHandler rowCallbackHandler = new RatingCallBackHandler();
+		jdbcTemplate.query(sql, rowCallbackHandler, id);
+
+		return rowCallbackHandler.getRatings();
 	}
 
 }

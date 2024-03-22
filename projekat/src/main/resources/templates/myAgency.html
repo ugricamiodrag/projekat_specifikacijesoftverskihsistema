@@ -26,15 +26,24 @@
                 <a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
                 <a class="nav-item nav-link white-font" href="/registration">Register</a>
                 <a class="nav-item nav-link white-font" href="/login">Log in</a>
-
             </div>
         </div>
     </nav>
 
  <div th:if="${agency != null}" class="col-md-12">
+ 				
                 <!--Information about Agency-->
                 <div class="card">
                     <a href="agency/change"  class="link_black"><h3 class="card-header bolder text-orange link_black" th:text="${agency.name}">  </h3></a>
+                    	<form action="/agency/search" method="get" id="searchForm">
+ 						
+							<label><input type="checkbox" id="popularity" name="popularity" value="popularity"> Sort By Popularity</label>
+						
+						<div class="form-inline">
+							<button class="tour" onclick="search()" type="button">Search</button>
+						</div>
+					</form>
+					<div  id="searchResults">
                     <div th:each="agent: ${agents}"><br>
                      <div class="text-container">
                      				<form method="post" action="agency/deleteAgent">
@@ -54,6 +63,7 @@
                     <br><br>
                     <a href="agency/addAgent" class="btn">Add Agent</a>
                   
+                </div>
                 </div>
 </div>
 <div th:if="${agency == null}" class="col-md-12">
@@ -79,6 +89,58 @@
     
     <br /><br /><br /><br />
 
+
+
+<!-- For filtering agents by popularity -->
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+			<script th:inline="javascript">
+				function search() {
+
+					$.ajax({
+						type: 'GET',
+						url: '/agency/search',
+						data: $('#searchForm').serialize(),
+						success: function (data) {
+							console.log(data);
+							console.log('Search success:', data);
+							$('#searchResults').empty(); // Empty the searchResults div before appending new results
+							if (data.agents && data.agents.length) {
+
+								for (var i = 0; i < data.agents.length; i++) {
+									var agent = data.agents[i];
+
+									var resultHtml =
+                     								'<div class="text-container">' +
+                     				'<form method="post" action="agency/deleteAgent">' +
+                     				
+                     				'<h5 class="bolder"> '+ agent.name +'</h5>'+
+                     				'<hr>'+
+                                    '<p class="card-text"><span class="bolder">Username: </span>'+ agent.uesrname +'</p>'+
+                                    '<p class="card-text"><span class="bolder">Password: </span>'+ agent.password +'</p>'+
+                                    '<p class="card-text"><span class="bolder">Phone Number: </span>'+ agent.phoneNumber +'</p>'+
+                                    '<p class="card-text"><span class="bolder">Email: </span>'+ agent.email +'</p>'+
+                                    '<p class="card-text"><span class="bolder">Address: </span>'+ agent.address +'</p>'+
+                                    '<input  name="agentId" class="hidden" value="'+ agent.id +'"></input>'+
+                                    '<button class="btn">Delete</button>' +
+                                    '</form>' +
+                    				'</div>';
+
+									$('#searchResults').append(resultHtml);
+
+
+								}
+							}
+							else {
+								console.log('No putovanja data found');
+							}
+						},
+						error: function (error) {
+							console.log("Something went wrong");
+						}
+					});
+				}
+			</script>
 
 
 
