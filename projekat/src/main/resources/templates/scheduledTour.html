@@ -67,9 +67,9 @@
 		</div>
 		<!-- Form to choose available time -->
 		<div id="timeForm" style="display: block;">
-			<h3>Choose Available Time</h3>
+			<h3 style="margin-left: 25%;">Choose Available Time</h3>
 
-			<table id="availableTimes">
+			<table id="availableTimes" class="table" style="width: 40%; margin-left: 30%; text-align: center;">
 				<tbody>
 				</tbody>
 			</table>
@@ -93,7 +93,18 @@
 
 </body>
 
+<script th:inline="javascript">
+	/*<![CDATA[*/
+
+	var scheduledTours = /*[[${scheduledTours}]]*/ 'default';
+	console.log(message);
+
+	/*]]>*/
+</script>
+
 <script>
+
+
 	const isLeapYear = (year) => {
 		return (
 			(year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) ||
@@ -122,7 +133,7 @@
 
 	let month_picker = document.querySelector('#month-picker');
 
-
+	// MONTH PANEL SHOW - HIDE	
 	let isMonthListOpen = false;
 	month_picker.onclick = () => {
 		if (isMonthListOpen) {
@@ -162,29 +173,76 @@
 		calendar_header_year.innerHTML = year;
 		let first_day = new Date(year, month);
 
-		for (let i = 1; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
 
+		// GENERATE CALENDAR DAYS	
+		for (let i = 1; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
 			let day = document.createElement('div');
 
 			if (i >= first_day.getDay()) {
 				day.innerHTML = i - first_day.getDay() + 1;
+				let dayDate = new Date(year, month, i - first_day.getDay() + 1);
 
+				// SEPARATE PAST DAYS AND FUTURE DAYS
+				if (dayDate < currentDate) {
+					day.classList.add('past-day');
+					day.setAttribute('disabled', true);
+				} else {
+					day.classList.add('future-day');
+					day.addEventListener('click', showTime);
+				}
+				// MARK THE CURRENT DATE	
 				if (i - first_day.getDay() + 1 === currentDate.getDate() &&
 					year === currentDate.getFullYear() &&
 					month === currentDate.getMonth()
 				) {
 					day.classList.add('current-date');
+					day.addEventListener('click', showTime);
 				}
 			}
 			calendar_days.appendChild(day);
 		}
 	};
 
+
+	document.addEventListener('DOMContentLoaded', function () {
+		let currentDateElement = document.querySelector('.current-date');
+		if (currentDateElement) {
+			showTime.call(currentDateElement);
+		}
+	});
+
+	// LET THE CURRENT DATE INITIALLY BE SELECTED, BUT HAVE A LITTLE COLOR WHEN CLICKED ON OTHER DATES
+	let currentdate = null;
+	let selectedDate = null;
+	function showTime() {
+
+		if (this !== currentdate) {
+			if (currentdate) {
+				currentdate.classList.add('current-date')
+			}
+		}
+
+		if (selectedDate) {
+			selectedDate.classList.remove('selected-day');
+		}
+
+		if (this.classList.contains('current-date')) {
+			currentdate = this;
+			this.classList.remove('current-date')
+		}
+		this.classList.add('selected-day');
+		selectedDate = this;
+		console.log(selectedDate)
+		console.log(currentdate)
+
+		generateAvailableTimes();
+	}
+
+	// MONTH PANEL
 	let month_list = calendar.querySelector('.month-list');
 	month_names.forEach((e, index) => {
 		let month = document.createElement('div');
 		month.innerHTML = `<div>${e}</div>`;
-
 		month_list.append(month);
 		month.onclick = () => {
 			currentMonth.value = index;
@@ -206,6 +264,9 @@
 		generateCalendar(currentMonth.value, currentYear.value);
 	};
 
+
+
+
 	let currentDate = new Date();
 	let currentMonth = {value: currentDate.getMonth()};
 	let currentYear = {value: currentDate.getFullYear()};
@@ -213,13 +274,16 @@
 
 	const todayShowTime = document.querySelector('.time-formate');
 	const todayShowDate = document.querySelector('.date-formate');
-
 	let dates = document.querySelectorAll('.calendar-days');
 
+
+	console.log(scheduledTours);
+	// SHOW AVAILABLE TIME	
 	function generateAvailableTimes() {
 		let availableTimesTable = document.getElementById('availableTimes');
 		let tbody = availableTimesTable.querySelector('tbody');
 		tbody.innerHTML = '';
+
 
 		for (let hour = 8; hour <= 18; hour++) {
 			let row = document.createElement('tr');
@@ -229,31 +293,36 @@
 			cell.textContent = timeString;
 			row.appendChild(cell);
 			tbody.appendChild(row);
-			row.classList.add('slide-in-row');
+
+		
+			if (isTimeTaken(scheduledTours, timeString)) {
+				cell.classList.add('taken-time'); 
+			}
+
 		}
 	}
-	
-	function toggleRowsDown() {
-    let table = document.querySelector('tbody');
-    let rows = table.querySelectorAll('tr');
 
-    // Iterate over each row and toggle it down
-    rows.forEach((row, index) => {
-        setTimeout(() => {
-            row.style.transition = 'transform 0.5s ease-in-out';
-            row.style.transform = `translateY(${index * 50}px)`; // Adjust the value as needed
-        }, index * 100); // Adjust the delay between each row
-    });
-}
-	
-	// Add click event listener to each date element
-	dates.forEach(date => {
-		date.addEventListener('click', () => {
-			document.getElementById('timeForm').style.display = 'block';
-			generateAvailableTimes();
-			toggleRowsDown();
-		});
-	});
+	function isTimeTaken(scheduledTours, timeString) {
+		for (let i = 0; i < scheduledTours.length; i++) {
+			let dateTime = new Date(scheduledTours[i].startTime);
+			
+			let hours = dateTime.getHours();
+			let minutes = dateTime.getMinutes();
+			
+			let timeString1 = `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+
+			console.log(timeString1);
+			
+			if (timeString1 === timeString) {
+
+				return true; 
+			}
+		}
+		return false;
+	}
+
+
+// TODO => compare dates to see which time is available
 
 </script>
 

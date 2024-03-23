@@ -2,11 +2,14 @@ package com.specifikacije.projekat.controller;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import com.specifikacije.projekat.model.Agency;
 import com.specifikacije.projekat.model.Notification;
 import com.specifikacije.projekat.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +20,7 @@ import com.specifikacije.projekat.model.ScheduledTour;
 import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.ScheduledTourService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
@@ -31,8 +35,9 @@ public class ScheduledTourController {
 	private NotificationService notificationService;
 	
 	@GetMapping
-	public String showSchedulingPage() {
-		
+	public String showSchedulingPage(Model model, HttpServletRequest request) {
+		List<ScheduledTour> scheduledTours = scheduledTourService.findAll();
+		model.addAttribute("scheduledTours", scheduledTours);
 		return "scheduledTour";
 		
 	}

@@ -63,7 +63,6 @@
   justify-content: center;
   padding: 5px;
   position: relative;
-  cursor: pointer;
   animation: to-top 1s forwards;
 }
 
@@ -107,17 +106,19 @@
   position: absolute;
 }
 
-.calendar-days div:hover {
+.future-day:hover {
   transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
   background-color: rgb(245, 204, 154);
   border-radius: 20%;
   color: #f8fbff;
+  cursor: pointer;
 }
 
 .calendar-days div.current-date {
   color: #f8fbff;
-  background-color: #E98A15;
+  background-color: rgb(243, 190, 124);
   border-radius: 20%;
+  cursor: pointer;
 }
 
 .month-list {
@@ -295,17 +296,28 @@
 
 }
 
-@keyframes slideIn {
-    from {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+.taken-time{
+	background-color: gray;
 }
 
-.slide-in-row {
-    animation: slideIn 2.5s ease forwards;
+.past-day {
+  transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
+  background-color: rgb(192, 192, 192);
+  border-radius: 20%;
+  color: #f8fbff;
+}
+
+.selected-day {
+  transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
+  background-color: #E98A15;
+  border-radius: 20%;
+  color: #f8fbff;
+}
+
+#availableTimes tr:hover{
+  transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
+  background-color: rgb(245, 204, 154);
+  border-radius: 20%;
+  color: #f8fbff;
+  cursor: pointer;
 }
