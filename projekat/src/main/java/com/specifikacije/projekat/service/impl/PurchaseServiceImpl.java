@@ -80,12 +80,12 @@ public class PurchaseServiceImpl implements PurchaseService{
         	if (purchaseDate.isEqual(firstDayOfMonth) || (purchaseDate.isAfter(firstDayOfMonth) && purchaseDate.isBefore(lastDayOfMonth)) || purchaseDate.isEqual(lastDayOfMonth)) {
         		 
         			double price = p.getEstate().getPrice();
-        			
-        			if(p.getEstate().getEstateType().equals(RentOrBuy.valueOf("Rent"))) 
+
+        			if(p.getEstate().getEstateType().equals(RentOrBuy.valueOf("Rent")))
         				 income += price * 0.01;// for rented estates, calculate 1% of the price
-        			else 
-        				income += price * 0.001;// for bought estates, calculate 0.1% of the price
-        			
+        			else {
+						income += price * 0.001;// for bought estates, calculate 0.1% of the price
+					}
         	        
         	    }
 }

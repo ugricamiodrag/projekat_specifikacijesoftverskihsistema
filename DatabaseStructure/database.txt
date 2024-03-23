@@ -153,12 +153,27 @@ CREATE TABLE like_dislike (
 
 CREATE TABLE purchase (
     id BIGINT NOT NULL auto_increment,
-    user_id INT,
-    estate_id INT,
+    user_id BIGINT NOT NULL,
+    estate_id BIGINT NOT NULL,
     purchase_date date not null,
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
+    foreign key(user_id) references users(id),
+    foreign key(estate_id) references estate(id)
     
-    )
+    );
+    
+    
+CREATE TABLE rented (
+    id BIGINT auto_increment NOT NULL,
+    user_id BIGINT NOT NULL,
+    estate_id BIGINT NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    primary key(id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (estate_id) REFERENCES estate(id)
+);
+
 
 -- Test data :
 INSERT INTO like_dislike (user_id, estate_id, liked_disliked)

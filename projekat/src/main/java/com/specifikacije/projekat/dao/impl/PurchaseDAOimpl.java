@@ -29,13 +29,13 @@ import java.sql.Date;
 public class PurchaseDAOimpl {
 	
 	 @Autowired
-	    private JdbcTemplate jdbcTemplate;
+	 private JdbcTemplate jdbcTemplate;
 
-	    @Autowired
-	    private UserService userService;
+	 @Autowired
+	 private UserService userService;
 
-	    @Autowired
-	    private RealEstateService estateService;
+	 @Autowired
+	 private RealEstateService estateService;
 	    
 	    
 	    private class PurchaseCallBackHandler implements RowCallbackHandler {

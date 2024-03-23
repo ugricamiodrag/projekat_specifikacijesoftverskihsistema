@@ -3,12 +3,11 @@ package com.specifikacije.projekat.service.impl;
 import java.util.List;
 
 import com.specifikacije.projekat.dao.RealEstateDAO;
+import com.specifikacije.projekat.model.Agency;
 import com.specifikacije.projekat.model.Agent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.specifikacije.projekat.dao.impl.PurchaseDAOimpl;
-import com.specifikacije.projekat.dao.impl.RealEstateDAOimpl;
 import com.specifikacije.projekat.model.RealEstate;
 import com.specifikacije.projekat.service.RealEstateService;
 
@@ -63,8 +62,13 @@ public class RealEstateServiceImpl implements RealEstateService{
 	}
 
 	@Override
-	public List<RealEstate> findAgenciesEstate(Agent agent) {
-		return realEstateDAO.findAgenciesEstate(agent);
+	public List<RealEstate> findAgenciesEstate(Agency agency) {
+		return realEstateDAO.findAgenciesEstate(agency);
+	}
+
+	@Override
+	public List<RealEstate> findAgentsEstate(Agent agent) {
+		return realEstateDAO.findAgentsEstate(agent);
 	}
 
 }

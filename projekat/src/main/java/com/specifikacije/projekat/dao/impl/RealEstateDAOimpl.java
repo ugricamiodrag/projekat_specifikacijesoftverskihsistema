@@ -214,13 +214,24 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 	}
 
 	@Override
-	public List<RealEstate> findAgenciesEstate(Agent agent) {
-		Agency agency = agent.getAgency();
+	public List<RealEstate> findAgentsEstate(Agent agent) {
+		String sql = "SELECT * " +
+				"FROM estate " +
+				"WHERE agent_id = ?";
+		RealEstateCallBackHandler rowCallbackHandler = new RealEstateCallBackHandler();
+		jdbcTemplate.query(sql, rowCallbackHandler, agent.getId());
+
+		return rowCallbackHandler.getRealEstates();
+	}
+
+	@Override
+	public List<RealEstate> findAgenciesEstate(Agency agency) {
+
 		String sql = "SELECT * " +
 				"FROM estate " +
 				"WHERE agent_id IN (SELECT id FROM agent WHERE agency_id = ?)";
 		RealEstateCallBackHandler rowCallbackHandler = new RealEstateCallBackHandler();
-
+		jdbcTemplate.query(sql, rowCallbackHandler, agency.getId());
 
 		return rowCallbackHandler.getRealEstates();
 	}

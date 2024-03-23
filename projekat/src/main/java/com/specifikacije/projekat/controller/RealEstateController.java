@@ -1,5 +1,6 @@
 package com.specifikacije.projekat.controller;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import java.io.IOException;
@@ -11,6 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.specifikacije.projekat.model.*;
+import com.specifikacije.projekat.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,23 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.specifikacije.projekat.dao.LikeDislikeDAO;
-import com.specifikacije.projekat.model.Administrator;
-import com.specifikacije.projekat.model.AgencyOwner;
-import com.specifikacije.projekat.model.Agent;
-import com.specifikacije.projekat.model.Purchase;
-import com.specifikacije.projekat.model.Rating;
-import com.specifikacije.projekat.model.RealEstate;
-import com.specifikacije.projekat.model.RealEstateType;
-import com.specifikacije.projekat.model.RentOrBuy;
-import com.specifikacije.projekat.model.ScheduledTour;
-import com.specifikacije.projekat.model.User;
-import com.specifikacije.projekat.service.AgentService;
-import com.specifikacije.projekat.service.LikeDislikeService;
-import com.specifikacije.projekat.service.NotificationService;
-import com.specifikacije.projekat.service.PurchaseService;
-import com.specifikacije.projekat.service.RatingService;
-import com.specifikacije.projekat.service.RealEstateService;
-import com.specifikacije.projekat.service.ScheduledTourService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -51,6 +37,9 @@ public class RealEstateController {
 
 	@Autowired
 	private RealEstateService realEstateService;
+
+	@Autowired
+	private AgencyService agencyService;
 	
 	@Autowired
 	private PurchaseService purchaseService;
@@ -67,22 +56,17 @@ public class RealEstateController {
 	
 	@Autowired
 	RatingService ratingService;
+
+	@Autowired
+	private RentedService rentedService;
 	
 	@GetMapping
 	public String showRealEstate(HttpServletRequest request, Model model) {
 		
 		
 		Map<String, Object> response = new HashMap<>();
-		List<RealEstate> realEstateList = realEstateService.findAll();
-		
-		// check if somebody already purchased that realestate, if so dont show it to other buyers
-		Iterator<RealEstate> iterator = realEstateList.iterator();
-		while (iterator.hasNext()) {
-		    RealEstate e = iterator.next();
-		    if (purchaseService.purchaseExists(e)) {
-		        iterator.remove();
-		    }
-		}
+		List<RealEstate> realEstateList = new ArrayList<>();
+
 		
 		
 		boolean isLoggedIn = false;
@@ -103,27 +87,45 @@ public class RealEstateController {
 		    //add to model
 		    model.addAttribute("likedEstates", likedEstates.get("likedEstates"));
 		    model.addAttribute("dislikedEstates", likedEstates.get("dislikedEstates"));
-		    
-		
-		    
+			realEstateList = realEstateService.findAll();
+
+			// check if somebody already purchased that realestate, if so dont show it to other buyers
+			System.out.println(LocalDate.now());
+			Iterator<RealEstate> iterator = realEstateList.iterator();
+			while (iterator.hasNext()) {
+				RealEstate e = iterator.next();
+				if (purchaseService.purchaseExists(e) || rentedService.rentedExists(e)) {
+					iterator.remove();
+				}
+			}
+
+
+
+
 		}else if(obj instanceof Administrator){
 			    isLoggedIn = true;   
 			    Class<?> objClass = obj.getClass();
 			    model.addAttribute("admin", objClass);
+				realEstateList = realEstateService.findAll();
 			    
 		}else if(obj instanceof Agent){
 		    isLoggedIn = true;
 		    Class<?> objClass = obj.getClass();
 			Agent agent = (Agent) obj;
 		    model.addAttribute("agent", objClass);
+			realEstateList = realEstateService.findAgentsEstate(agent);
 		    
 		}else if(obj instanceof AgencyOwner){
 		    isLoggedIn = true;
 		    Class<?> objClass = obj.getClass();
 		    model.addAttribute("owner", objClass);
+			AgencyOwner owner = (AgencyOwner) obj;
+			realEstateList = realEstateService.findAgenciesEstate(agencyService.findOwnersAgency(owner.getId()));
+
 		    
 		}else {
 		    isLoggedIn = false;
+			realEstateList = realEstateService.findAll();
 		}
 		
 		
@@ -227,6 +229,12 @@ public class RealEstateController {
 		    ScheduledTour tour = tourService.findByUserAndEstate(user.getId(), id);
 		    model.addAttribute("tour", tour);
 		    model.addAttribute("user", objClass);
+			if(d.getRentOrBuy().equals(RentOrBuy.Buy)){
+				model.addAttribute("toBuyEstate", RentOrBuy.Buy);
+			}
+			else {
+				model.addAttribute("toRentEstate", RentOrBuy.Rent);
+			}
 		}
 		
 		List<Rating> ratings = ratingService.findByAgent(d.getAgent().getId());
@@ -402,6 +410,35 @@ public class RealEstateController {
 
 			return "redirect:/realestate";
 		
+
+	}
+
+	@PostMapping(value = "/rentRealEstate")
+	public String rent(@RequestParam Long id, @RequestParam String startDate, @RequestParam String endDate, HttpSession session, RedirectAttributes redirectAttributes){
+		RealEstate estate = realEstateService.findOne(id);
+
+
+
+		User user = (User) session.getAttribute(LoginLogoutController.KORISNIK_KEY); // convert it to user because only user can see that button and make a purchase
+		if (user == null){
+			return "404NotFound"; // if session expired return not found
+		}
+
+
+
+		LocalDate start_date = LocalDate.parse(startDate);
+		LocalDate end_date = LocalDate.parse(endDate);
+
+		if (rentedService.rentedExists(estate, start_date, end_date)){
+			redirectAttributes.addFlashAttribute("message", "This estate is already rented for that date. Please try a different date.");
+			return "redirect:/realestate/viewOne?id=" + id;
+		}
+
+		Rented rented = new Rented(user, estate, start_date, end_date);
+		rentedService.save(rented);
+
+		redirectAttributes.addFlashAttribute("message", "You have successfully rented this estate.");
+		return "redirect:/realestate";
 
 	}
 	

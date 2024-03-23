@@ -146,7 +146,7 @@ public class AgencyController {
 	    public void DeleteAgent(HttpServletResponse response, @RequestParam Long agentId) throws IOException {
 
 	        Agent agent = agentService.findOne(agentId);
-	        List<RealEstate> estateList = estateService.findAgenciesEstate(agent);
+	        List<RealEstate> estateList = estateService.findAgentsEstate(agent);
 	        System.out.println(agentId);
 	        agentService.delete(agentId); 	// remove agent 
 	        if(!estateList.isEmpty()) {
