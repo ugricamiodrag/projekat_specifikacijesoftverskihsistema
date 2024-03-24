@@ -66,15 +66,19 @@
 			<div class="month-list"></div>
 		</div>
 		<!-- Form to choose available time -->
-		<div id="timeForm" style="display: block;">
+		<form id="timeForm" style="display: block;" method="post" action="/scheduledTour/ScheduleTour" >
 			<h3 style="margin-left: 25%;">Choose Available Time</h3>
 
 			<table id="availableTimes" class="table" style="width: 40%; margin-left: 30%; text-align: center;">
 				<tbody>
 				</tbody>
 			</table>
+			<input type="hidden" id="selectedStartTimeInput" name="startTime">
+			<input type="hidden" id="selectedEndTimeInput" name="endTime">
+			<input type="hidden" id="" th:value="${estateId}" name="realEstateId">
 			<button class="ok btn" type="submit">Submit</button>
-		</div>
+		</form>
+	</div>
 	</div>
 
 
@@ -97,14 +101,11 @@
 	/*<![CDATA[*/
 
 	var scheduledTours = /*[[${scheduledTours}]]*/ 'default';
-	console.log(message);
 
 	/*]]>*/
 </script>
 
 <script>
-
-
 	const isLeapYear = (year) => {
 		return (
 			(year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) ||
@@ -146,8 +147,8 @@
 			month_list.classList.add('show');
 		}
 		isMonthListOpen = !isMonthListOpen;
-		console.log(isMonthListOpen)
 	};
+
 
 	const generateCalendar = (month, year) => {
 		let calendar_days = document.querySelector('.calendar-days');
@@ -232,9 +233,6 @@
 		}
 		this.classList.add('selected-day');
 		selectedDate = this;
-		console.log(selectedDate)
-		console.log(currentdate)
-
 		generateAvailableTimes();
 	}
 
@@ -277,8 +275,8 @@
 	let dates = document.querySelectorAll('.calendar-days');
 
 
-	console.log(scheduledTours);
-	// SHOW AVAILABLE TIME	
+	// SHOW AVAILABLE TIMES	
+	let selectedTime = null;
 	function generateAvailableTimes() {
 		let availableTimesTable = document.getElementById('availableTimes');
 		let tbody = availableTimesTable.querySelector('tbody');
@@ -289,40 +287,97 @@
 			let row = document.createElement('tr');
 			let time = hour < 10 ? '0' + hour : hour;
 			let timeString = `${time}:00`;
+			let timeStringEnd = `${time}:45`;
 			let cell = document.createElement('td');
 			cell.textContent = timeString;
 			row.appendChild(cell);
 			tbody.appendChild(row);
+			cell.setAttribute('id', 'fadeInRow')
 
-		
-			if (isTimeTaken(scheduledTours, timeString)) {
-				cell.classList.add('taken-time'); 
+
+			let currentHour = currentDate.getHours();
+			let currentMinute = currentDate.getMinutes();
+
+			let selectedDateTime = new Date(currentYear.value, currentMonth.value, selectedDate.textContent, hour, 0);
+			if (selectedDateTime < currentDate) {
+				cell.classList.add('taken-time');
+				cell.setAttribute('disabled', true);
+			} else if (isTimeTaken(scheduledTours, selectedDate, currentMonth.value, currentYear.value, timeString)) {
+				cell.classList.add('taken-time');
+				cell.setAttribute('disabled', true);
+			} else {
+				cell.addEventListener('click', function () {
+					if (this.classList.contains('selected')) {
+						this.classList.remove('selected');
+						selectedTime = null;
+					} else {
+
+						let selectedCell = tbody.querySelector('.selected');
+						if (selectedCell) {
+							selectedCell.classList.remove('selected');
+						}
+						this.classList.add('selected');
+						selectedTime = timeString;
+						console.log('Selected Time:', selectedTime);
+						console.log("Ending time " + timeStringEnd)
+						let localDateTime = generateLocalDateTime(currentYear.value, currentMonth.value, parseInt(selectedDate.textContent), selectedTime);
+						let localDateTimeEnd = generateLocalDateTime(currentYear.value, currentMonth.value, parseInt(selectedDate.textContent), timeStringEnd);
+						document.getElementById('selectedStartTimeInput').value = localDateTime;
+						document.getElementById('selectedEndTimeInput').value = localDateTimeEnd;
+
+					}
+				});
 			}
-
 		}
 	}
 
-	function isTimeTaken(scheduledTours, timeString) {
+	// COMPARE THE AVAILABLE TIMES IN CALENDAR WITH THE OCCUPIED DATES FROM DATABASE
+	let month = null;
+	function isTimeTaken(scheduledTours, selectedDate, selectedMonth, selectedYear, timeString) {
+
 		for (let i = 0; i < scheduledTours.length; i++) {
 			let dateTime = new Date(scheduledTours[i].startTime);
-			
-			let hours = dateTime.getHours();
-			let minutes = dateTime.getMinutes();
-			
-			let timeString1 = `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}`;
 
-			console.log(timeString1);
-			
-			if (timeString1 === timeString) {
+			let scheduledYear = dateTime.getFullYear();
+			let scheduledMonth = dateTime.getMonth();
+			let scheduledDay = dateTime.getDate();
 
-				return true; 
+
+			let scheduledHours = dateTime.getHours();
+			let scheduledMinutes = dateTime.getMinutes();
+
+
+			let scheduledTimeString = `${scheduledHours < 10 ? '0' + scheduledHours : scheduledHours}:${scheduledMinutes < 10 ? '0' + scheduledMinutes : scheduledMinutes}`;
+			let selectedDay = parseInt(selectedDate.textContent);
+
+			if (selectedYear === scheduledYear &&
+				selectedMonth === scheduledMonth &&
+				selectedDay === scheduledDay &&
+				timeString === scheduledTimeString) {
+				return true;
 			}
 		}
 		return false;
 	}
 
 
-// TODO => compare dates to see which time is available
+	function generateLocalDateTime(selectedYear, selectedMonth, selectedDay, timeString) {
+		let [hours, minutes] = timeString.split(':').map(Number);
+		let newDate = new Date(selectedYear, selectedMonth, selectedDay, hours, minutes);
+
+		let year = newDate.getFullYear();
+		let month = newDate.getMonth();
+		let day = newDate.getDate();
+		let hour = newDate.getHours() + 1;
+		let minute = newDate.getMinutes();
+
+
+		let localDateTime = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+		console.log(localDateTime)
+		return localDateTime;
+
+	}
+
 
 </script>
 

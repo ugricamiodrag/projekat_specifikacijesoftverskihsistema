@@ -7,6 +7,8 @@ import java.util.List;
 import com.specifikacije.projekat.model.Agency;
 import com.specifikacije.projekat.model.Notification;
 import com.specifikacije.projekat.service.NotificationService;
+import com.specifikacije.projekat.service.RealEstateService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,25 +34,33 @@ public class ScheduledTourController {
 	private ScheduledTourService scheduledTourService;
 
 	@Autowired
+	private RealEstateService realestateService;
+	
+	@Autowired
 	private NotificationService notificationService;
 	
 	@GetMapping
-	public String showSchedulingPage(Model model, HttpServletRequest request) {
+	public String showSchedulingPage(@RequestParam("realEstateId") Long realEstateId, Model model, HttpServletRequest request) {
 		List<ScheduledTour> scheduledTours = scheduledTourService.findAll();
 		model.addAttribute("scheduledTours", scheduledTours);
+		model.addAttribute("estateId", realEstateId);
 		return "scheduledTour";
 		
 	}
 	
-	@PostMapping("/ScheduleTour")
-	public void ScheduleTour(@RequestParam LocalDateTime startTime, @RequestParam LocalDateTime endTime, @RequestParam RealEstate realEstate, HttpServletResponse response, HttpSession session) throws IOException {
+	@PostMapping(value = "/ScheduleTour")
+	public void ScheduleTour(@RequestParam LocalDateTime startTime, @RequestParam LocalDateTime endTime, @RequestParam String realEstateId, HttpServletResponse response, HttpSession session) throws IOException {
 		Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
 	    User user = (User) obj;
+	    RealEstate realEstate = realestateService.findOne(Long.parseLong(realEstateId));
 		ScheduledTour newTour = new ScheduledTour(startTime, endTime, user, realEstate);
+		ScheduledTour savedTour = scheduledTourService.save(newTour);
+		
+		System.out.println("Saved ScheduledTour ID: " + savedTour.getId());
+		
 		Notification notification = new Notification(realEstate.getAgent(), newTour, false);
 
 	
-		scheduledTourService.save(newTour);
 		notificationService.save(notification);
 
 		response.sendRedirect("/realestate");

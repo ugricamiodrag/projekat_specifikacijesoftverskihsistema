@@ -327,7 +327,7 @@
 							<div th:if="${isLoggedIn == true and user != null}"
 								style="position: relative; margin-right: 2%; margin-left: auto;">
 								
-									<a href="/scheduledTour"><button type="submit" class="btn tour">Schedule a Tour</button></a>
+									<a th:href="@{'/scheduledTour?realEstateId=' + ${estate.id}}"><button type="submit" class="btn tour">Schedule a Tour</button></a>
 								
 							</div>
 

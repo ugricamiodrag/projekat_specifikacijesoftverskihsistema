@@ -8,7 +8,7 @@ public class ScheduledTour {
 	private LocalDateTime endTime;
 	private User user;
 	private RealEstate realEstate;
-	private Boolean isApproved = null;
+	private Boolean isApproved = false;
 	
 	public ScheduledTour() {
 	}
@@ -117,5 +117,15 @@ public class ScheduledTour {
 	public void setEndTime(LocalDateTime endTime) {
 		this.endTime = endTime;
 	}
+
+
+
+	@Override
+	public String toString() {
+		return "ScheduledTour [id=" + id + ", startTime=" + startTime + ", endTime=" + endTime + ", user=" + user
+				+ ", realEstate=" + realEstate + ", isApproved=" + isApproved + "]";
+	}
+	
+	
 }
 

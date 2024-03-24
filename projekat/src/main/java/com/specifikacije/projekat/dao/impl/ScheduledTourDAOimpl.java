@@ -123,6 +123,16 @@ public class ScheduledTourDAOimpl implements ScheduledTourDAO {
 		};
 		GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 		boolean uspeh = jdbcTemplate.update(preparedStatementCreator, keyHolder) == 1;
+		 if (uspeh) {
+		        Number generatedId = keyHolder.getKey();
+		        if (generatedId != null) {
+		            scheduledTour.setId(generatedId.longValue());
+		        } else {
+		            throw new IllegalStateException("Failed to retrieve generated ID for ScheduledTour");
+		        }
+		    } else {
+		        throw new IllegalStateException("Failed to save ScheduledTour");
+		    }
 	}
 	
 	@Transactional

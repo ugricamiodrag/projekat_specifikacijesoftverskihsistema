@@ -37,7 +37,21 @@
   color: rgb(104, 104, 104);
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
+#fadeInRow {
+  animation: fadeIn 0.5s ease forwards;
+  opacity: 0;
+}
 
 .calendar-week-days div {
   display: grid;
@@ -200,29 +214,6 @@
   font-size: 1.5rem;
 }
 
-.time-formate.hideTime {
-  animation: hidetime 1.5s forwards;
-}
-
-.day-text-formate.hidetime {
-  animation: hidetime 1.5s forwards;
-}
-
-.date-formate.hideTime {
-  animation: hidetime 1.5s forwards;
-}
-
-.day-text-formate.showtime {
-  animation: showtime 1s forwards;
-}
-
-.time-formate.showtime {
-  animation: showtime 1s forwards;
-}
-
-.date-formate.showtime {
-  animation: showtime 1s forwards;
-}
 
 #timeForm{
 	flex: 2;
@@ -298,6 +289,13 @@
 
 .taken-time{
 	background-color: gray;
+	cursor: default;
+}
+
+.taken-time:hover{
+	background-color: gray;
+	cursor: default;
+	color: black;
 }
 
 .past-day {
@@ -305,6 +303,10 @@
   background-color: rgb(192, 192, 192);
   border-radius: 20%;
   color: #f8fbff;
+}
+
+.selected{
+	background-color: #E98A15;
 }
 
 .selected-day {
