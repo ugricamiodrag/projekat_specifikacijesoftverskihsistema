@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -115,8 +116,12 @@ public class ScheduledTourDAOimpl implements ScheduledTourDAO {
 				preparedStatement.setTimestamp(index++, Timestamp.valueOf(scheduledTour.getEndTime()));
 				preparedStatement.setLong(index++, scheduledTour.getUser().getId());
 				preparedStatement.setLong(index++, scheduledTour.getRealEstate().getId());
-				preparedStatement.setBoolean(index++, scheduledTour.getIsApproved());
-
+				Boolean isApproved = scheduledTour.getIsApproved();
+				if (scheduledTour.getIsApproved() != null) {
+				    preparedStatement.setBoolean(index++, isApproved);
+				} else {
+				    preparedStatement.setNull(index++, Types.BOOLEAN);
+				}
 				return preparedStatement;
 			}
 

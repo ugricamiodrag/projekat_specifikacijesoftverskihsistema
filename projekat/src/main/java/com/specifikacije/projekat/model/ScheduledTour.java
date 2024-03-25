@@ -8,7 +8,7 @@ public class ScheduledTour {
 	private LocalDateTime endTime;
 	private User user;
 	private RealEstate realEstate;
-	private Boolean isApproved = false;
+	private Boolean isApproved = null;
 	
 	public ScheduledTour() {
 	}

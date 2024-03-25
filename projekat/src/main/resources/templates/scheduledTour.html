@@ -32,7 +32,7 @@
 	<br>
 	<div class="contianer">
 
-		<div class="calendar">
+		<div class="calendar" id="calendar">
 			<div class="calendar-header">
 				<span class="month-picker" id="month-picker"> May </span>
 				<div class="year-picker" id="year-picker">
@@ -66,7 +66,18 @@
 			<div class="month-list"></div>
 		</div>
 		<!-- Form to choose available time -->
-		<form id="timeForm" style="display: block;" method="post" action="/scheduledTour/ScheduleTour" >
+
+		<div id="panelContainer">
+			<div id="confirmationPanel" >
+				<h2 id="final"></h2>
+				<br><br>
+				<p>Are you sure you want to submit?</p>
+				<button id="cancel">Cancel</button>
+				<button id="confirm">OK</button>
+			</div>
+		</div>
+
+		<form id="timeForm" style="display: block;" method="post" action="/scheduledTour/ScheduleTour">
 			<h3 style="margin-left: 25%;">Choose Available Time</h3>
 
 			<table id="availableTimes" class="table" style="width: 40%; margin-left: 30%; text-align: center;">
@@ -76,7 +87,8 @@
 			<input type="hidden" id="selectedStartTimeInput" name="startTime">
 			<input type="hidden" id="selectedEndTimeInput" name="endTime">
 			<input type="hidden" id="" th:value="${estateId}" name="realEstateId">
-			<button class="ok btn" type="submit">Submit</button>
+			<button id="confirmButton" class="ok btn" type="submit">Submit</button>
+			<div id="validation" style="color: red; margin-left: 25%;"></div>
 		</form>
 	</div>
 	</div>
@@ -322,6 +334,7 @@
 						console.log("Ending time " + timeStringEnd)
 						let localDateTime = generateLocalDateTime(currentYear.value, currentMonth.value, parseInt(selectedDate.textContent), selectedTime);
 						let localDateTimeEnd = generateLocalDateTime(currentYear.value, currentMonth.value, parseInt(selectedDate.textContent), timeStringEnd);
+						document.getElementById('final').innerHTML = "You have selected a tour for<br> <b> " + parseInt(selectedDate.textContent) + ". " + month_names[currentMonth.value] + " " + currentYear.value + ". <br> " + selectedTime + " - " + timeStringEnd + "</b>";
 						document.getElementById('selectedStartTimeInput').value = localDateTime;
 						document.getElementById('selectedEndTimeInput').value = localDateTimeEnd;
 
@@ -371,13 +384,34 @@
 		let hour = newDate.getHours() + 1;
 		let minute = newDate.getMinutes();
 
-
 		let localDateTime = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
 		console.log(localDateTime)
 		return localDateTime;
 
 	}
 
+	// VALIDATION
+	document.getElementById('confirmButton').addEventListener('click', function (event) {
+		event.preventDefault();
+		var selectedTime = document.getElementById('selectedStartTimeInput').value;
+		if (!selectedTime) {
+			document.getElementById('validation').textContent = 'Please select a time before confirming.';
+		} else {
+			document.getElementById('panelContainer').style.display = 'flex';
+			document.getElementById('confirmationPanel').focus();
+
+		}
+	});
+
+	
+	document.getElementById('confirm').addEventListener('click', function () {
+		document.getElementById('timeForm').submit();
+	});
+
+	document.getElementById('cancel').addEventListener('click', function () {
+		document.getElementById('panelContainer').style.display = 'none';
+		
+	});
 
 </script>
 
