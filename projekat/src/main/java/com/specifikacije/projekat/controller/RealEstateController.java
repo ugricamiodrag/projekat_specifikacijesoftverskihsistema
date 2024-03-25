@@ -94,7 +94,7 @@ public class RealEstateController {
 			Iterator<RealEstate> iterator = realEstateList.iterator();
 			while (iterator.hasNext()) {
 				RealEstate e = iterator.next();
-				if (purchaseService.purchaseExists(e) || rentedService.rentedExists(e)) {
+				if (purchaseService.purchaseExists(e)) {
 					iterator.remove();
 				}
 			}

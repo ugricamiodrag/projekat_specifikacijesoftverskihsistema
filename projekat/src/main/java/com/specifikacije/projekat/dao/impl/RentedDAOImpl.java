@@ -131,9 +131,8 @@ public class RentedDAOImpl implements RentedDAO {
         String sql = "SELECT COUNT(*) > 0 AS rented_exists " +
                 "FROM rented " +
                 "WHERE estate_id = ? " +
-                "AND ? BETWEEN start_date AND end_date " +
-                "OR ? BETWEEN start_date AND end_date";
+                "AND ((start_date < ? AND end_date > ?) OR (start_date < ? AND end_date > ?))";
 
-        return jdbcTemplate.queryForObject(sql, Boolean.class, estate.getId(), startDate, endDate);
+        return jdbcTemplate.queryForObject(sql, Boolean.class, estate.getId(), endDate, startDate, startDate, endDate);
     }
 }
