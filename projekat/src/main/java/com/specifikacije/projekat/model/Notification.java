@@ -50,4 +50,11 @@ public class Notification {
         this.tour = tour;
         this.isRead = isRead;
     }
+
+	@Override
+	public String toString() {
+		return "Notification [id=" + id + ", agent=" + agent + ", tour=" + tour + ", isRead=" + isRead + "]";
+	}
+    
+    
 }

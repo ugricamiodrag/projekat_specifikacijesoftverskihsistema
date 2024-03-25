@@ -3,6 +3,7 @@ package com.specifikacije.projekat.controller;
 import com.specifikacije.projekat.bean.SecondConfiguration;
 import com.specifikacije.projekat.model.Agent;
 import com.specifikacije.projekat.model.Notification;
+import com.specifikacije.projekat.model.ScheduledTour;
 import com.specifikacije.projekat.service.*;
 import jakarta.servlet.http.HttpSession;
 
@@ -47,6 +48,9 @@ public class NotificationsController implements ApplicationContextAware {
 
     @Autowired
     private NotificationService notificationService;
+    
+    @Autowired
+    private ScheduledTourService scheduledTourService;
 
 
     @Override
@@ -90,6 +94,16 @@ public class NotificationsController implements ApplicationContextAware {
         notificationService.update(notification);
         model.addAttribute("notification", notification);
         return "oneNotification";
+
+    }
+    
+    @GetMapping(value="/calendar")
+    public String calendar(Model model){
+        List<Notification> notifications = notificationService.findAll();
+        List<ScheduledTour> tours = scheduledTourService.findAll();
+        model.addAttribute("notifications", notifications);
+        model.addAttribute("tours", tours);
+        return "calendar";
 
     }
 }

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Calendar</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/index.css">
+	<link rel="stylesheet" href="/css/calendar.css">
+	<base th:href="@{/}">
+
+</head>
+
+<body>
+	<!--navbar-->
+	<nav class="navbar navbar-expand-lg black-bg">
+		<img class="img" src="/images/keyToTheCastleLogoOrangeWhiteWithTitle.png">
+		<!-- add above logo -->
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+			aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			<div class="navbar-nav">
+				<a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
+				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == false}" href="registration">Register</a>
+				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == false}" href="/login">Log in</a>
+				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="/login/logOut">Log out</a>
+				<a class="nav-item nav-link white-font" th:if="${admin != null}" href="/realestate/adminPage">Admin</a>
+				<a class="nav-item nav-link white-font" th:if="${owner != null}" href="/agency">My Agency</a>
+				<a class="nav-item nav-link white-font" th:if="${agent != null or owner != null}" href="">Calendar</a>
+				<a class="nav-item nav-link white-font" th:if="${agent != null}" href="/realestate/add">Add an
+					estate</a>
+
+				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="#"><img class="small"
+						src="/images/cart.png"></img></a>
+
+				<a class="nav-item nav-link white-font" th:if="${agent != null or owner != null}"
+					href="/notifications/unread" style="position: absolute; margin-left: 78%;"><img class="small"
+						src="/images/bell.png"></img></a>
+
+				<a class="nav-item nav-link white-font" style="position: absolute; margin-left: 83%;"
+					th:if="${isLoggedIn == true}" href="realestate/profile"><img class="small"
+						src="/images/user.png"></a>
+
+			</div>
+		</div>
+	</nav>
+
+
+	<!--Filters-->
+
+	<div id="todoCalendar" class="todoCalendar">
+		<div class="calendar-header">
+			<span class="month-picker" id="month-picker"> May </span>
+			<div class="year-picker" id="year-picker">
+				<span class="year-change" id="pre-year">
+					<pre style="margin-top: 12px; font-size: 20px;"><</pre>
+				</span>
+				<span id="year">2020 </span>
+				<span class="year-change" id="next-year">
+					<pre style="margin-top: 12px; font-size: 20px;">></pre>
+				</span>
+			</div>
+		</div>
+		<div class="calendar-body">
+			<div class="calendar-week-days">
+				<div>Mon</div>
+				<div>Tue</div>
+				<div>Wed</div>
+				<div>Thu</div>
+				<div>Fri</div>
+				<div>Sat</div>
+				<div>Sun</div>
+			</div>
+			<div class="calendar-days1">
+			</div>
+		</div>
+		<div class="calendar-footer">
+		</div>
+
+		<div class="toBlur" id="toBlur" style="display: none;"><div class="month-list1" id="month-list1"></div></div>
+	</div>
+
+
+	<!--Footer -->
+	<div>
+		<nav class="navbar ">
+			<a class="navbar-brand" href="#">
+				<form class="form-inline red">
+					<p>some information about agency such as mail phone number..etc</p>
+				</form>
+			</a>
+		</nav>
+	</div>
+
+
+
+
+
+</body>
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+
+	var notifications = /*[[${notifications}]]*/ 'default';
+	var scheduledTours = /*[[${tours}]]*/ 'default';
+	/*]]>*/
+</script>
+
+<script>
+	const isLeapYear = (year) => {
+		return (
+			(year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) ||
+			(year % 100 === 0 && year % 400 === 0)
+		);
+	};
+	const getFebDays = (year) => {
+		return isLeapYear(year) ? 29 : 28;
+	};
+	let calendar = document.querySelector('.todoCalendar');
+	const month_names = [
+		'January',
+		'February',
+		'March',
+		'April',
+		'May',
+		'June',
+		'July',
+		'August',
+		'September',
+		'October',
+		'November',
+		'December',
+	];
+
+
+	let month_picker = document.querySelector('#month-picker');
+
+	// MONTH PANEL SHOW - HIDE	
+	let isMonthListOpen = false;
+	month_picker.onclick = () => {
+		if (isMonthListOpen) {
+			month_list.classList.remove('show');
+			month_list.classList.add('hide');		
+			document.getElementById('toBlur').style.display = 'none';
+
+
+		} else {
+			month_list.classList.remove('hideonce');
+			month_list.classList.remove('hide');
+			month_list.classList.add('show');
+			document.getElementById('toBlur').style.display = 'flex';
+			document.getElementById('month-list1').focus();
+
+		}
+		isMonthListOpen = !isMonthListOpen;
+	};
+
+
+	const generateCalendar = (month, year) => {
+		let calendar_days = document.querySelector('.calendar-days1');
+		calendar_days.innerHTML = '';
+		let calendar_header_year = document.querySelector('#year');
+		let days_of_month = [
+			31,
+			getFebDays(year),
+			31,
+			30,
+			31,
+			30,
+			31,
+			31,
+			30,
+			31,
+			30,
+			31,
+		];
+
+		let currentDate = new Date();
+		month_picker.innerHTML = month_names[month];
+		calendar_header_year.innerHTML = year;
+		let first_day = new Date(year, month);
+
+
+		// GENERATE CALENDAR DAYS	
+		for (let i = 1; i <= days_of_month[month] + first_day.getDay() - 1; i++) {
+			let day = document.createElement('div');
+
+			if (i >= first_day.getDay()) {
+				day.innerHTML = i - first_day.getDay() + 1;
+				let notificationContainer = document.createElement('div');
+				notificationContainer.className = 'notification-container';
+				day.appendChild(notificationContainer);
+				let dayDate = new Date(year, month, i - first_day.getDay() + 1);
+
+				let scheduledToursForDay = getScheduledTourForDay(i - first_day.getDay() + 1, month, year, scheduledTours);
+				scheduledToursForDay.forEach(function (scheduledTour) {
+					let notification = document.createElement('div');
+					notification.className = 'notification';
+					let startdate = new Date(scheduledTour.startTime);
+					let startTime = formatTime(startdate);
+					let enddate = new Date(scheduledTour.endTime);
+					let endTime = formatTime(enddate);
+					notification.innerHTML = `${startTime} - ${endTime}`;
+					notificationContainer.appendChild(notification);
+				});
+
+
+
+				// SEPARATE PAST DAYS AND FUTURE DAYS
+				if (dayDate < currentDate) {
+					day.classList.add('past-day1');
+				} else {
+					day.classList.add('future-day1');
+				}
+				// MARK THE CURRENT DATE	
+				if (i - first_day.getDay() + 1 === currentDate.getDate() &&
+					year === currentDate.getFullYear() &&
+					month === currentDate.getMonth()
+				) {
+					day.classList.add('current-date');
+				}
+			}
+			calendar_days.appendChild(day);
+		}
+	};
+
+	function formatTime(date) {
+		let hours = date.getHours();
+		let minutes = date.getMinutes();
+		let scheduledTimeString = `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+
+		return scheduledTimeString;
+	}
+
+	function getScheduledTourForDay(day, month, year, scheduledTours) {
+		let listOfTours = [];
+		for (let i = 0; i < scheduledTours.length; i++) {
+			let dateTime = new Date(scheduledTours[i].startTime);
+			let scheduledYear = dateTime.getFullYear();
+			let scheduledMonth = dateTime.getMonth();
+			let scheduledDay = dateTime.getDate();
+
+			if (year === scheduledYear &&
+				month === scheduledMonth &&
+				day === scheduledDay) {
+				listOfTours.push(scheduledTours[i])
+
+			}
+		}
+		console.log("for the day" + day + " and " + listOfTours)
+		return listOfTours;
+	}
+
+	// MONTH PANEL
+	let month_list = calendar.querySelector('.month-list1');
+	month_names.forEach((e, index) => {
+		let month = document.createElement('div');
+		month.innerHTML = `<div>${e}</div>`;
+		month_list.append(month);
+		month.onclick = () => {
+			currentMonth.value = index;
+			generateCalendar(currentMonth.value, currentYear.value);
+			month_list.classList.replace('show', 'hide');
+			document.getElementById('toBlur').style.display = 'none';
+			isMonthListOpen = false;
+		};
+	});
+
+	(function () {
+		month_list.classList.add('hideonce');
+	})();
+	document.querySelector('#pre-year').onclick = () => {
+		--currentYear.value;
+		generateCalendar(currentMonth.value, currentYear.value);
+	};
+	document.querySelector('#next-year').onclick = () => {
+		++currentYear.value;
+		generateCalendar(currentMonth.value, currentYear.value);
+	};
+
+
+
+
+	let currentDate = new Date();
+	let currentMonth = {value: currentDate.getMonth()};
+	let currentYear = {value: currentDate.getFullYear()};
+	generateCalendar(currentMonth.value, currentYear.value);
+
+
+
+
+
+
+</script>
+
+
+</html>

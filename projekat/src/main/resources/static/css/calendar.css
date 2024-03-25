@@ -11,6 +11,17 @@
   margin-right: 5%;
 }
 
+.todoCalendar {
+  height: 100%;
+  width: 96%;
+  background-color: white;
+  border-radius: 25px;
+  overflow: hidden;
+  padding: 35px 50px 0px 50px;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
 .calendar {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
@@ -69,6 +80,13 @@
   color: #0A0921;
 }
 
+.calendar-days1 {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  color: #0A0921;
+}
+
 .calendar-days div {
   width: 37px;
   height: 33px;
@@ -78,6 +96,34 @@
   padding: 5px;
   position: relative;
   animation: to-top 1s forwards;
+  
+}
+
+.notification-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.notification{
+	background-color: #E98A15;
+	max-height: 17%;
+	max-width: 80%;
+	border-radius: 20px;
+	font-size: 12px;
+	margin: 2px;
+	place-items: center;
+}
+
+.calendar-days1 div {
+  width: 100%;
+  display: flex;
+  align-items: top;
+  justify-content: center;
+  padding: 5px;
+  position: relative;
+  height: 120px;
 }
 
 .month-picker {
@@ -128,6 +174,20 @@
   cursor: pointer;
 }
 
+.future-day1:hover {
+  transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
+  background-color: rgb(245, 204, 154);
+  color: #f8fbff;
+  cursor: pointer;
+}
+
+.past-day1:hover {
+  transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
+  background-color: rgb(245, 204, 154);
+  color: #f8fbff;
+  cursor: pointer;
+}
+
 .calendar-days div.current-date {
   color: #f8fbff;
   background-color: rgb(243, 190, 124);
@@ -148,7 +208,39 @@
   width: 115%;
 }
 
+.month-list1 {
+  position: relative;
+  left: 0;
+  top: 0;
+  background-color: #ebebeb;
+  color: #151426;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 5px;
+  border-radius: 20px;
+  width: 60%;
+	height: 40%;
+}
+
+.toBlur {
+	display: none;
+    position: fixed;
+    top: 30%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
 .month-list>div {
+  display: grid;
+  place-content: center;
+  margin: 5px 10px;
+  transition: all 0.2s ease-in-out;
+}
+
+.month-list1>div {
   display: grid;
   place-content: center;
   margin: 5px 10px;
@@ -161,7 +253,20 @@
   cursor: pointer;
 }
 
+.month-list1>div>div {
+  border-radius: 15px;
+  padding: 10px;
+  cursor: pointer;
+}
+
 .month-list>div>div:hover {
+  background-color: #E98A15;
+  color: #f8fbff;
+  transform: scale(0.9);
+  transition: all 0.2s ease-in-out;
+}
+
+.month-list1>div>div:hover {
   background-color: #E98A15;
   color: #f8fbff;
   transform: scale(0.9);
@@ -175,11 +280,28 @@
   animation: to-left .71s forwards;
 }
 
+.month-list1.show {
+  visibility: visible;
+  pointer-events: visible;
+  transition: 0.6s ease-in-out;
+  animation: to-left .71s forwards;
+}
+
 .month-list.hideonce {
   visibility: hidden;
 }
 
+.month-list1.hideonce {
+  visibility: hidden;
+}
+
 .month-list.hide {
+  animation: to-right 1s forwards;
+  visibility: none;
+  pointer-events: none;
+}
+
+.month-list1.hide {
   animation: to-right 1s forwards;
   visibility: none;
   pointer-events: none;
@@ -225,6 +347,7 @@
 	display: flex;
     flex-direction: row;
 }
+
 @keyframes to-top {
   0% {
     transform: translateY(0);
@@ -236,6 +359,7 @@
     opacity: 1;
   }
 }
+
 
 @keyframes to-left {
   0% {
@@ -305,6 +429,12 @@
   color: #f8fbff;
 }
 
+.past-day1 {
+  transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
+  background-color: rgb(192, 192, 192);
+  color: #f8fbff;
+}
+
 .selected{
 	background-color: #E98A15;
 }
@@ -331,8 +461,8 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
-    z-index: 1000; /* Ensure it's above other content */
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
     backdrop-filter: blur(5px);
     justify-content: center;
     align-items: center;
