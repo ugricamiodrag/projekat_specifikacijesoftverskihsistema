@@ -19,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,18 +33,6 @@ public class NotificationsController implements ApplicationContextAware {
 
     @Autowired
     private SecondConfiguration.ApplicationMemory applicationMemory;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private AdministratorService adminService;
-
-    @Autowired
-    private AgencyOwnerService ownerService;
-
-    @Autowired
-    private AgentService agentService;
 
     @Autowired
     private NotificationService notificationService;
@@ -78,15 +65,6 @@ public class NotificationsController implements ApplicationContextAware {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
     }
-
-//    @PostMapping(value="/readOne")
-//    public String readOne(@RequestParam Long id, Model model){
-//        Notification notification = notificationService.findOne(id);
-//        notification.setRead(true);
-//        model.addAttribute("notification", notification);
-//        return "oneNotification";
-//
-//    }
     
     @GetMapping(value="/readOne")
     public String readOne(@RequestParam Long id, Model model){

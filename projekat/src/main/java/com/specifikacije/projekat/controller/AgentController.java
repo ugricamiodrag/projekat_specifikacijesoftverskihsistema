@@ -34,15 +34,6 @@ public class AgentController  implements ApplicationContextAware {
     private SecondConfiguration.ApplicationMemory applicationMemory;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private AdministratorService adminService;
-
-    @Autowired
-    private AgencyOwnerService ownerService;
-
-    @Autowired
     private AgentService agentService;
 
     @Autowired
@@ -113,12 +104,9 @@ public class AgentController  implements ApplicationContextAware {
 		d.setAddress(address);
 		d.setPhoneNumber(phone);
 
-
 		agentService.update(d);
 
-
 		response.sendRedirect("viewAllUsers");
-
 
 	}
 	

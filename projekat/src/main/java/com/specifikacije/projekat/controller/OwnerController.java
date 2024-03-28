@@ -1,13 +1,9 @@
 package com.specifikacije.projekat.controller;
 
 import com.specifikacije.projekat.bean.SecondConfiguration;
-import com.specifikacije.projekat.model.Administrator;
 import com.specifikacije.projekat.model.AgencyOwner;
 import com.specifikacije.projekat.model.User;
-import com.specifikacije.projekat.service.AdministratorService;
 import com.specifikacije.projekat.service.AgencyOwnerService;
-import com.specifikacije.projekat.service.AgentService;
-import com.specifikacije.projekat.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.BeansException;
@@ -35,16 +31,7 @@ public class OwnerController implements ApplicationContextAware {
     private SecondConfiguration.ApplicationMemory applicationMemory;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private AdministratorService adminService;
-
-    @Autowired
     private AgencyOwnerService ownerService;
-
-    @Autowired
-    private AgentService agentService;
 
     public static final String USER_KEY = "users";
 

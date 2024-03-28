@@ -34,16 +34,7 @@ public class AdministratorController implements ApplicationContextAware {
     private SecondConfiguration.ApplicationMemory applicationMemory;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private AdministratorService adminService;
-
-    @Autowired
-    private AgencyOwnerService ownerService;
-
-    @Autowired
-    private AgentService agentService;
 
     public static final String USER_KEY = "users";
 
@@ -60,19 +51,16 @@ public class AdministratorController implements ApplicationContextAware {
         }
         return "404NotFound";
 
-
     }
 
     @PostMapping("addAdmin")
     public void addAdmin(HttpServletResponse response, @RequestParam String name, @RequestParam String surname, @RequestParam String username, @RequestParam String password, @RequestParam String phone, @RequestParam String email, @RequestParam String address ) throws IOException {
-
 
         Administrator d = new Administrator(name, surname, username, password, phone, email, address, true, false);
 
         adminService.save(d);
 
         response.sendRedirect("/users/viewAllUsers");
-
 
     }
 
@@ -115,13 +103,10 @@ public class AdministratorController implements ApplicationContextAware {
         }
         return "404NotFound";
 
-
-
     }
 
     @PostMapping("/editAdmin")
     public void edit(@RequestParam Long id, @RequestParam String name, @RequestParam String surname, @RequestParam String username, @RequestParam String password, @RequestParam String phone, @RequestParam String email, @RequestParam String address, HttpServletResponse response) throws IOException {
-
 
         Administrator d = adminService.findOne(id);
 
@@ -133,12 +118,9 @@ public class AdministratorController implements ApplicationContextAware {
         d.setAddress(address);
         d.setPhoneNumber(phone);
 
-
         adminService.update(d);
 
-
         response.sendRedirect("/users/viewAllUsers");
-
 
     }
 }

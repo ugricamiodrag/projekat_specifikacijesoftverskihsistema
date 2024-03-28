@@ -2,9 +2,7 @@ package com.specifikacije.projekat.service;
 
 import java.util.List;
 
-import com.specifikacije.projekat.model.Agency;
 import com.specifikacije.projekat.model.AgencyOwner;
-import com.specifikacije.projekat.model.User;
 
 public interface AgencyOwnerService {
 	AgencyOwner findOne(Long id);

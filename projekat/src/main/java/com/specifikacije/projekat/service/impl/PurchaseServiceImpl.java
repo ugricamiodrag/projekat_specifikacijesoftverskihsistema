@@ -2,16 +2,11 @@ package com.specifikacije.projekat.service.impl;
 
 import java.util.List;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.specifikacije.projekat.dao.impl.PurchaseDAOimpl;
 import com.specifikacije.projekat.model.Purchase;
 import com.specifikacije.projekat.model.RealEstate;
-import com.specifikacije.projekat.model.RealEstateType;
 import com.specifikacije.projekat.model.RentOrBuy;
 import com.specifikacije.projekat.service.PurchaseService;
 

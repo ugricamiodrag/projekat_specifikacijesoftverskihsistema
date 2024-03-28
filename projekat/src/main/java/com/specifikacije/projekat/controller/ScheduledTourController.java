@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.specifikacije.projekat.model.Agency;
 import com.specifikacije.projekat.model.Notification;
 import com.specifikacije.projekat.service.NotificationService;
 import com.specifikacije.projekat.service.RealEstateService;

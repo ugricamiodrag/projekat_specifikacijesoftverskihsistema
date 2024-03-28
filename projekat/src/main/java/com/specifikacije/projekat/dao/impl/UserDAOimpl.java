@@ -19,11 +19,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.specifikacije.projekat.dao.LikeDislikeDAO;
 import com.specifikacije.projekat.dao.UserDAO;
-import com.specifikacije.projekat.model.RealEstate;
 import com.specifikacije.projekat.model.User;
-import com.specifikacije.projekat.service.AgentService;
 
 @Repository
 @Primary

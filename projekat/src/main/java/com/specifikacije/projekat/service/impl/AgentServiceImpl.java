@@ -12,15 +12,6 @@ import com.specifikacije.projekat.service.AgentService;
 
 import java.util.ArrayList;
 
-import java.util.Set;
-import java.util.HashSet;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.specifikacije.projekat.dao.impl.AgentDAOimpl;
-import com.specifikacije.projekat.model.Agent;
-import com.specifikacije.projekat.model.RealEstate;
-import com.specifikacije.projekat.service.AgentService;
 
 @Service
 public class AgentServiceImpl implements AgentService{

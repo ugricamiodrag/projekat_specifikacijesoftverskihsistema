@@ -1,7 +1,6 @@
 package com.specifikacije.projekat.dao.impl;
 
 import com.specifikacije.projekat.dao.RentedDAO;
-import com.specifikacije.projekat.model.Purchase;
 import com.specifikacije.projekat.model.RealEstate;
 import com.specifikacije.projekat.model.Rented;
 import com.specifikacije.projekat.model.User;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.*;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
 

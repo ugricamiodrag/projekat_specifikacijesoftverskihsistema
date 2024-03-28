@@ -1,6 +1,5 @@
 package com.specifikacije.projekat.controller;
 
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import java.io.IOException;
@@ -23,9 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.specifikacije.projekat.dao.LikeDislikeDAO;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,9 +46,6 @@ public class RealEstateController {
 	
 	@Autowired
 	private ScheduledTourService tourService;
-	
-	@Autowired
-	private AgentService agentService;
 	
 	@Autowired
 	private NotificationService notificationService;
@@ -85,8 +78,7 @@ public class RealEstateController {
 		    User user = (User) obj;
 		    //get users lliked and disliked estates
 		    Map<String, List<RealEstate>> likedEstates = likeDislikeService.findAllLikedEstateForUserAndSetAttributes(user.getId());
-//		    System.out.println("Liked Estates: " + likedEstates.get("likedEstates"));
-//		    System.out.println("Disiked Estates: " + likedEstates.get("dislikedEstates"));
+
 		    //add to model
 		    model.addAttribute("likedEstates", likedEstates.get("likedEstates"));
 		    model.addAttribute("dislikedEstates", likedEstates.get("dislikedEstates"));
@@ -187,19 +179,6 @@ public class RealEstateController {
 									   @RequestParam(required=false) List<String> propertyTypes) throws ParseException {
 									   
 
-
-//		System.out.println(location);
-//		System.out.println(surfaceFrom);
-//		System.out.println(surfaceTo);
-//		System.out.println(priceMax);
-//		System.out.println(priceMin);
-//		System.out.println(rent);
-//		System.out.println(buy);
-//		System.out.println(house);
-//		System.out.println(apartment);
-//		System.out.println(land);
-//		System.out.println(office);
-
 		Map<String, Object> response = new HashMap<>();
 
 
@@ -292,7 +271,6 @@ public class RealEstateController {
 		model.addAttribute("person", obj);
 		model.addAttribute("type", type);
 		model.addAttribute("theHref", theHref);
-		System.out.println(obj +" "+ type +" "+ theHref);
 		return "profile";
 	}
 	
@@ -338,7 +316,6 @@ public class RealEstateController {
 		d.setPrice(price);
 		d.setRentOrBuy(RentOrBuy.valueOf(rentOrBuy));
 		d.setSurface(surface);
-		// TODO: set atributes
 
 		realEstateService.update(d);
 		
@@ -436,14 +413,10 @@ public class RealEstateController {
 	public String rent(@RequestParam Long id, @RequestParam String startDate, @RequestParam String endDate, HttpSession session, RedirectAttributes redirectAttributes){
 		RealEstate estate = realEstateService.findOne(id);
 
-
-
 		User user = (User) session.getAttribute(LoginLogoutController.KORISNIK_KEY); // convert it to user because only user can see that button and make a purchase
 		if (user == null){
 			return "404NotFound"; // if session expired return not found
 		}
-
-
 
 		LocalDate start_date = LocalDate.parse(startDate);
 		LocalDate end_date = LocalDate.parse(endDate);

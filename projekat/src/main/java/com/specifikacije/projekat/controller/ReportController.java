@@ -1,10 +1,6 @@
 package com.specifikacije.projekat.controller;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.specifikacije.projekat.model.Administrator;
 import com.specifikacije.projekat.model.Report;
 import com.specifikacije.projekat.service.PurchaseService;
-
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -27,10 +21,8 @@ public class ReportController {
 	private PurchaseService purchaseService;
 	
 	
-	
 	@GetMapping
 	public String reportShow(Model model) {
-		
 		
 		return "report";
 	}

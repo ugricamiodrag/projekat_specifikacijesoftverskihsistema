@@ -10,17 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.model.AgencyOwner;
 import com.specifikacije.projekat.model.Administrator;
 import com.specifikacije.projekat.model.Agent;
-import com.specifikacije.projekat.service.AdministratorService;
-import com.specifikacije.projekat.service.AgencyOwnerService;
-import com.specifikacije.projekat.service.AgentService;
 import com.specifikacije.projekat.service.LoginService;
-import com.specifikacije.projekat.service.UserService;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -37,12 +31,10 @@ public class LoginLogoutController {
 	@GetMapping
 	public String showLoginPage(Model model) {
 		
-        String message = (String) model.getAttribute("message");
-        System.out.println(message);
+        String message = (String) model.getAttribute("message"); // for retriving message 
 		return "login.html";
 		
 	}
-	
 	
 
 	@PostMapping("/logIn")
@@ -51,7 +43,6 @@ public class LoginLogoutController {
 		// error message that will be displayed in .html
 		String error = "";
 
-		
 		redirectAttributes.addFlashAttribute("username", username);
 		redirectAttributes.addFlashAttribute("password", password);
 		
@@ -78,7 +69,6 @@ public class LoginLogoutController {
 		
 		}
 
-		
 		//find user, agent, owner and admin if found, before login check if password is correct if not send with 
 		User user = loginService.findUser(username);
 		Administrator admin = loginService.findAdmin(username);
@@ -92,8 +82,7 @@ public class LoginLogoutController {
     		redirectAttributes.addFlashAttribute("errorPassword", error);
     		return "redirect:/login";
     	}
-    			
-    			
+    						
     	
         if(user != null) {
         	if(user.isBlocked() == true) {
@@ -172,7 +161,6 @@ public class LoginLogoutController {
 			return "redirect:/login";
 		}
 			
-		
 		request.getSession().removeAttribute(LoginLogoutController.KORISNIK_KEY);
 		request.getSession().invalidate();
 		

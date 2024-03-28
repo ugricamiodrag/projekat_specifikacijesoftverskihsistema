@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.specifikacije.projekat.dao.AdministratorDAO;
 import com.specifikacije.projekat.model.Administrator;
-import com.specifikacije.projekat.model.User;
 
 @Repository
 @Primary

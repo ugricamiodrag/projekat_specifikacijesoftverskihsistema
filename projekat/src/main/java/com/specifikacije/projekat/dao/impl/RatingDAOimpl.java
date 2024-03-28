@@ -20,14 +20,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.specifikacije.projekat.dao.RatingDAO;
-import com.specifikacije.projekat.model.Administrator;
 import com.specifikacije.projekat.model.Agent;
 import com.specifikacije.projekat.model.Rating;
 import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.AgentService;
 import com.specifikacije.projekat.service.UserService;
-import com.specifikacije.projekat.service.impl.AgentServiceImpl;
-import com.specifikacije.projekat.service.impl.UserServiceImpl;
 
 @Repository
 @Primary
@@ -52,7 +49,6 @@ public class RatingDAOimpl implements RatingDAO {
 			Long id = resultSet.getLong(index++);
 			Long user_id = resultSet.getLong(index++);
 			
-//			UserService userService = new UserServiceImpl();
 			User user = userService.findOne(user_id);
 			
 			Long agent_id = resultSet.getLong(index++);
@@ -68,7 +64,6 @@ public class RatingDAOimpl implements RatingDAO {
 				ratings.put(rating.getId(), rating); // dodavanje u kolekciju
 			}
 			
-//			TODO Kada uradimo bazu
 		}
 		public List<Rating> getRatings() {
 			return new ArrayList<>(ratings.values());

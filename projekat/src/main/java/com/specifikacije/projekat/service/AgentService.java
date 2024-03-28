@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.specifikacije.projekat.model.Agent;
 import com.specifikacije.projekat.model.RealEstate;
-import com.specifikacije.projekat.model.User;
 
 public interface AgentService {
 	Agent findOne(Long id);

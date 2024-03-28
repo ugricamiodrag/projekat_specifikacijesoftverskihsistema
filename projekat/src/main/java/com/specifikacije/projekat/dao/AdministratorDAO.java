@@ -3,7 +3,6 @@ package com.specifikacije.projekat.dao;
 import java.util.List;
 
 import com.specifikacije.projekat.model.Administrator;
-import com.specifikacije.projekat.model.Agent;
 
 
 public interface AdministratorDAO {

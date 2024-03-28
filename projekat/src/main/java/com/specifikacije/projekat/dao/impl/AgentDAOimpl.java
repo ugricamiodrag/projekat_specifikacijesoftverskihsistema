@@ -22,9 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.specifikacije.projekat.dao.AgentDAO;
 import com.specifikacije.projekat.model.Agency;
 import com.specifikacije.projekat.model.Agent;
-import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.AgencyService;
-import com.specifikacije.projekat.service.impl.AgencyServiceImpl;
 
 @Repository
 @Primary

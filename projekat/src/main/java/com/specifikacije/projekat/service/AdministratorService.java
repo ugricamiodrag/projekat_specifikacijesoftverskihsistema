@@ -3,7 +3,6 @@ package com.specifikacije.projekat.service;
 import java.util.List;
 
 import com.specifikacije.projekat.model.Administrator;
-import com.specifikacije.projekat.model.AgencyOwner;
 
 
 public interface AdministratorService {

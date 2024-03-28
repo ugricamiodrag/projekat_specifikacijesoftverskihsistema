@@ -27,9 +27,7 @@ import com.specifikacije.projekat.model.RealEstate;
 import com.specifikacije.projekat.model.ScheduledTour;
 import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.UserService;
-import com.specifikacije.projekat.service.impl.UserServiceImpl;
 import com.specifikacije.projekat.service.RealEstateService;
-import com.specifikacije.projekat.service.impl.RealEstateServiceImpl;
 
 @Repository
 @Primary

@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
@@ -48,10 +47,7 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 			Long id = resultSet.getLong(index++);
 			RealEstateType type = RealEstateType.valueOf(resultSet.getString(index++));
 			Long agent_id = resultSet.getLong(index++);
-//			System.out.println("Agent id je " + agent_id);
 			Agent agent = agentService.findOne(agent_id);
-//			System.out.println("Agent je " + agent);
-
 			String location = resultSet.getString(index++);
 			String picture = resultSet.getString(index++);
 			Double price = resultSet.getDouble(index++);
@@ -193,23 +189,6 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 
 		 return filteredStream.collect(Collectors.toList());
 		    
-		    
-//		return allEstate.stream()
-//				.filter(estate ->
-//						(location == null || location.isEmpty() ||
-//								estate.getLocation().contains(location))
-//								&& (surfaceFrom == null || estate.getSurface() >= surfaceFrom)
-//								&& (surfaceTo == null || estate.getSurface() <= surfaceTo)
-//								&& (priceMin == null || estate.getPrice() >= priceMin)
-//								&& (priceMax == null || estate.getPrice() <= priceMax)
-//								&& (rent == null || rent.isEmpty() || estate.getRentOrBuy().toString().equalsIgnoreCase(rent))
-//								&& (buy == null || buy.isEmpty() || estate.getRentOrBuy().toString().equalsIgnoreCase(buy))
-//								&& (propertyTypes == null || propertyTypes.isEmpty() || propertyTypes.contains(estate.getEstateType().toString())
-//								)
-//				)
-//				.sorted(Comparator.comparingDouble(RealEstate::getViewNumber).reversed())
-//				.sorted(Comparator.comparingDouble(RealEstate::getNumberOfVisitRequests).reversed())
-//				.collect(Collectors.toList());
 
 	}
 

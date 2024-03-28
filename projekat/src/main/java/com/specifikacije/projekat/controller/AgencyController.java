@@ -33,7 +33,6 @@ import com.specifikacije.projekat.service.RealEstateService;
 @RequestMapping("/agency")
 public class AgencyController {
 
-	
 	@Autowired
 	AgencyOwnerService ownerService;
 	
@@ -82,8 +81,7 @@ public class AgencyController {
 			return "agentAddByOwner";
 		}
 		return "404NotFound";
-
-		
+	
 	}
 	
 	 @PostMapping("addAgent")
@@ -95,7 +93,6 @@ public class AgencyController {
 	        agentService.save(d);
 
 	        response.sendRedirect("/agency");
-
 
 	    }
 	 
@@ -110,7 +107,6 @@ public class AgencyController {
 				return "agencyInfo";
 			}
 			return "404NotFound";
-
 			
 		}
 	 
@@ -126,7 +122,6 @@ public class AgencyController {
 				return "redirect:agency";
 			}
 			return "404NotFound";
-
 			
 		}
 		
@@ -138,7 +133,6 @@ public class AgencyController {
 	        agencyService.update(agency);
 
 	        response.sendRedirect("/agency");
-
 
 	    }
 	 
@@ -169,21 +163,7 @@ public class AgencyController {
 										   
 
 
-//			System.out.println(location);
-//			System.out.println(surfaceFrom);
-//			System.out.println(surfaceTo);
-//			System.out.println(priceMax);
-//			System.out.println(priceMin);
-//			System.out.println(rent);
-//			System.out.println(buy);
-//			System.out.println(house);
-//			System.out.println(apartment);
-//			System.out.println(land);
-//			System.out.println(office);
-
 			Map<String, Object> response = new HashMap<>();
-
-
 
 			List<RealEstate> realEstates = realEstateService.find(null,
 					parseInteger(null),

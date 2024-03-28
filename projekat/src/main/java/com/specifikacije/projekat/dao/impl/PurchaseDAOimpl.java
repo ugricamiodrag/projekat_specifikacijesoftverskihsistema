@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,6 +24,7 @@ import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.RealEstateService;
 import com.specifikacije.projekat.service.UserService;
 import java.sql.Date;
+
 @Repository
 public class PurchaseDAOimpl {
 	
@@ -69,9 +69,6 @@ public class PurchaseDAOimpl {
 	            return new ArrayList<>(purchases.values());
 	        }
 	    }
-	    
-	    
-	    
 	    
 	    
 	    public Purchase findOne(Long id) {

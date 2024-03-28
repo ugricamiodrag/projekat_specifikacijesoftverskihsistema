@@ -20,10 +20,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.specifikacije.projekat.dao.AgencyOwnerDAO;
-import com.specifikacije.projekat.model.Agency;
 import com.specifikacije.projekat.model.AgencyOwner;
-import com.specifikacije.projekat.model.Agent;
-import com.specifikacije.projekat.model.User;
 
 @Repository
 @Primary

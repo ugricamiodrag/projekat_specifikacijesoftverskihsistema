@@ -3,7 +3,6 @@ package com.specifikacije.projekat.controller;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpSession;
@@ -23,13 +22,9 @@ import com.specifikacije.projekat.bean.SecondConfiguration.ApplicationMemory;
 import com.specifikacije.projekat.model.Administrator;
 import com.specifikacije.projekat.model.AgencyOwner;
 import com.specifikacije.projekat.model.Agent;
-import com.specifikacije.projekat.model.RealEstate;
-import com.specifikacije.projekat.model.RealEstateType;
-import com.specifikacije.projekat.model.RentOrBuy;
 import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.AdministratorService;
 import com.specifikacije.projekat.service.AgencyOwnerService;
-import com.specifikacije.projekat.service.AgencyService;
 import com.specifikacije.projekat.service.AgentService;
 import com.specifikacije.projekat.service.UserService;
 
@@ -118,7 +113,6 @@ public class UserController implements ApplicationContextAware{
 
 
 	}
-	//TODO: other CRUD operations for every user type and add attribute in every user for blocking user function        
 
 	@GetMapping(value="addUser")  // for showing users in admin page
 	public String addUser (HttpSession session)  throws IOException{
