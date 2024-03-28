@@ -1,6 +1,7 @@
 package com.specifikacije.projekat.controller;
 
 import com.specifikacije.projekat.bean.SecondConfiguration;
+import com.specifikacije.projekat.model.AgencyOwner;
 import com.specifikacije.projekat.model.Agent;
 import com.specifikacije.projekat.model.Notification;
 import com.specifikacije.projekat.model.ScheduledTour;
@@ -61,7 +62,7 @@ public class NotificationsController implements ApplicationContextAware {
     @GetMapping(value = "/unread")
     public String readNotifications(HttpSession session){
         Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
-        if(obj instanceof Agent){
+        if(obj instanceof Agent || obj instanceof AgencyOwner){
             return "notifications";
         }
         return "404NotFound";

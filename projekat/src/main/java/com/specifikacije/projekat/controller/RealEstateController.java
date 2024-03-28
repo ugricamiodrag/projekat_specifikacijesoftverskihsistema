@@ -55,6 +55,9 @@ public class RealEstateController {
 	private AgentService agentService;
 	
 	@Autowired
+	private NotificationService notificationService;
+	
+	@Autowired
 	RatingService ratingService;
 
 	@Autowired
@@ -145,6 +148,22 @@ public class RealEstateController {
 		model.addAttribute("typesOfEstate", types);
 		response.put("realEstate", realEstateList);
 		response.put("typesOfEstate", types);
+		
+		
+		// get unread messages
+		int count = 0;
+		if(obj instanceof Agent || obj instanceof AgencyOwner){
+			List<Notification> notifications = notificationService.findAll();
+			
+			for(Notification n: notifications) {
+				if(n.isRead() == false) {
+					count++;
+				}
+			}
+		    model.addAttribute("newMessageCount", count);
+		}
+		       
+		    
 
 		return "index";
 
