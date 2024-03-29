@@ -14,4 +14,10 @@ public interface PurchaseService {
 	void update(Purchase d);
 	boolean purchaseExists(RealEstate estate);
 	double getMonthlyIncome();
+
+	Purchase findOneRequest(Long id);
+	List<Purchase> findAllRequests();
+	Purchase saveRequest(Purchase purchase);
+	void updateRequest(Purchase purchase);
+	void deleteRequest(Long id);
 }

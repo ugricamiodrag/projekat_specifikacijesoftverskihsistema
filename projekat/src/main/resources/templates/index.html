@@ -32,6 +32,7 @@
 				<a class="nav-item nav-link white-font" th:if="${admin != null}" href="/realestate/adminPage">Admin</a>
 				<a class="nav-item nav-link white-font" th:if="${owner != null}" href="/agency">My Agency</a>
 				<a class="nav-item nav-link white-font" th:if="${agent != null or owner != null}" href="notifications/calendar">Calendar</a>
+				<a class="nav-item nav-link white-font" th:if="${agent != null}" href="/realestate/requests">Requests</a>
 				<a class="nav-item nav-link white-font" th:if="${agent != null}" href="/realestate/add">Add an
 					estate</a>
 

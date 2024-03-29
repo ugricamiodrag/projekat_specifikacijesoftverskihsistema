@@ -21,4 +21,18 @@ public interface RentedDAO {
     boolean rentedExists(RealEstate estate);
 
     boolean rentedExists(RealEstate estate, LocalDate startDate, LocalDate endDate);
+
+    Rented findOneRequest(Long id);
+
+    List<Rented> findAllRequests();
+
+    void saveRequest(Rented rented);
+
+    void updateRequest(Rented rented);
+
+    void deleteRequest(Long id);
+
+    boolean rentedRequestExists(RealEstate estate);
+
+    boolean rentedRequestExists(RealEstate estate, LocalDate startDate, LocalDate endDate);
 }

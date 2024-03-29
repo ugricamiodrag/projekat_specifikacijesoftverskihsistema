@@ -88,4 +88,29 @@ public class PurchaseServiceImpl implements PurchaseService{
 		 return income;
 	}
 
+	@Override
+	public Purchase findOneRequest(Long id) {
+		return purchaseDAO.findOneRequest(id);
+	}
+
+	@Override
+	public List<Purchase> findAllRequests() {
+		return purchaseDAO.findAllRequests();
+	}
+
+	@Override
+	public Purchase saveRequest(Purchase purchase) {
+		return purchaseDAO.saveRequest(purchase);
+	}
+
+	@Override
+	public void updateRequest(Purchase purchase) {
+		purchaseDAO.updateRequest(purchase);
+	}
+
+	@Override
+	public void deleteRequest(Long id) {
+		purchaseDAO.deleteRequest(id);
+	}
+
 }

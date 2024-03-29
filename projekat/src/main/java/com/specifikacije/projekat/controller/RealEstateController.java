@@ -400,9 +400,9 @@ public class RealEstateController {
 			
 			Purchase purchase = new Purchase (user, estate, currentDateSql);
 			
-			purchaseService.save(purchase);
+			purchaseService.saveRequest(purchase);
 			
-		    redirectAttributes.addFlashAttribute("message", "Your purchase have been finished successfully!"); // display this message on index page when user make a purchase
+		    redirectAttributes.addFlashAttribute("message", "Your request for purchase has been sent!"); // display this message on index page when user make a purchase
 
 			return "redirect:/realestate";
 		
@@ -421,16 +421,32 @@ public class RealEstateController {
 		LocalDate start_date = LocalDate.parse(startDate);
 		LocalDate end_date = LocalDate.parse(endDate);
 
-		if (rentedService.rentedExists(estate, start_date, end_date)){
+		if (rentedService.rentedExists(estate, start_date, end_date) || rentedService.rentedRequestExists(estate, start_date, end_date)){
 			redirectAttributes.addFlashAttribute("message", "This estate is already rented for that date. Please try a different date.");
 			return "redirect:/realestate/viewOne?id=" + id;
 		}
 
 		Rented rented = new Rented(user, estate, start_date, end_date);
-		rentedService.save(rented);
+		rentedService.saveRequest(rented);
 
-		redirectAttributes.addFlashAttribute("message", "You have successfully rented this estate.");
+		redirectAttributes.addFlashAttribute("message", "You have successfully sent a request to rent this estate.");
 		return "redirect:/realestate";
+
+	}
+
+	@GetMapping(value = "/requests")
+	public String showRequests(HttpSession session, Model model){
+		Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
+		if (!(obj instanceof Agent)){
+			return "404NotFound";
+		}
+		List<Rented> rentedList = rentedService.findAllRequests();
+		List<Purchase> purchaseList = purchaseService.findAllRequests();
+		model.addAttribute("rentingRequests", rentedList);
+		model.addAttribute("buyingRequests", purchaseList);
+
+
+		return "request";
 
 	}
 	

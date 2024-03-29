@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.specifikacije.projekat.dao.PurchaseDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -26,7 +27,7 @@ import com.specifikacije.projekat.service.UserService;
 import java.sql.Date;
 
 @Repository
-public class PurchaseDAOimpl {
+public class PurchaseDAOimpl implements PurchaseDAO {
 	
 	 @Autowired
 	 private JdbcTemplate jdbcTemplate;
@@ -70,7 +71,8 @@ public class PurchaseDAOimpl {
 	        }
 	    }
 	    
-	    
+
+	    @Override
 	    public Purchase findOne(Long id) {
 	        String sql = "select * from purchase" +
 	                " where id = ?" +
@@ -80,7 +82,7 @@ public class PurchaseDAOimpl {
 	        return handler.getPurchases().get(0);
 	    }
 
-	    
+	    @Override
 	    public List<Purchase> findAll() {
 	        String sql = "select * from purchase";
 	        PurchaseCallBackHandler handler = new PurchaseCallBackHandler();
@@ -89,6 +91,7 @@ public class PurchaseDAOimpl {
 	    }
 
 	    @Transactional
+		@Override
 	    public Purchase save(Purchase purchase) {
 	        PreparedStatementCreator preparedStatementCreator = new PreparedStatementCreator() {
 
@@ -113,25 +116,75 @@ public class PurchaseDAOimpl {
 	    }
 
 	    @Transactional
+		@Override
 	    public void update(Purchase purchase) {
-	        String sql = "update purchase set user_id = ?, estate_id = ?, purchase_date = ?, is_read = ? where id = ?";
+	        String sql = "update purchase set user_id = ?, estate_id = ?, purchase_date = ? where id = ?";
 	        jdbcTemplate.update(sql, purchase.getUser().getId(), purchase.getEstate().getId(), purchase.getPurchaseTime(), purchase.getId());
 	    }
 
 	    @Transactional
+		@Override
 	    public void delete(Long id) {
 	        String sql = "DELETE FROM purchase WHERE id = ?";
 	        jdbcTemplate.update(sql, id);
 	    }
 
+	@Override
+	public Purchase findOneRequest(Long id) {
+		String sql = "select * from purchase_request" +
+				" where id = ?" +
+				" order by id";
+		PurchaseCallBackHandler handler = new PurchaseCallBackHandler();
+		jdbcTemplate.query(sql, handler, id);
+		return handler.getPurchases().get(0);
+	}
 
-		
+	@Override
+	public List<Purchase> findAllRequests() {
+		String sql = "select * from purchase_request";
+		PurchaseCallBackHandler handler = new PurchaseCallBackHandler();
+		jdbcTemplate.query(sql, handler);
+		return handler.getPurchases();
+	}
 
-	    
-	    
+	@Transactional
+	@Override
+	public Purchase saveRequest(Purchase purchase) {
+		PreparedStatementCreator preparedStatementCreator = new PreparedStatementCreator() {
+
+			@Override
+			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+				String sql = "INSERT INTO purchase_request (user_id, estate_id, purchase_date ) VALUES (?, ?, ?)";
+
+				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				int index = 1;
+				preparedStatement.setLong(index++, purchase.getUser().getId());
+				preparedStatement.setLong(index++, purchase.getEstate().getId());
+				preparedStatement.setDate(index++, purchase.getPurchaseTime());
 
 
-	    
-	    
-	    
+				return preparedStatement;
+			}
+
+		};
+		GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+		boolean uspeh = jdbcTemplate.update(preparedStatementCreator, keyHolder) == 1;
+		return purchase;
+	}
+
+	@Transactional
+	@Override
+	public void updateRequest(Purchase purchase) {
+		String sql = "update purchase_request set user_id = ?, estate_id = ?, purchase_date = ? where id = ?";
+		jdbcTemplate.update(sql, purchase.getUser().getId(), purchase.getEstate().getId(), purchase.getPurchaseTime(), purchase.getId());
+	}
+
+	@Transactional
+	@Override
+	public void deleteRequest(Long id) {
+		String sql = "DELETE FROM purchase_request WHERE id = ?";
+		jdbcTemplate.update(sql, id);
+	}
+
+
 }

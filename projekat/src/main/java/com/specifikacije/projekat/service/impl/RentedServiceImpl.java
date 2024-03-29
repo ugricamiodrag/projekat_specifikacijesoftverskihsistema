@@ -50,4 +50,39 @@ public class RentedServiceImpl implements RentedService {
     public boolean rentedExists(RealEstate estate, LocalDate startDate, LocalDate endDate) {
         return rentedDAO.rentedExists(estate, startDate, endDate);
     }
+
+    @Override
+    public Rented findOneRequest(Long id) {
+        return rentedDAO.findOneRequest(id);
+    }
+
+    @Override
+    public List<Rented> findAllRequests() {
+        return rentedDAO.findAllRequests();
+    }
+
+    @Override
+    public void saveRequest(Rented rented) {
+        rentedDAO.saveRequest(rented);
+    }
+
+    @Override
+    public void updateRequest(Rented rented) {
+        rentedDAO.updateRequest(rented);
+    }
+
+    @Override
+    public void deleteRequest(Long id) {
+        rentedDAO.deleteRequest(id);
+    }
+
+    @Override
+    public boolean rentedRequestExists(RealEstate estate) {
+        return rentedDAO.rentedRequestExists(estate);
+    }
+
+    @Override
+    public boolean rentedRequestExists(RealEstate estate, LocalDate startDate, LocalDate endDate) {
+        return rentedDAO.rentedRequestExists(estate, startDate, endDate);
+    }
 }
