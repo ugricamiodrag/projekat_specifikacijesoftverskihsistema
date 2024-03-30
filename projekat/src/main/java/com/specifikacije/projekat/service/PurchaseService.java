@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.specifikacije.projekat.model.Purchase;
 import com.specifikacije.projekat.model.RealEstate;
+import com.specifikacije.projekat.model.User;
 
 public interface PurchaseService {
 
@@ -20,4 +21,6 @@ public interface PurchaseService {
 	Purchase saveRequest(Purchase purchase);
 	void updateRequest(Purchase purchase);
 	void deleteRequest(Long id);
+
+	boolean requestExists(RealEstate estate, User user);
 }

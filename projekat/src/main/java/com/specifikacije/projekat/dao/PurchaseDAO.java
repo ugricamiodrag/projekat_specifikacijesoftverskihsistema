@@ -1,6 +1,8 @@
 package com.specifikacije.projekat.dao;
 
 import com.specifikacije.projekat.model.Purchase;
+import com.specifikacije.projekat.model.RealEstate;
+import com.specifikacije.projekat.model.User;
 
 import java.util.List;
 
@@ -15,5 +17,7 @@ public interface PurchaseDAO {
     Purchase saveRequest(Purchase purchase);
     void updateRequest(Purchase purchase);
     void deleteRequest(Long id);
+
+    boolean requestExists(RealEstate estate, User user);
 
 }

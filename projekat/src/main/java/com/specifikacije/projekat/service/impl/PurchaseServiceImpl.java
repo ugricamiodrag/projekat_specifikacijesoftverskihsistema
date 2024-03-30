@@ -2,6 +2,8 @@ package com.specifikacije.projekat.service.impl;
 
 import java.util.List;
 import java.time.LocalDate;
+
+import com.specifikacije.projekat.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.specifikacije.projekat.dao.impl.PurchaseDAOimpl;
@@ -111,6 +113,11 @@ public class PurchaseServiceImpl implements PurchaseService{
 	@Override
 	public void deleteRequest(Long id) {
 		purchaseDAO.deleteRequest(id);
+	}
+
+	@Override
+	public boolean requestExists(RealEstate estate, User user) {
+		return purchaseDAO.requestExists(estate, user);
 	}
 
 }

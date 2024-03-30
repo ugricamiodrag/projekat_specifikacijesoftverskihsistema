@@ -186,5 +186,14 @@ public class PurchaseDAOimpl implements PurchaseDAO {
 		jdbcTemplate.update(sql, id);
 	}
 
+	@Override
+	public boolean requestExists(RealEstate estate, User user) {
+		String sql = "SELECT COUNT(*) > 0 AS request_exists " +
+				"FROM purchase_request " +
+				"WHERE user_id = ? AND estate_id = ?";
+
+		return jdbcTemplate.queryForObject(sql, Boolean.class, user.getId(), estate.getId());
+	}
+
 
 }

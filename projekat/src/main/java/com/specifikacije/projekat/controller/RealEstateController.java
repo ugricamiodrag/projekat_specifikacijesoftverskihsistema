@@ -388,10 +388,18 @@ public class RealEstateController {
 	public String buyRealEstate(@RequestParam Long id, Model model, HttpSession session, RedirectAttributes redirectAttributes) throws IOException {
 
 			RealEstate estate = realEstateService.findOne(id);
-			
+
+
+
+
 			User user = (User) session.getAttribute(LoginLogoutController.KORISNIK_KEY); // convert it to user because only user can see that button and make a purchase
 			if (user == null){
 				return "404NotFound"; // if session expired return not found
+			}
+			if(purchaseService.requestExists(estate, user)){
+				redirectAttributes.addFlashAttribute("message", "You already sent a request for this estate!");
+
+				return "redirect:/realestate";
 			}
 			
 			Date currentDateUtil = new Date();
@@ -421,7 +429,7 @@ public class RealEstateController {
 		LocalDate start_date = LocalDate.parse(startDate);
 		LocalDate end_date = LocalDate.parse(endDate);
 
-		if (rentedService.rentedExists(estate, start_date, end_date) || rentedService.rentedRequestExists(estate, start_date, end_date)){
+		if (rentedService.rentedExists(estate, start_date, end_date) || rentedService.rentedRequestExists(estate, start_date, end_date) || (rentedService.rentedRequestExists(estate, start_date, end_date) && rentedService.rentedRequestExists(estate, user)) || (rentedService.rentedExists(estate, start_date, end_date) && rentedService.rentedRequestExists(estate, user))){
 			redirectAttributes.addFlashAttribute("message", "This estate is already rented for that date. Please try a different date.");
 			return "redirect:/realestate/viewOne?id=" + id;
 		}
@@ -449,11 +457,59 @@ public class RealEstateController {
 		return "request";
 
 	}
-	
-	
-	
-	
-	
-			
-	
+
+
+	@PostMapping(value = "/acceptBuyingRequest")
+	public String acceptBuyingRequest(@RequestParam Long requestId){
+		Purchase purchase = purchaseService.findOneRequest(requestId);
+		Purchase newPurchase = new Purchase(purchase.getUser(), purchase.getEstate(), purchase.getPurchaseTime());
+		purchaseService.save(newPurchase);
+		List<Purchase> allPurchaseRequests = purchaseService.findAllRequests();
+		for (Purchase onePurchase : allPurchaseRequests){
+			if (onePurchase.getId().equals(requestId)){
+				purchaseService.deleteRequest(onePurchase.getId());
+			}
+		}
+
+
+		return "redirect:/realestate";
+	}
+
+	@PostMapping(value = "/declineBuyingRequest")
+	public String declineBuyingRequest(@RequestParam Long requestId){
+		purchaseService.deleteRequest(requestId);
+
+		return "redirect:/realestate";
+	}
+
+	@PostMapping(value = "/acceptRentingRequest")
+	public String acceptRentingRequest(@RequestParam Long requestId){
+
+		Rented rented = rentedService.findOneRequest(requestId);
+		Rented newRented = new Rented(rented.getUser(), rented.getEstate(), rented.getStartDate(), rented.getEndDate());
+		rentedService.save(newRented);
+		rentedService.deleteRequest(requestId);
+
+		List<Rented> allRentedRequests = rentedService.findAllRequests();
+		for (Rented oneRented : allRentedRequests){
+			if(oneRented.getId().equals(requestId)){
+				rentedService.deleteRequest(oneRented.getId());
+			}
+		}
+
+		return "redirect:/realestate";
+	}
+
+	@PostMapping(value = "/declineRentingRequest")
+	public String declineRentingRequest(@RequestParam Long requestId){
+		rentedService.deleteRequest(requestId);
+
+		return "redirect:/realestate";
+	}
+
+
+
+
+
+
 }

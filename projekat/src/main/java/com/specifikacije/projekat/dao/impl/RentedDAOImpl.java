@@ -212,4 +212,13 @@ public class RentedDAOImpl implements RentedDAO {
 
         return jdbcTemplate.queryForObject(sql, Boolean.class, estate.getId(), endDate, startDate, startDate, endDate);
     }
+
+    @Override
+    public boolean rentedRequestExists(RealEstate estate, User user) {
+        String sql = "SELECT COUNT(*) > 0 AS request_exists " +
+                "FROM rented_request " +
+                "WHERE user_id = ? AND estate_id = ?";
+
+        return jdbcTemplate.queryForObject(sql, Boolean.class, user.getId(), estate.getId());
+    }
 }

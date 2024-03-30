@@ -3,6 +3,7 @@ package com.specifikacije.projekat.service.impl;
 import com.specifikacije.projekat.dao.RentedDAO;
 import com.specifikacije.projekat.model.RealEstate;
 import com.specifikacije.projekat.model.Rented;
+import com.specifikacije.projekat.model.User;
 import com.specifikacije.projekat.service.RentedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,5 +85,10 @@ public class RentedServiceImpl implements RentedService {
     @Override
     public boolean rentedRequestExists(RealEstate estate, LocalDate startDate, LocalDate endDate) {
         return rentedDAO.rentedRequestExists(estate, startDate, endDate);
+    }
+
+    @Override
+    public boolean rentedRequestExists(RealEstate estate, User user) {
+        return rentedDAO.rentedRequestExists(estate, user);
     }
 }

@@ -2,6 +2,7 @@ package com.specifikacije.projekat.service;
 
 import com.specifikacije.projekat.model.RealEstate;
 import com.specifikacije.projekat.model.Rented;
+import com.specifikacije.projekat.model.User;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -35,4 +36,6 @@ public interface RentedService {
     boolean rentedRequestExists(RealEstate estate);
 
     boolean rentedRequestExists(RealEstate estate, LocalDate startDate, LocalDate endDate);
+
+    boolean rentedRequestExists(RealEstate estate, User user);
 }
