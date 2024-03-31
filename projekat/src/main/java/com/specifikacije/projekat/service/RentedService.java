@@ -1,5 +1,6 @@
 package com.specifikacije.projekat.service;
 
+import com.specifikacije.projekat.model.Purchase;
 import com.specifikacije.projekat.model.RealEstate;
 import com.specifikacije.projekat.model.Rented;
 import com.specifikacije.projekat.model.User;
@@ -38,4 +39,8 @@ public interface RentedService {
     boolean rentedRequestExists(RealEstate estate, LocalDate startDate, LocalDate endDate);
 
     boolean rentedRequestExists(RealEstate estate, User user);
+
+    void deleteRequests(Long id);
+
+    List<Rented> findByUser(User user);
 }

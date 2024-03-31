@@ -21,7 +21,7 @@
           <div class="navbar-nav">
               <a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
               <a class="nav-item nav-link white-font" href="/login/logOut">Log out<span class="sr-only"></span></a>
-              <a class="nav-item nav-link white-font" href="#"><img class="small" src="/images/cart.png"></img></a>
+              <a class="nav-item nav-link white-font" th:if="${user != null}" href="/users/pastPurchases"><img class="small" src="/images/cart.png"></img></a>
 
           </div>
       </div>

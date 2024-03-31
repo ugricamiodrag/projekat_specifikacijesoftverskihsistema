@@ -23,4 +23,8 @@ public interface PurchaseService {
 	void deleteRequest(Long id);
 
 	boolean requestExists(RealEstate estate, User user);
+
+	void deleteRequests(Long id);
+	List<Purchase> findByUser(User user);
+
 }

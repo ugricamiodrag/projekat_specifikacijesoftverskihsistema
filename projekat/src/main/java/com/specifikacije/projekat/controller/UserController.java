@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.specifikacije.projekat.model.*;
+import com.specifikacije.projekat.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.specifikacije.projekat.bean.SecondConfiguration.ApplicationMemory;
-import com.specifikacije.projekat.model.Administrator;
-import com.specifikacije.projekat.model.AgencyOwner;
-import com.specifikacije.projekat.model.Agent;
-import com.specifikacije.projekat.model.User;
-import com.specifikacije.projekat.service.AdministratorService;
-import com.specifikacije.projekat.service.AgencyOwnerService;
-import com.specifikacije.projekat.service.AgentService;
-import com.specifikacije.projekat.service.UserService;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletResponse;
@@ -53,6 +47,12 @@ public class UserController implements ApplicationContextAware{
 	
 	@Autowired
 	private AgentService agentService;
+
+	@Autowired
+	private RentedService rentedService;
+
+	@Autowired
+	private PurchaseService purchaseService;
 	
 	public static final String USER_KEY = "users";
 	
@@ -142,7 +142,7 @@ public class UserController implements ApplicationContextAware{
 	@GetMapping(value="/editUser")
 	public String edit(@RequestParam Long id, HttpServletResponse response, Model model, HttpSession session) throws IOException {
 		Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
-		if (!(obj instanceof User)) {
+		if ((obj instanceof User)) {
 
 			User d = userService.findOne(id);
 
@@ -157,7 +157,7 @@ public class UserController implements ApplicationContextAware{
 	}
 	
 	@PostMapping("/editUser")
-	public void edit(@RequestParam Long id, @RequestParam String name, @RequestParam String surname, @RequestParam String username, @RequestParam String password, @RequestParam String phone, @RequestParam String email, @RequestParam String address, HttpServletResponse response) throws IOException {
+	public void edit(@RequestParam Long id, @RequestParam String name, @RequestParam String surname, @RequestParam String username, @RequestParam String password, @RequestParam String phone, @RequestParam String email, @RequestParam String address, HttpServletResponse response, HttpSession session) throws IOException {
 		
 
 		User d = userService.findOne(id);
@@ -172,6 +172,12 @@ public class UserController implements ApplicationContextAware{
 
 
 		userService.update(d);
+
+		Object obj = (Object) session.getAttribute(LoginLogoutController.KORISNIK_KEY);
+		if(obj instanceof User){
+			response.sendRedirect("/realestate/profile");
+			return;
+		}
 		
 		
 		response.sendRedirect("viewAllUsers");
@@ -204,6 +210,22 @@ public class UserController implements ApplicationContextAware{
 		userService.update(d);
 
 		return "redirect:viewAllUsers";
+	}
+
+	@GetMapping(value = "/pastPurchases")
+	public String pastPurchases(Model model, HttpSession session){
+		Object obj = (Object) session.getAttribute(LoginLogoutController.KORISNIK_KEY);
+		if(!(obj instanceof User)){
+			return "404NotFound";
+		}
+		User user = (User) obj;
+		model.addAttribute("isLoggedIn", true);
+		List<Rented> allRented = rentedService.findByUser(user);
+		List<Purchase> allPurchases = purchaseService.findByUser(user);
+		model.addAttribute("buyingRequests", allPurchases);
+		model.addAttribute("rentingRequests", allRented);
+
+		return "pastPurchases";
 	}
 	
 	

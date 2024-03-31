@@ -26,11 +26,14 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
                 <a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
-                <a class="nav-item nav-link white-font" href="registration">Register</a>
+                <a class="nav-item nav-link white-font" th:if="${isLoggedIn == false}" href="registration">Register</a>
 				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == false}" href="/login">Log in</a>
 				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="/login/logOut">Log out</a>
-				<a class="nav-item nav-link white-font" href="#"><img class="small" src="/images/cart.png"></img></a>
+				<a class="nav-item nav-link white-font"  th:if="${isLoggedIn == true}" href="/users/pastPurchases"><img class="small" src="/images/cart.png"></img></a>
 
+                <a class="nav-item nav-link white-font" style="position: absolute; margin-left: 83%;"
+                   th:if="${isLoggedIn == true}" href="realestate/profile"><img class="small"
+                                                                                src="/images/user.png"></a>
             </div>
         </div>
     </nav>

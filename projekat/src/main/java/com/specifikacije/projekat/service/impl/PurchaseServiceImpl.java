@@ -120,4 +120,14 @@ public class PurchaseServiceImpl implements PurchaseService{
 		return purchaseDAO.requestExists(estate, user);
 	}
 
+	@Override
+	public void deleteRequests(Long id) {
+		purchaseDAO.deleteRequests(id);
+	}
+
+	@Override
+	public List<Purchase> findByUser(User user) {
+		return purchaseDAO.findByUser(user);
+	}
+
 }

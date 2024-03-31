@@ -33,10 +33,14 @@ public interface RentedDAO {
 
     void deleteRequest(Long id);
 
+    void deleteRequests(Long id);
+
     boolean rentedRequestExists(RealEstate estate);
 
     boolean rentedRequestExists(RealEstate estate, LocalDate startDate, LocalDate endDate);
 
     boolean rentedRequestExists(RealEstate estate, User user);
+
+    List<Rented> findByUser(User user);
 
 }

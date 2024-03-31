@@ -1,6 +1,7 @@
 package com.specifikacije.projekat.service.impl;
 
 import com.specifikacije.projekat.dao.RentedDAO;
+import com.specifikacije.projekat.model.Purchase;
 import com.specifikacije.projekat.model.RealEstate;
 import com.specifikacije.projekat.model.Rented;
 import com.specifikacije.projekat.model.User;
@@ -90,5 +91,15 @@ public class RentedServiceImpl implements RentedService {
     @Override
     public boolean rentedRequestExists(RealEstate estate, User user) {
         return rentedDAO.rentedRequestExists(estate, user);
+    }
+
+    @Override
+    public void deleteRequests(Long id) {
+        rentedDAO.deleteRequests(id);
+    }
+
+    @Override
+    public List<Rented> findByUser(User user) {
+        return rentedDAO.findByUser(user);
     }
 }

@@ -190,6 +190,12 @@ public class RentedDAOImpl implements RentedDAO {
         jdbcTemplate.update(sql, id);
     }
 
+    @Override
+    public void deleteRequests(Long id) {
+        String sql = "delete from rented_request where estate_id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
 
     @Override
     public boolean rentedRequestExists(RealEstate estate) {
@@ -220,5 +226,15 @@ public class RentedDAOImpl implements RentedDAO {
                 "WHERE user_id = ? AND estate_id = ?";
 
         return jdbcTemplate.queryForObject(sql, Boolean.class, user.getId(), estate.getId());
+    }
+
+    @Override
+    public List<Rented> findByUser(User user) {
+        String sql = "select * from rented " +
+                " where user_id = ? " +
+                " order by id";
+        RentedCallBackHandler handler = new RentedCallBackHandler();
+        jdbcTemplate.query(sql, handler, user.getId());
+        return handler.getRented();
     }
 }

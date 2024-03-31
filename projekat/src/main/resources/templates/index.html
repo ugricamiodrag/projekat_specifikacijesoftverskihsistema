@@ -36,7 +36,7 @@
 				<a class="nav-item nav-link white-font" th:if="${agent != null}" href="/realestate/add">Add an
 					estate</a>
 
-				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="#"><img class="small"
+				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == true and user != null}" href="/users/pastPurchases"><img class="small"
 						src="/images/cart.png"></img></a>
 
 				<a class="nav-item nav-link white-font" th:if="${agent != null or owner != null}" href="/notifications/unread" style="position: absolute; margin-left: 78%;"><img class="small"

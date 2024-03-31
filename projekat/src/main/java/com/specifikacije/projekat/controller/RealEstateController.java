@@ -239,6 +239,10 @@ public class RealEstateController {
 		model.addAttribute("ratings", ratings);
 		model.addAttribute("oneRealEstate", d);
 
+		if(obj != null){
+			model.addAttribute("isLoggedIn", true);
+		}
+
 		return "oneRealEstate";
 	}
 	
@@ -256,6 +260,9 @@ public class RealEstateController {
 		Object obj =  request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
 		String type = "";
 		String theHref = "users/editUser";
+		if(obj == null){
+			return "404NotFound";
+		}
 		if (obj instanceof Administrator) {
 			type = "- Administrator -";
 			theHref = "admin/editAdmin";
@@ -267,6 +274,9 @@ public class RealEstateController {
 		if (obj instanceof AgencyOwner) {
 			type = "- Agency owner -";
 			theHref = "owner/editOwner";
+		}
+		if(obj instanceof User){
+			model.addAttribute("user", true);
 		}
 		model.addAttribute("person", obj);
 		model.addAttribute("type", type);
@@ -466,8 +476,8 @@ public class RealEstateController {
 		purchaseService.save(newPurchase);
 		List<Purchase> allPurchaseRequests = purchaseService.findAllRequests();
 		for (Purchase onePurchase : allPurchaseRequests){
-			if (onePurchase.getId().equals(requestId)){
-				purchaseService.deleteRequest(onePurchase.getId());
+			if (onePurchase.getId().equals(purchase.getId())){
+				purchaseService.deleteRequests(onePurchase.getEstate().getId());
 			}
 		}
 
@@ -492,8 +502,8 @@ public class RealEstateController {
 
 		List<Rented> allRentedRequests = rentedService.findAllRequests();
 		for (Rented oneRented : allRentedRequests){
-			if(oneRented.getId().equals(requestId)){
-				rentedService.deleteRequest(oneRented.getId());
+			if(oneRented.getId().equals(rented.getId())){
+				rentedService.deleteRequests(oneRented.getEstate().getId());
 			}
 		}
 

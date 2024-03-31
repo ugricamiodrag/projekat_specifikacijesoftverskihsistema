@@ -195,5 +195,21 @@ public class PurchaseDAOimpl implements PurchaseDAO {
 		return jdbcTemplate.queryForObject(sql, Boolean.class, user.getId(), estate.getId());
 	}
 
+	@Override
+	public void deleteRequests(Long id) {
+		String sql = "delete from purchase_request where estate_id = ?";
+		jdbcTemplate.update(sql, id);
+	}
+
+	@Override
+	public List<Purchase> findByUser(User user) {
+		String sql = "select * from purchase " +
+				" where user_id = ? " +
+				" order by id";
+		PurchaseCallBackHandler handler = new PurchaseCallBackHandler();
+		jdbcTemplate.query(sql, handler, user.getId());
+		return handler.getPurchases();
+	}
+
 
 }
