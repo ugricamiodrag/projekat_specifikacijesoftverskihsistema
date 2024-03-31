@@ -1,5 +1,6 @@
 .main-content{
     margin: 10%;
+    font-family: montserrat;
 }
 .margin-left{
     margin-left: 10%;
@@ -435,6 +436,23 @@ body{
 }
 
 
+ .btn-like {
+        border: none;
+        background: none;
+        padding: 0;
+    }
 
 
+::selection {
+  background: #E98A15;
+  padding: 20px;
+  color: white;
+}
 
+
+ @font-face {
+        font-family: montserrat;
+        src: url('/font/Montserrat-Regular.woff');
+    }
+    
+*{font-family:montserrat;}

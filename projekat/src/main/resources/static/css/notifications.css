@@ -85,3 +85,12 @@
     background-color: #E98A15;
     border: 1px solid #E98A15;
 }
+
+
+ @font-face {
+        font-family: montserrat;
+        src: url('/font/Montserrat-Regular.woff');
+    }
+    
+*{font-family:montserrat;}
+

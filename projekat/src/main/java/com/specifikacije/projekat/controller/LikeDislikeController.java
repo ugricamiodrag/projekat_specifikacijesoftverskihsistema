@@ -16,7 +16,8 @@ public class LikeDislikeController {
 	 @Autowired
 	 private SaveLikeDislikeDAOimpl likeDislikeService;
 
-	    @PostMapping("/like")
+	    @SuppressWarnings("null")
+		@PostMapping("/like")
 	    public String likeEstate(HttpServletRequest request, @RequestParam Long estateId) {
 
 	    	User obj =  (User)request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
@@ -25,16 +26,27 @@ public class LikeDislikeController {
 
 			//If he didnt set new like, else update the existing one
 			if(user == null) {
-		    	likeDislikeService.save(obj.getId(), estateId, true);
-
+				
+					likeDislikeService.save(obj.getId(), estateId, true);
+		    	
 			}else {
-				likeDislikeService.update(obj.getId(), estateId, true);
+				boolean result = likeDislikeService.findLike(user.getId(), estateId, false);
+				System.out.println(result);
+				if(result == false) {
+					likeDislikeService.delete(obj.getId(), estateId);
+
+				}else {
+					likeDislikeService.update(obj.getId(), estateId, true);
+
+				}
+				
 			}
 	        // Redirect the user back to the previous page
 	        return "redirect:/realestate";
 	    }
 	    
 	    // Same as like just different parameter, instead of true, send false
+		@SuppressWarnings("null")
 		@PostMapping("/dislike")
 	    public String dislikeEstate(HttpServletRequest request, @RequestParam Long estateId) {
 	        
@@ -44,10 +56,19 @@ public class LikeDislikeController {
 			
 
 			if(user == null) {
-		    	likeDislikeService.save(obj.getId(), estateId, false);
+				likeDislikeService.save(obj.getId(), estateId, false);
+				
 
 			}else {
-				likeDislikeService.update(obj.getId(), estateId, false);
+				boolean result = likeDislikeService.findLike(user.getId(), estateId, false);
+				System.out.println(result);
+				if(result == true) {
+					likeDislikeService.delete(obj.getId(), estateId);
+
+				}else {
+					likeDislikeService.update(obj.getId(), estateId, false);
+
+				}
 			}
 			
 	        return "redirect:/realestate";

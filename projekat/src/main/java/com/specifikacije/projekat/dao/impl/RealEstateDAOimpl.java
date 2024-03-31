@@ -192,15 +192,21 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public List<RealEstate> findAgentsEstate(Agent agent) {
+		Agency agency = agent.getAgency();
 		String sql = "SELECT * " +
 				"FROM estate " +
-				"WHERE agent_id = ?";
-		RealEstateCallBackHandler rowCallbackHandler = new RealEstateCallBackHandler();
-		jdbcTemplate.query(sql, rowCallbackHandler, agent.getId());
+				"WHERE agent_id IN (SELECT id FROM agent WHERE agency_id = ? AND agent_id = ?)";
+		
+		Object[] params = { agency.getId(), agent.getId() };
+		return jdbcTemplate.query(sql, params, new RealEstateCallBackHandler());
 
-		return rowCallbackHandler.getRealEstates();
+//		RealEstateCallBackHandler rowCallbackHandler = new RealEstateCallBackHandler();
+//		jdbcTemplate.query(sql, rowCallbackHandler, agent.getId());
+//
+//		return rowCallbackHandler.getRealEstates();
 	}
 
 	@Override

@@ -28,3 +28,12 @@
 .notif-btn:hover {
     background-color: #0056b3;
 }
+
+
+
+ @font-face {
+        font-family: montserrat;
+        src: url('/font/Montserrat-Regular.woff');
+    }
+    
+*{font-family:montserrat;}

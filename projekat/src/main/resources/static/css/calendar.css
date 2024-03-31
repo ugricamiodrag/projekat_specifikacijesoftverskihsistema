@@ -520,3 +520,12 @@
     color: white;
     
 }
+
+
+
+ @font-face {
+        font-family: montserrat;
+        src: url('/font/Montserrat-Regular.woff');
+    }
+    
+*{font-family:montserrat;}

@@ -122,10 +122,36 @@ public class SaveLikeDislikeDAOimpl {
 		
 	}
 	
+	public boolean findLike(Long id, Long estateId, boolean like) {
+		String sql = 
+				"SELECT * FROM like_dislike " +
+				"WHERE user_id = ? " + 
+				"AND estate_id = ? " +
+				"AND liked_disliked = ?";
+				
+		
+		LikeCallBackHandler rowCallbackHandler = new LikeCallBackHandler();
+		jdbcTemplate.query(sql, rowCallbackHandler, id, estateId, like);
+
+		 List<User> users = rowCallbackHandler.getLikes();
+		    if (users.isEmpty()) {
+		        return false; 
+		    } else {
+		        return true; 
+		    }
+		
+	}
+	
 	@Transactional
 	public void update(Long userid, Long estateid, boolean isLiked) {
 		String sql = "UPDATE like_dislike SET liked_disliked = ? WHERE user_id = ? AND estate_id = ?";	
 		jdbcTemplate.update(sql, isLiked, userid, estateid);	
+	}
+	
+	@Transactional
+	public void delete(Long userid, Long estateid) {
+		String sql = "DELETE FROM like_dislike WHERE user_id = ? AND estate_id = ?";	
+		jdbcTemplate.update(sql, userid, estateid);	
 	}
 	
 	
