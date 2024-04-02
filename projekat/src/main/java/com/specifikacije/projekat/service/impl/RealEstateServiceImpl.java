@@ -71,4 +71,9 @@ public class RealEstateServiceImpl implements RealEstateService{
 		return realEstateDAO.findAgentsEstate(agent);
 	}
 
+	@Override
+	public List<RealEstate> findRemaining() {
+		return realEstateDAO.findRemaining();
+	}
+
 }

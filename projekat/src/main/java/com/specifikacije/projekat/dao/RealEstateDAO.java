@@ -27,4 +27,6 @@ public interface RealEstateDAO {
 			Double priceMax, String rent, String buy, String popularity, List<String> propertyTypes);
 
 	List<RealEstate> findAgentsEstate(Agent agent);
+
+	List<RealEstate> findRemaining();
 }

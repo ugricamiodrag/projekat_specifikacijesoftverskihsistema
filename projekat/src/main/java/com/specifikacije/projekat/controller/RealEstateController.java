@@ -120,7 +120,7 @@ public class RealEstateController {
 		    
 		}else {
 		    isLoggedIn = false;
-			realEstateList = realEstateService.findAll();
+			realEstateList = realEstateService.findRemaining();
 		}
 		
 		
@@ -220,7 +220,11 @@ public class RealEstateController {
 		
 		
 		Object obj =  request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
-
+		if(obj != null) {
+			model.addAttribute("isLoggedIn", true);
+		}else {
+			model.addAttribute("isLoggedIn", false);
+		}
 		if (obj instanceof User) {
 		    Class<?> objClass = obj.getClass();
 		    User user = (User) obj;
@@ -277,6 +281,9 @@ public class RealEstateController {
 		}
 		if(obj instanceof User){
 			model.addAttribute("user", true);
+			System.out.println(((User) obj).getId());
+			System.out.println(((User) obj).getAddress());
+
 		}
 		model.addAttribute("person", obj);
 		model.addAttribute("type", type);

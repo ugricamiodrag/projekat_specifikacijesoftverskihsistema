@@ -145,6 +145,7 @@ public class UserController implements ApplicationContextAware{
 		if ((obj instanceof User)) {
 
 			User d = userService.findOne(id);
+			
 
 			model.addAttribute("user", d);
 			model.addAttribute("entityType", "User");
@@ -160,22 +161,31 @@ public class UserController implements ApplicationContextAware{
 	public void edit(@RequestParam Long id, @RequestParam String name, @RequestParam String surname, @RequestParam String username, @RequestParam String password, @RequestParam String phone, @RequestParam String email, @RequestParam String address, HttpServletResponse response, HttpSession session) throws IOException {
 		
 
-		User d = userService.findOne(id);
+//		User d = userService.findOne(id);
+//
+//		d.setName(name);
+//		d.setSurname(surname);
+//		d.setUsername(username);
+//		d.setPassword(password);
+//		d.setEmail(email);
+//		d.setAddress(address);
+//		d.setPhoneNumber(phone);
 
-		d.setName(name);
-		d.setSurname(surname);
-		d.setUsername(username);
-		d.setPassword(password);
-		d.setEmail(email);
-		d.setAddress(address);
-		d.setPhoneNumber(phone);
 
-
-		userService.update(d);
+//		userService.update(d);
 
 		Object obj = (Object) session.getAttribute(LoginLogoutController.KORISNIK_KEY);
 		if(obj instanceof User){
+			User u = (User) obj;
 			response.sendRedirect("/realestate/profile");
+			u.setName(name);
+			u.setSurname(surname);
+			u.setUsername(username);
+			u.setPassword(password);
+			u.setEmail(email);
+			u.setAddress(address);
+			u.setPhoneNumber(phone);
+			userService.update(u);
 			return;
 		}
 		

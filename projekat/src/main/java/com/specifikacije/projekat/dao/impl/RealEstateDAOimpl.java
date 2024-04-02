@@ -116,6 +116,20 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 
 		return rowCallbackHandler.getRealEstates();
 	}
+	
+	
+	@Override
+	public List<RealEstate> findRemaining() {
+		String sql = 
+				"SELECT * FROM estate ck " +
+				"WHERE ck.id NOT IN (SELECT estate_id from purchase_request) AND ck.id NOT IN (SELECT estate_id from purchase) AND isActive = true " +
+				"ORDER BY ck.id";
+
+		RealEstateCallBackHandler rowCallbackHandler = new RealEstateCallBackHandler();
+		jdbcTemplate.query(sql, rowCallbackHandler);
+
+		return rowCallbackHandler.getRealEstates();
+	}
 
 	@Transactional
 	@Override
@@ -166,7 +180,7 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 
 	@Override
 	public List<RealEstate> find(String location, Integer surfaceFrom, Integer surfaceTo, Double priceMin, Double priceMax, String rent, String buy, String popularity, List<String> propertyTypes) {
-		List<RealEstate> allEstate = findAll();
+		List<RealEstate> allEstate = findRemaining();
 
 		 Stream<RealEstate> filteredStream = allEstate.stream()
 		            .filter(estate ->

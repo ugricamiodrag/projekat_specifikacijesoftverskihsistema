@@ -22,4 +22,5 @@ public interface RealEstateService {
     List<RealEstate> findAgenciesEstate(Agency agency);
 
 	List<RealEstate> findAgentsEstate(Agent agent);
+	List<RealEstate> findRemaining();
 }
