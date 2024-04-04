@@ -111,6 +111,7 @@ public class ScheduledTourDAOimpl implements ScheduledTourDAO {
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;
 				preparedStatement.setTimestamp(index++, Timestamp.valueOf(scheduledTour.getStartTime()));
+				System.out.println("start time: " + scheduledTour.getStartTime());
 				preparedStatement.setTimestamp(index++, Timestamp.valueOf(scheduledTour.getEndTime()));
 				preparedStatement.setLong(index++, scheduledTour.getUser().getId());
 				preparedStatement.setLong(index++, scheduledTour.getRealEstate().getId());

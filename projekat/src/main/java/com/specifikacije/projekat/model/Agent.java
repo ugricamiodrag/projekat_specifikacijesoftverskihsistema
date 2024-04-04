@@ -36,6 +36,11 @@ public class Agent extends Person {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public String toString() {
+		return "Agent [realEstates=" + realEstates + ", agency=" + agency + "]";
+	}
+
 
 }
 

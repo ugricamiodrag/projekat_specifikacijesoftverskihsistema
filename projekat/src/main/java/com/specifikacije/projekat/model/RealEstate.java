@@ -110,11 +110,20 @@ public class RealEstate {
 		this.isActive = isActive;
 	}
 
+	
+
+
+
 	@Override
 	public String toString() {
-		return "RealEstate [id=" + id + ", type=" + estateType + ", location=" + location + ", picture=" + picture
-				+ ", price=" + price + ", rentOrBuy=" + rentOrBuy + ", isActive=" + isActive + "]";
+		return "RealEstate [id=" + id + ", estateType=" + estateType + ", agent=" + agent + ", location=" + location
+				+ ", picture=" + picture + ", price=" + price + ", rentOrBuy=" + rentOrBuy + ", surface=" + surface
+				+ ", numberOfVisitRequests=" + numberOfVisitRequests + ", grade=" + grade + ", viewNumber=" + viewNumber
+				+ ", isActive=" + isActive + "]";
 	}
+
+
+
 
 
 

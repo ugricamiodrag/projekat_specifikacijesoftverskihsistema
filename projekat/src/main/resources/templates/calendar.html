@@ -79,8 +79,10 @@
 		</div>
 		<div class="calendar-footer">
 		</div>
-
-		<div class="toBlur" id="toBlur" style="display: none;"><div class="month-list1" id="month-list1"></div></div>
+		<input type="hidden" id="agentIdValue" th:value="${agent.id}" />
+		<div class="toBlur" id="toBlur" style="display: none;">
+			<div class="month-list1" id="month-list1"></div>
+		</div>
 	</div>
 
 
@@ -143,17 +145,14 @@
 	month_picker.onclick = () => {
 		if (isMonthListOpen) {
 			month_list.classList.remove('show');
-			month_list.classList.add('hide');		
+			month_list.classList.add('hide');
 			document.getElementById('toBlur').style.display = 'none';
-
-
 		} else {
 			month_list.classList.remove('hideonce');
 			month_list.classList.remove('hide');
 			month_list.classList.add('show');
 			document.getElementById('toBlur').style.display = 'flex';
 			document.getElementById('month-list1').focus();
-
 		}
 		isMonthListOpen = !isMonthListOpen;
 	};
@@ -197,14 +196,21 @@
 
 				let scheduledToursForDay = getScheduledTourForDay(i - first_day.getDay() + 1, month, year, scheduledTours);
 				scheduledToursForDay.forEach(function (scheduledTour) {
-					let notification = document.createElement('div');
-					notification.className = 'notification';
-					let startdate = new Date(scheduledTour.startTime);
-					let startTime = formatTime(startdate);
-					let enddate = new Date(scheduledTour.endTime);
-					let endTime = formatTime(enddate);
-					notification.innerHTML = `${startTime} - ${endTime}`;
-					notificationContainer.appendChild(notification);
+					let agent = scheduledTour.realEstate.agent;
+					var agentIdValue = document.getElementById("agentIdValue").value;
+					console.log("person " + agentIdValue);
+					console.log("Agent " + agent.id);
+					if (agent.id == agentIdValue) {
+						console.log("TRUE")
+						let notification = document.createElement('div');
+						notification.className = 'notification';
+						let startdate = new Date(scheduledTour.startTime);
+						let startTime = formatTime(startdate);
+						let enddate = new Date(scheduledTour.endTime);
+						let endTime = formatTime(enddate);
+						notification.innerHTML = `${startTime} - ${endTime}`;
+						notificationContainer.appendChild(notification);
+					}
 				});
 
 
@@ -234,6 +240,8 @@
 
 		return scheduledTimeString;
 	}
+
+
 
 	function getScheduledTourForDay(day, month, year, scheduledTours) {
 		let listOfTours = [];

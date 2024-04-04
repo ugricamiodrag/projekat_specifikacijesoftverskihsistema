@@ -86,7 +86,8 @@
 			</table>
 			<input type="hidden" id="selectedStartTimeInput" name="startTime">
 			<input type="hidden" id="selectedEndTimeInput" name="endTime">
-			<input type="hidden" id="" th:value="${estateId}" name="realEstateId">
+			<input type="hidden" id="realEstateId" th:value="${estateId}" name="realEstateId">
+			<input type="hidden" id="agentIdValue" th:value="${agentId}" />
 			<button id="confirmButton" class="ok btn" type="submit">Submit</button>
 			<div id="validation" style="color: red; margin-left: 25%;"></div>
 		</form>
@@ -334,8 +335,9 @@
 						console.log("Ending time " + timeStringEnd)
 						let localDateTime = generateLocalDateTime(currentYear.value, currentMonth.value, parseInt(selectedDate.textContent), selectedTime);
 						let localDateTimeEnd = generateLocalDateTime(currentYear.value, currentMonth.value, parseInt(selectedDate.textContent), timeStringEnd);
-						document.getElementById('final').innerHTML = "You have selected a tour for<br> <b> " + parseInt(selectedDate.textContent) + ". " + month_names[currentMonth.value] + " " + currentYear.value + ". <br> " + selectedTime + " - " + timeStringEnd + "</b>";
+						document.getElementById('final').innerHTML = "You have selected a tour for<br> <b> " + parseInt(selectedDate.textContent) + ". " + month_names[currentMonth.value] + " " + currentYear.value + ". <br> " + selectedTime + " - " + timeStringEnd + "</b>";						
 						document.getElementById('selectedStartTimeInput').value = localDateTime;
+						console.log(localDateTime)
 						document.getElementById('selectedEndTimeInput').value = localDateTimeEnd;
 
 					}
@@ -362,10 +364,11 @@
 
 			let scheduledTimeString = `${scheduledHours < 10 ? '0' + scheduledHours : scheduledHours}:${scheduledMinutes < 10 ? '0' + scheduledMinutes : scheduledMinutes}`;
 			let selectedDay = parseInt(selectedDate.textContent);
-
+			var agentIdValue = document.getElementById("agentIdValue").value;
 			if (selectedYear === scheduledYear &&
 				selectedMonth === scheduledMonth &&
 				selectedDay === scheduledDay &&
+				agentIdValue == scheduledTours[i].realEstate.agent.id &&
 				timeString === scheduledTimeString) {
 				return true;
 			}
@@ -381,11 +384,10 @@
 		let year = newDate.getFullYear();
 		let month = newDate.getMonth();
 		let day = newDate.getDate();
-		let hour = newDate.getHours() + 1;
+		let hour = newDate.getHours() + 2;
 		let minute = newDate.getMinutes();
 
 		let localDateTime = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-		console.log(localDateTime)
 		return localDateTime;
 
 	}

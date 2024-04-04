@@ -40,9 +40,11 @@ public class ScheduledTourController {
 	
 	@GetMapping
 	public String showSchedulingPage(@RequestParam("realEstateId") Long realEstateId, Model model, HttpServletRequest request) {
+		RealEstate realEstate = realestateService.findOne(realEstateId);
 		List<ScheduledTour> scheduledTours = scheduledTourService.findAll();
 		model.addAttribute("scheduledTours", scheduledTours);
 		model.addAttribute("estateId", realEstateId);
+		model.addAttribute("agentId", realEstate.getAgent().getId());
 		return "scheduledTour";
 		
 	}
@@ -56,6 +58,7 @@ public class ScheduledTourController {
 		ScheduledTour savedTour = scheduledTourService.save(newTour);
 		
 		System.out.println("Saved ScheduledTour ID: " + savedTour.getId());
+		System.out.println(startTime);
 		
 		Notification notification = new Notification(realEstate.getAgent(), newTour, false);
 

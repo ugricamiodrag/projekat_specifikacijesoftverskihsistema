@@ -3,6 +3,9 @@ package com.specifikacije.projekat.controller;
 import java.util.Date;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,6 +20,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -375,6 +379,25 @@ public class RealEstateController {
 		d.setGrade(0.0);
 		d.setViewNumber(0.0);
 		d.setIsActive(true);
+		
+		if (picture != null && !picture.isEmpty()) {
+			try {
+		        String uploadDir = "src/main/resources/static/images";
+		        Path uploadPath = Paths.get(uploadDir);
+
+		        String fileName = StringUtils.cleanPath(picture.getOriginalFilename());
+
+		        Path filePath = uploadPath.resolve(fileName);
+
+		        Files.copy(picture.getInputStream(), filePath);
+
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		        response.sendRedirect("404NotFound");
+		        return;
+		    }
+			
+	    }
 
 		realEstateService.save(d);
 		
