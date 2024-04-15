@@ -179,32 +179,32 @@ public class RealEstateDAOimpl implements RealEstateDAO{
 		jdbcTemplate.update(sql, id);	}
 
 	@Override
-	public List<RealEstate> find(String location, Integer surfaceFrom, Integer surfaceTo, Double priceMin, Double priceMax, String rent, String buy, String popularity, List<String> propertyTypes) {
+	public List<RealEstate> find(String location, Integer surfaceFrom, Integer surfaceTo, Double priceMin, Double priceMax, String rent, String buy, String popularity, List<String> propertyTypes, Agent agent) {
 		List<RealEstate> allEstate = findRemaining();
 
-		 Stream<RealEstate> filteredStream = allEstate.stream()
-		            .filter(estate ->
-		                    (location == null || location.isEmpty() || estate.getLocation().contains(location))
-		                            && (surfaceFrom == null || estate.getSurface() >= surfaceFrom)
-		                            && (surfaceTo == null || estate.getSurface() <= surfaceTo)
-		                            && (priceMin == null || estate.getPrice() >= priceMin)
-		                            && (priceMax == null || estate.getPrice() <= priceMax)
-		                            && (rent == null || rent.isEmpty() || estate.getRentOrBuy().toString().equalsIgnoreCase(rent))
-		                            && (buy == null || buy.isEmpty() || estate.getRentOrBuy().toString().equalsIgnoreCase(buy))
-		                            && (propertyTypes == null || propertyTypes.isEmpty() || propertyTypes.contains(estate.getEstateType().toString()))
-		            );
-		 
-		 if (popularity != null) {
-		        filteredStream = filteredStream
-		                .sorted(Comparator.comparingDouble(RealEstate::getViewNumber).reversed())
-		                .sorted(Comparator.comparingDouble(RealEstate::getGrade).reversed())
-		                .sorted(Comparator.comparingDouble(RealEstate::getNumberOfVisitRequests).reversed());
-		    }
+		Stream<RealEstate> filteredStream = allEstate.stream()
+				.filter(estate ->
+						(location == null || location.isEmpty() || estate.getLocation().contains(location))
+								&& (surfaceFrom == null || estate.getSurface() >= surfaceFrom)
+								&& (surfaceTo == null || estate.getSurface() <= surfaceTo)
+								&& (priceMin == null || estate.getPrice() >= priceMin)
+								&& (priceMax == null || estate.getPrice() <= priceMax)
+								&& (rent == null || rent.isEmpty() || estate.getRentOrBuy().toString().equalsIgnoreCase(rent))
+								&& (buy == null || buy.isEmpty() || estate.getRentOrBuy().toString().equalsIgnoreCase(buy))
+								&& (propertyTypes == null || propertyTypes.isEmpty() || propertyTypes.contains(estate.getEstateType().toString()))
+								&& (agent == null || estate.getAgent().getUsername().equals(agent.getUsername()))
+				);
 
-		 return filteredStream.collect(Collectors.toList());
-		    
+		if (popularity != null) {
+			filteredStream = filteredStream
+					.sorted(Comparator.comparingDouble(RealEstate::getViewNumber).reversed())
+					.sorted(Comparator.comparingDouble(RealEstate::getGrade).reversed())
+					.sorted(Comparator.comparingDouble(RealEstate::getNumberOfVisitRequests).reversed());
+		}
 
+		return filteredStream.collect(Collectors.toList());
 	}
+
 
 	@SuppressWarnings("deprecation")
 	@Override

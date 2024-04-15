@@ -171,7 +171,7 @@ public class RealEstateController {
 	
 	@GetMapping(value="/search")
 	@ResponseBody
-	public Map<String, Object>  search(HttpServletRequest request, Model model,
+	public Map<String, Object>  search(HttpSession session, Model model,
 									   @RequestParam(required=false) String location,
 									   @RequestParam(required=false) String surfaceFrom,
 									   @RequestParam(required=false) String surfaceTo,
@@ -184,15 +184,28 @@ public class RealEstateController {
 									   
 
 		Map<String, Object> response = new HashMap<>();
+		List<RealEstate> realEstates = null;
+		Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
+		if (obj instanceof Agent agent) {
+			realEstates = realEstateService.find(location,
+					parseInteger(surfaceFrom),
+					parseInteger(surfaceTo),
+					parseDouble(priceMin),
+					parseDouble(priceMax),
+					rent, buy, popularity, propertyTypes, agent);
+		}
+		else {
+			realEstates = realEstateService.find(location,
+					parseInteger(surfaceFrom),
+					parseInteger(surfaceTo),
+					parseDouble(priceMin),
+					parseDouble(priceMax),
+					rent, buy, popularity, propertyTypes, null);
+		}
 
 
 
-		List<RealEstate> realEstates = realEstateService.find(location,
-				parseInteger(surfaceFrom),
-				parseInteger(surfaceTo),
-				parseDouble(priceMin),
-				parseDouble(priceMax),
-				rent, buy, popularity, propertyTypes);
+
 
 		model.addAttribute("realEstate", realEstates);
 

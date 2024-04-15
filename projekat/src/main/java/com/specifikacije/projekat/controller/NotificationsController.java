@@ -59,8 +59,8 @@ public class NotificationsController implements ApplicationContextAware {
     @ResponseBody
     public ResponseEntity<?> getUnreadNotifications(HttpSession session) {
         Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
-        if (obj instanceof Agent) {
-            List<Notification> notifications = notificationService.findAll();
+        if (obj instanceof Agent agent) {
+            List<Notification> notifications = notificationService.findByAgent(agent.getId());
             return ResponseEntity.ok(notifications);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");

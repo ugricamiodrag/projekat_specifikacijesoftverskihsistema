@@ -24,7 +24,7 @@ public interface RealEstateDAO {
 	List<RealEstate> findAllHidden();
 
 	public List<RealEstate> find(String location, Integer surfaceFrom, Integer surfaceTo, Double priceMin,
-			Double priceMax, String rent, String buy, String popularity, List<String> propertyTypes);
+			Double priceMax, String rent, String buy, String popularity, List<String> propertyTypes, Agent agent);
 
 	List<RealEstate> findAgentsEstate(Agent agent);
 

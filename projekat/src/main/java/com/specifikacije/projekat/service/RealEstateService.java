@@ -17,7 +17,7 @@ public interface RealEstateService {
 	void update(RealEstate d);
 
 	List<RealEstate> find(String location, Integer parseInteger, Integer parseInteger2, Double parseDouble,
-			Double parseDouble2, String rent, String buy, String popularity, List<String> propertyTypes);
+			Double parseDouble2, String rent, String buy, String popularity, List<String> propertyTypes, Agent agent);
 
     List<RealEstate> findAgenciesEstate(Agency agency);
 

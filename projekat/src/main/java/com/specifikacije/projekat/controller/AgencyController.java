@@ -58,9 +58,9 @@ public class AgencyController {
 			if(agency != null) {
 				List<Agent> agents = agentService.findAgents(agency.getId());
 				model.addAttribute("agents", agents);
-				}
+			}
 
-			
+			model.addAttribute("owner", user);
 			model.addAttribute("agency", agency);
 			return "myAgency";
 		}
@@ -170,7 +170,7 @@ public class AgencyController {
 					parseInteger(null),
 					parseDouble(null),
 					parseDouble(null),
-					null, null, popularity, null);
+					null, null, popularity, null, null);
 
 			List<Agent> agents = agentService.findAll(realEstates);
 			model.addAttribute("agents", agents);

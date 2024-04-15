@@ -56,8 +56,8 @@ public class RealEstateServiceImpl implements RealEstateService{
 
 	@Override
 	public List<RealEstate> find(String location, Integer surfaceFrom, Integer surfaceTo, Double priceMin,
-			Double priceMax, String rent, String buy, String popularity, List<String> propertyTypes) {
-		return realEstateDAO.find(location, surfaceFrom, surfaceTo, priceMin, priceMax, rent, buy, popularity, propertyTypes);
+			Double priceMax, String rent, String buy, String popularity, List<String> propertyTypes, Agent agent) {
+		return realEstateDAO.find(location, surfaceFrom, surfaceTo, priceMin, priceMax, rent, buy, popularity, propertyTypes, agent);
 
 	}
 
