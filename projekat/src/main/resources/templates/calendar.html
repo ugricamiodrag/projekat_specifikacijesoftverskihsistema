@@ -29,20 +29,14 @@
 				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="/login/logOut">Log out</a>
 				<a class="nav-item nav-link white-font" th:if="${admin != null}" href="/realestate/adminPage">Admin</a>
 				<a class="nav-item nav-link white-font" th:if="${owner != null}" href="/agency">My Agency</a>
-				<a class="nav-item nav-link white-font" th:if="${agent != null or owner != null}" href="">Calendar</a>
 				<a class="nav-item nav-link white-font" th:if="${agent != null}" href="/realestate/add">Add an
 					estate</a>
 
-				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="#"><img class="small"
-						src="/images/cart.png"></img></a>
-
-				<a class="nav-item nav-link white-font" th:if="${agent != null or owner != null}"
-					href="/notifications/unread" style="position: absolute; margin-left: 78%;"><img class="small"
-						src="/images/bell.png"></img></a>
+				<a class="nav-item nav-link white-font"  href="/notifications/unread" style="position: absolute; margin-left: 78%;"><img class="small"
+						th:src="@{'/images/bell' + ${newMessageCount} + '.png'}"></img></a>
 
 				<a class="nav-item nav-link white-font" style="position: absolute; margin-left: 83%;"
-					th:if="${isLoggedIn == true}" href="realestate/profile"><img class="small"
-						src="/images/user.png"></a>
+					href="/realestate/profile"><img class="small" src="/images/user.png"></a>
 
 			</div>
 		</div>
@@ -198,10 +192,8 @@
 				scheduledToursForDay.forEach(function (scheduledTour) {
 					let agent = scheduledTour.realEstate.agent;
 					var agentIdValue = document.getElementById("agentIdValue").value;
-					console.log("person " + agentIdValue);
-					console.log("Agent " + agent.id);
-					if (agent.id == agentIdValue) {
-						console.log("TRUE")
+					let isApproved = scheduledTour.isApproved;
+					if (agent.id == agentIdValue && isApproved) {
 						let notification = document.createElement('div');
 						notification.className = 'notification';
 						let startdate = new Date(scheduledTour.startTime);
@@ -210,9 +202,13 @@
 						let endTime = formatTime(enddate);
 						notification.innerHTML = `${startTime} - ${endTime}`;
 						notificationContainer.appendChild(notification);
+						notification.addEventListener('click', function () {
+							notifId = findNotif(agent, scheduledTour);
+							console.log(notifId)
+							window.location.href = '/notifications/unread?id=' + notifId;
+						});
 					}
 				});
-
 
 
 				// SEPARATE PAST DAYS AND FUTURE DAYS
@@ -232,6 +228,21 @@
 			calendar_days.appendChild(day);
 		}
 	};
+	
+	function findNotif(agent, scheduledTour) {
+		console.log("agent je " + agent.id)
+		console.log("tour je " + scheduledTour.id)
+		let notifId;
+		notifications.forEach(function(notif) {
+			console.log(notif.agent.id + " , " + notif.tour.id)
+			if (notif.agent.id === agent.id && notif.tour.id === scheduledTour.id) {
+				
+				notifId = notif.id;
+				
+			}
+		})
+		return notifId;
+	}
 
 	function formatTime(date) {
 		let hours = date.getHours();

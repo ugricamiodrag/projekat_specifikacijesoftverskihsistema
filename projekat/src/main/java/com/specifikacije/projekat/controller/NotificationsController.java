@@ -79,15 +79,33 @@ public class NotificationsController implements ApplicationContextAware {
     @GetMapping(value="/calendar")
     public String calendar(Model model, HttpSession session){
     	Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
+    	boolean isLoggedIn = false;
     	if(obj instanceof Agent){
     		Agent agent = (Agent)obj;
+    		isLoggedIn = true;
     		model.addAttribute("agent", agent);
         } else {
         	AgencyOwner owner = (AgencyOwner) obj;
+        	isLoggedIn = true;
     		model.addAttribute("owner", owner);
         }
         List<Notification> notifications = notificationService.findAll();
         List<ScheduledTour> tours = scheduledTourService.findAll();
+        
+        
+        int count = 0;
+		if(obj instanceof Agent || obj instanceof AgencyOwner){
+			List<Notification> notifications1 = notificationService.findAll();
+			
+			for(Notification n: notifications1) {
+				if(n.isRead() == false) {
+					count++;
+				}
+			}
+		    model.addAttribute("newMessageCount", count);
+		}
+        
+        model.addAttribute("isLoggedIn", isLoggedIn);
         model.addAttribute("notifications", notifications);
         model.addAttribute("tours", tours);
         return "calendar";

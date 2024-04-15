@@ -15,6 +15,13 @@
     border-radius: 5px;
 }
 
+.highlighted{
+    background-color: rgba(255, 128, 0, 0.05);
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgb(255, 128, 0);
+}
 
 .checkbox[type="checkbox"] {
     margin-right: 5px;

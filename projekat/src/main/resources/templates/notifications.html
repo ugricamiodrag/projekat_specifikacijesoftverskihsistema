@@ -1,110 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/index.css">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/notifications.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <title>Notifications</title>
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/index.css">
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="/css/notifications.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<title>Notifications</title>
 </head>
+
 <body>
 
-<nav class="navbar navbar-expand-lg black-bg">
-    <img class="img" src="/images/keyToTheCastleLogoOrangeWhiteWithTitle.png">
-    <!-- add above logo -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-            <a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
-            <a class="nav-item nav-link white-font" href="/login/logOut">Log out</a>
-            <a class="nav-item nav-link white-font" href="/notifications/calendar">Calendar</a>
-            <a class="nav-item nav-link white-font" href="/realestate/add">Add an
-                estate</a>
+	<nav class="navbar navbar-expand-lg black-bg">
+		<img class="img" src="/images/keyToTheCastleLogoOrangeWhiteWithTitle.png">
+		<!-- add above logo -->
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+			aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			<div class="navbar-nav">
+				<a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
+				<a class="nav-item nav-link white-font" href="/login/logOut">Log out</a>
+				<a class="nav-item nav-link white-font" href="/notifications/calendar">Calendar</a>
+				<a class="nav-item nav-link white-font" href="/realestate/add">Add an
+					estate</a>
 
-            <a class="nav-item nav-link white-font" href="#"><img class="small"
-                                                                                                src="/images/cart.png"></img></a>
+				<a class="nav-item nav-link white-font" href="#"><img class="small" src="/images/cart.png"></img></a>
 
-            <a class="nav-item nav-link white-font" style="position: absolute; margin-left: 83%;"
-              href="/realestate/profile"><img class="small"
-                                                                            src="/images/user.png"></a>
+				<a class="nav-item nav-link white-font" style="position: absolute; margin-left: 83%;"
+					href="/realestate/profile"><img class="small" src="/images/user.png"></a>
 
-        </div>
-    </div>
-</nav>
+			</div>
+		</div>
+	</nav>
 
-<div class="main-content">
-<h3>Notifications</h3>
+	<div class="main-content">
+		<h3>Notifications</h3>
 
-<ul class="notification-list"></ul>
+		<ul class="notification-list"></ul>
 
 
-</div>
+	</div>
 
-<script>
+	<script>
 
 
-    $(document).ready(function() {
+		$(document).ready(function () {
 
-        function fetchNotifications() {
-            $.ajax({
-                type: "GET",
-                url: "/notifications/Unread",
-                success: function(unreadNotifications) {
-                    $('.notification-list').empty();
-                    unreadNotifications.forEach(function(notification) {
-				console.log(notification);
-						if(notification.read){
-	                        var listItem = $('<li class="notification"><a class="read-link" href="/notifications/readOne?id='+notification.id +'">' + "Agent: " + notification.agent.name + " " + notification.agent.surname + " For:" + notification.tour.realEstate.location + ": " + notification.tour.startTime + "|" + notification.tour.endTime.split('T')[1] + " IsApropved: "+ notification.tour.isApproved + '</a></li>');
+			function fetchNotifications() {
+				$.ajax({
+					type: "GET",
+					url: "/notifications/Unread",
+					success: function (unreadNotifications) {
+						$('.notification-list').empty();
+						unreadNotifications.forEach(function (notification) {
+							if (notification.read) {
+								var listItem = $('<li class="notification" data-notificationId = "' + notification.id + '" ><a class="read-link" href="/notifications/readOne?id=' + notification.id + '">' + "Agent: <b>" + notification.agent.name + " " + notification.agent.surname + "</b>&nbsp;&nbsp;&nbsp; For: <b>" + notification.tour.realEstate.location + ":</b> &nbsp;" + notification.tour.startTime.split('T')[0] + " at " + notification.tour.startTime.split('T')[1] + " - " + notification.tour.endTime.split('T')[1] + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IsApproved: " + notification.tour.isApproved + '</a></li>');
 
-						}else{
-	                        var listItem = $('<li class="notification"><a class="unread-link" href="/notifications/readOne?id='+notification.id +'">' + "Agent: " + notification.agent.name + " " + notification.agent.surname + " For:" + notification.tour.realEstate.location + ": " + notification.tour.startTime + "|" + notification.tour.endTime.split('T')[1] + " IsApropved: "+ notification.tour.isApproved + " NEW " + '</a></li>');
+							} else {
+								var listItem = $('<li class="notification" data-notificationId = "' + notification.id + '" ><a class="unread-link" href="/notifications/readOne?id=' + notification.id + '">' + "Agent: <b>" + notification.agent.name + " " + notification.agent.surname + "</b>&nbsp;&nbsp;&nbsp; For: <b>" + notification.tour.realEstate.location + ":</b> &nbsp;" + notification.tour.startTime.split('T')[0] + " at " + notification.tour.startTime.split('T')[1] + " - " + notification.tour.endTime.split('T')[1] + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IsApproved: " + notification.tour.isApproved + " NEW " + '</a></li>');
 
+							}
+							listItem.click(function () {
+
+								handleNotificationClick(notification.id);
+							});
+
+							$('.notification-list').append(listItem);
+
+							highlightNotification();
+						});
+					},
+					error: function (xhr, status, error) {
+						console.error("Error retrieving unread notifications: " + error);
+					}
+				});
+			}
+
+			function highlightNotification() {
+				const queryString = window.location.search;
+				const urlParams = new URLSearchParams(queryString);
+				const notifId = urlParams.get('id');
+				if (notifId) {
+					const notificationElements = document.querySelectorAll('.notification');
+					notificationElements.forEach(function (element) {
+						if (element.dataset.notificationid === notifId) {
+							console.log("dolgozik  " + element.dataset.notificationid)
+							element.classList.add('highlighted');
+							scrollToNotification(notifId); 
 						}
-                        listItem.click(function() {
+					});
+				}
+			}
 
-                            handleNotificationClick(notification.id);
-                        });
-                        
-                        	$('.notification-list').append(listItem);
-                        
-                        
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error retrieving unread notifications: " + error);
-                }
-            });
-        }
+			fetchNotifications();
 
 
-        fetchNotifications();
+			setInterval(fetchNotifications, 5000);
 
+			/* function handleNotificationClick(id) {
+				 $.ajax({
+					 type: "POST",
+					 url: "/notifications/readOne",
+					 data: { id: id},
+					 success: function() {
+						 console.log("Successfully opened the page.")
+					 },
+					 error: function(xhr, status, error) {
+						 console.error("Error retrieving unread notifications: " + error);
+					 }
+				 });
+			 }*/
+		});
 
-        setInterval(fetchNotifications, 5000);
+		function scrollToNotification(notificationId) {
+			const notificationElement = document.querySelector(`[data-notificationid="${notificationId}"]`);
+			if (notificationElement) {
+				notificationElement.scrollIntoView({behavior: 'smooth', block: 'start'});
+			}
+		}
 
-       /* function handleNotificationClick(id) {
-            $.ajax({
-                type: "POST",
-                url: "/notifications/readOne",
-                data: { id: id},
-                success: function() {
-                    console.log("Successfully opened the page.")
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error retrieving unread notifications: " + error);
-                }
-            });
-        }*/
-    });
-    
-    
-</script>
+	</script>
 
 </body>
+
 </html>

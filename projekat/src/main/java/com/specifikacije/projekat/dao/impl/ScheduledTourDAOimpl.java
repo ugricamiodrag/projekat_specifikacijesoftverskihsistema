@@ -143,7 +143,7 @@ public class ScheduledTourDAOimpl implements ScheduledTourDAO {
 	@Override
 	public void update(ScheduledTour scheduledTour) {
 		String sql = "UPDATE scheduled_tour SET start_time = ?, end_time = ?, user_id = ?, estate_id = ?, is_approved = ? WHERE id = ?";	
-		jdbcTemplate.update(sql, Timestamp.valueOf(scheduledTour.getStartTime()), Timestamp.valueOf(scheduledTour.getEndTime()), scheduledTour.getUser().getId(), scheduledTour.getRealEstate().getId(), scheduledTour.getIsApproved(), scheduledTour.getId());	
+		jdbcTemplate.update(sql, Timestamp.valueOf(scheduledTour.getStartTime().plusHours(2)), Timestamp.valueOf(scheduledTour.getEndTime().plusHours(2)), scheduledTour.getUser().getId(), scheduledTour.getRealEstate().getId(), scheduledTour.getIsApproved(), scheduledTour.getId());	
 	}
 
 	@Transactional
