@@ -10,7 +10,7 @@ public class RealEstate {
 	private String picture;
 	private Double price;
 	private RentOrBuy rentOrBuy;
-	private Integer surface; // dodato zbog pretrage po povrsini
+	private Integer surface; 
 	private Integer numberOfVisitRequests;
 	private Double grade;
 	private Double viewNumber;
