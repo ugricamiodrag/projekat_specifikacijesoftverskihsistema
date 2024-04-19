@@ -40,55 +40,52 @@ public class RealEstateController {
 
 	@Autowired
 	private AgencyService agencyService;
-	
+
 	@Autowired
 	private PurchaseService purchaseService;
-	
 
 	@Autowired
 	private LikeDislikeService likeDislikeService;
-	
+
 	@Autowired
 	private ScheduledTourService tourService;
-	
+
 	@Autowired
 	private NotificationService notificationService;
-	
+
 	@Autowired
 	RatingService ratingService;
 
 	@Autowired
 	private RentedService rentedService;
-	
+
 	@GetMapping
 	public String showRealEstate(HttpServletRequest request, Model model) {
-		
-		
+
 		Map<String, Object> response = new HashMap<>();
 		List<RealEstate> realEstateList = new ArrayList<>();
 
-		
-		
 		boolean isLoggedIn = false;
 		// get user if exists
-		Object obj =  request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
-		
-		
+		Object obj = request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
+
 		// check if user is logged in and users type
 		if (obj instanceof User) {
-		    isLoggedIn = true;
-		    Class<?> objClass = obj.getClass();
-		    model.addAttribute("user", objClass);
-		    User user = (User) obj;
-		    //get users lliked and disliked estates
-		    Map<String, List<RealEstate>> likedEstates = likeDislikeService.findAllLikedEstateForUserAndSetAttributes(user.getId());
+			isLoggedIn = true;
+			Class<?> objClass = obj.getClass();
+			model.addAttribute("user", objClass);
+			User user = (User) obj;
+			// get users lliked and disliked estates
+			Map<String, List<RealEstate>> likedEstates = likeDislikeService
+					.findAllLikedEstateForUserAndSetAttributes(user.getId());
 
-		    //add to model
-		    model.addAttribute("likedEstates", likedEstates.get("likedEstates"));
-		    model.addAttribute("dislikedEstates", likedEstates.get("dislikedEstates"));
+			// add to model
+			model.addAttribute("likedEstates", likedEstates.get("likedEstates"));
+			model.addAttribute("dislikedEstates", likedEstates.get("dislikedEstates"));
 			realEstateList = realEstateService.findAll();
 
-			// check if somebody already purchased that realestate, if so dont show it to other buyers
+			// check if somebody already purchased that realestate, if so dont show it to
+			// other buyers
 			System.out.println(LocalDate.now());
 			Iterator<RealEstate> iterator = realEstateList.iterator();
 			while (iterator.hasNext()) {
@@ -98,114 +95,91 @@ public class RealEstateController {
 				}
 			}
 
+		} else if (obj instanceof Administrator) {
+			isLoggedIn = true;
+			Class<?> objClass = obj.getClass();
+			model.addAttribute("admin", objClass);
+			realEstateList = realEstateService.findAll();
 
-
-
-		}else if(obj instanceof Administrator){
-			    isLoggedIn = true;   
-			    Class<?> objClass = obj.getClass();
-			    model.addAttribute("admin", objClass);
-				realEstateList = realEstateService.findAll();
-			    
-		}else if(obj instanceof Agent){
-		    isLoggedIn = true;
-		    Class<?> objClass = obj.getClass();
+		} else if (obj instanceof Agent) {
+			isLoggedIn = true;
+			Class<?> objClass = obj.getClass();
 			Agent agent = (Agent) obj;
-		    model.addAttribute("agent", objClass);
+			model.addAttribute("agent", objClass);
 			realEstateList = realEstateService.findAgentsEstate(agent);
-		    
-		}else if(obj instanceof AgencyOwner){
-		    isLoggedIn = true;
-		    Class<?> objClass = obj.getClass();
-		    model.addAttribute("owner", objClass);
+
+		} else if (obj instanceof AgencyOwner) {
+			isLoggedIn = true;
+			Class<?> objClass = obj.getClass();
+			model.addAttribute("owner", objClass);
 			AgencyOwner owner = (AgencyOwner) obj;
 			realEstateList = realEstateService.findAgenciesEstate(agencyService.findOwnersAgency(owner.getId()));
 
-		    
-		}else {
-		    isLoggedIn = false;
+		} else {
+			isLoggedIn = false;
 			realEstateList = realEstateService.findRemaining();
 		}
-		
-		
-		
-		
-		//add attribures
+
+		// add attribures
 		model.addAttribute("isLoggedIn", isLoggedIn);
-		
+
 		List<String> types = new ArrayList<>();
-		for (RealEstateType type : RealEstateType.values()){
+		for (RealEstateType type : RealEstateType.values()) {
 			types.add(String.valueOf(type));
 
 		}
-
 
 		model.addAttribute("realEstate", realEstateList);
 		model.addAttribute("typesOfEstate", types);
 		response.put("realEstate", realEstateList);
 		response.put("typesOfEstate", types);
-		
-		
+
 		// get unread messages
 		int count = 0;
-		if(obj instanceof Agent || obj instanceof AgencyOwner){
+		if (obj instanceof AgencyOwner) {
 			List<Notification> notifications = notificationService.findAll();
-			
-			for(Notification n: notifications) {
-				if(n.isRead() == false) {
+
+			for (Notification n : notifications) {
+				if (n.isRead() == false) {
 					count++;
 				}
 			}
-		    model.addAttribute("newMessageCount", count);
+			model.addAttribute("newMessageCount", count);
+			
+		} else if (obj instanceof Agent agent) {
+			List<Notification> notifications = notificationService.findByAgent(agent.getId());
+
+			for (Notification n : notifications) {
+				if (n.isRead() == false) {
+					count++;
+				}
+			}
+			model.addAttribute("newMessageCount", count);
 		}
-		       
-		    
 
 		return "index";
 
-
-
-
 	}
-	
-	
-	@GetMapping(value="/search")
+
+	@GetMapping(value = "/search")
 	@ResponseBody
-	public Map<String, Object>  search(HttpSession session, Model model,
-									   @RequestParam(required=false) String location,
-									   @RequestParam(required=false) String surfaceFrom,
-									   @RequestParam(required=false) String surfaceTo,
-									   @RequestParam(required=false) String priceMin,
-									   @RequestParam(required=false) String priceMax,
-									   @RequestParam(required=false) String rent,
-									   @RequestParam(required=false) String buy,
-									   @RequestParam(required=false) String popularity,
-									   @RequestParam(required=false) List<String> propertyTypes) throws ParseException {
-									   
+	public Map<String, Object> search(HttpSession session, Model model, @RequestParam(required = false) String location,
+			@RequestParam(required = false) String surfaceFrom, @RequestParam(required = false) String surfaceTo,
+			@RequestParam(required = false) String priceMin, @RequestParam(required = false) String priceMax,
+			@RequestParam(required = false) String rent, @RequestParam(required = false) String buy,
+			@RequestParam(required = false) String popularity,
+			@RequestParam(required = false) List<String> propertyTypes) throws ParseException {
 
 		Map<String, Object> response = new HashMap<>();
 		List<RealEstate> realEstates = null;
 		Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
 		if (obj instanceof Agent agent) {
-			realEstates = realEstateService.find(location,
-					parseInteger(surfaceFrom),
-					parseInteger(surfaceTo),
-					parseDouble(priceMin),
-					parseDouble(priceMax),
-					rent, buy, popularity, propertyTypes, agent);
+			realEstates = realEstateService.find(location, parseInteger(surfaceFrom), parseInteger(surfaceTo),
+					parseDouble(priceMin), parseDouble(priceMax), rent, buy, popularity, propertyTypes, agent);
+		} else {
+			realEstates = realEstateService.find(location, parseInteger(surfaceFrom), parseInteger(surfaceTo),
+					parseDouble(priceMin), parseDouble(priceMax), rent, buy, popularity, propertyTypes, null);
 		}
-		else {
-			realEstates = realEstateService.find(location,
-					parseInteger(surfaceFrom),
-					parseInteger(surfaceTo),
-					parseDouble(priceMin),
-					parseDouble(priceMax),
-					rent, buy, popularity, propertyTypes, null);
-		}
-
-
-
-
 
 		model.addAttribute("realEstate", realEstates);
 
@@ -213,6 +187,7 @@ public class RealEstateController {
 		return response;
 
 	}
+
 	private Integer parseInteger(String value) {
 		if (value != null && !value.isEmpty()) {
 			return Integer.parseInt(value);
@@ -226,62 +201,60 @@ public class RealEstateController {
 		}
 		return null;
 	}
-	
+
 	@GetMapping("/viewOne")
 	public String viewOne(@RequestParam Long id, Model model, HttpServletRequest request) {
-		
+
 		RealEstate d = realEstateService.findOne(id);
-		
-		d.setViewNumber(d.getViewNumber()+ 1); // Everytime the user views the realestate add one to viewNumber
+
+		d.setViewNumber(d.getViewNumber() + 1); // Everytime the user views the realestate add one to viewNumber
 		realEstateService.update(d); // Update that view
-		
-		
-		Object obj =  request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
-		if(obj != null) {
+
+		Object obj = request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
+		if (obj != null) {
 			model.addAttribute("isLoggedIn", true);
-		}else {
+		} else {
 			model.addAttribute("isLoggedIn", false);
 		}
 		if (obj instanceof User) {
-		    Class<?> objClass = obj.getClass();
-		    User user = (User) obj;
-		    ScheduledTour tour = tourService.findByUserAndEstate(user.getId(), id);
-		    model.addAttribute("tour", tour);
-		    model.addAttribute("user", objClass);
-			if(d.getRentOrBuy().equals(RentOrBuy.Buy)){
+			Class<?> objClass = obj.getClass();
+			User user = (User) obj;
+			ScheduledTour tour = tourService.findByUserAndEstate(user.getId(), id);
+			model.addAttribute("tour", tour);
+			model.addAttribute("user", objClass);
+			if (d.getRentOrBuy().equals(RentOrBuy.Buy)) {
 				model.addAttribute("toBuyEstate", RentOrBuy.Buy);
-			}
-			else {
+			} else {
 				model.addAttribute("toRentEstate", RentOrBuy.Rent);
 			}
 		}
-		
+
 		List<Rating> ratings = ratingService.findByAgent(d.getAgent().getId());
 		model.addAttribute("ratings", ratings);
 		model.addAttribute("oneRealEstate", d);
 
-		if(obj != null){
+		if (obj != null) {
 			model.addAttribute("isLoggedIn", true);
 		}
 
 		return "oneRealEstate";
 	}
-	
+
 	@GetMapping("/adminPage")
 	public String adminPage(Model model) {
-		
+
 		List<RealEstate> realEstateList = realEstateService.findAllHidden();
 
 		model.addAttribute("realEstates", realEstateList);
 		return "adminPage";
 	}
-	
+
 	@GetMapping("/profile")
 	public String profile(Model model, HttpServletRequest request) {
-		Object obj =  request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
+		Object obj = request.getSession().getAttribute(LoginLogoutController.KORISNIK_KEY);
 		String type = "";
 		String theHref = "users/editUser";
-		if(obj == null){
+		if (obj == null) {
 			return "404NotFound";
 		}
 		if (obj instanceof Administrator) {
@@ -296,7 +269,7 @@ public class RealEstateController {
 			type = "- Agency owner -";
 			theHref = "owner/editOwner";
 		}
-		if(obj instanceof User){
+		if (obj instanceof User) {
 			model.addAttribute("user", true);
 			System.out.println(((User) obj).getId());
 			System.out.println(((User) obj).getAddress());
@@ -307,43 +280,40 @@ public class RealEstateController {
 		model.addAttribute("theHref", theHref);
 		return "profile";
 	}
-	
+
 	@PostMapping("/delete")
-	public String deleteRealEstate(@RequestParam Long id ) {
-		
+	public String deleteRealEstate(@RequestParam Long id) {
+
 		RealEstate d = realEstateService.findOne(id);
-		
+
 		realEstateService.delete(d.getId());
 
 		return "redirect:adminPage";
 	}
-	
-	
-	@GetMapping(value="/edit")
-	public String edit(@RequestParam Long id, HttpServletResponse response, Model model, HttpSession session) throws IOException {
+
+	@GetMapping(value = "/edit")
+	public String edit(@RequestParam Long id, HttpServletResponse response, Model model, HttpSession session)
+			throws IOException {
 
 		Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
-		if (!(obj instanceof User)){
+		if (!(obj instanceof User)) {
 			RealEstate d = realEstateService.findOne(id);
 
-			model.addAttribute("realEstate",d);
+			model.addAttribute("realEstate", d);
 
 			return "realEstateEdit";
 		}
 		return "404NotFound";
 
-
-		
 	}
-	
+
 	@PostMapping("/edit")
-	public void edit(@RequestParam Long id, @RequestParam String type, @RequestParam String location, @RequestParam double price, @RequestParam String rentOrBuy, @RequestParam int surface, HttpServletResponse response) throws IOException {
-		
+	public void edit(@RequestParam Long id, @RequestParam String type, @RequestParam String location,
+			@RequestParam double price, @RequestParam String rentOrBuy, @RequestParam int surface,
+			HttpServletResponse response) throws IOException {
 
 		RealEstate d = realEstateService.findOne(id);
 
-		
-		
 		d.setId(id);
 		d.setType(RealEstateType.valueOf(type));
 		d.setLocation(location);
@@ -352,31 +322,31 @@ public class RealEstateController {
 		d.setSurface(surface);
 
 		realEstateService.update(d);
-		
-		
+
 		response.sendRedirect("adminPage");
-		
 
 	}
-	
-	@GetMapping(value="/add")
+
+	@GetMapping(value = "/add")
 	public String add(HttpServletResponse response, Model model, HttpSession session) throws IOException {
 		Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
-		if (obj == null || obj instanceof User){
+		if (obj == null || obj instanceof User) {
 			return "404NotFound";
 		}
 		List<String> allTypes = new ArrayList<>();
-		for (RealEstateType types : RealEstateType.values()){
+		for (RealEstateType types : RealEstateType.values()) {
 			allTypes.add(types.toString());
 		}
 		model.addAttribute("allTypes", allTypes);
 		return "realEstateAdd";
-		
+
 	}
-	
+
 	@PostMapping("add")
-	public void add(HttpServletResponse response, HttpSession session, @RequestParam int surface, @RequestParam("picture") MultipartFile picture, @RequestParam String type, @RequestParam String location, @RequestParam double price, @RequestParam String rentOrBuy) throws IOException {
-		
+	public void add(HttpServletResponse response, HttpSession session, @RequestParam int surface,
+			@RequestParam("picture") MultipartFile picture, @RequestParam String type, @RequestParam String location,
+			@RequestParam double price, @RequestParam String rentOrBuy) throws IOException {
+
 		Agent agent = (Agent) session.getAttribute(LoginLogoutController.KORISNIK_KEY);
 		RealEstate d = new RealEstate();
 		String relativePath = picture.getOriginalFilename();
@@ -392,98 +362,108 @@ public class RealEstateController {
 		d.setGrade(0.0);
 		d.setViewNumber(0.0);
 		d.setIsActive(true);
-		
+
 		if (picture != null && !picture.isEmpty()) {
 			try {
-		        String uploadDir = "src/main/resources/static/images";
-		        Path uploadPath = Paths.get(uploadDir);
+				String uploadDir = "src/main/resources/static/images";
+				Path uploadPath = Paths.get(uploadDir);
 
-		        String fileName = StringUtils.cleanPath(picture.getOriginalFilename());
+				String fileName = StringUtils.cleanPath(picture.getOriginalFilename());
 
-		        Path filePath = uploadPath.resolve(fileName);
+				Path filePath = uploadPath.resolve(fileName);
 
-		        Files.copy(picture.getInputStream(), filePath);
+				Files.copy(picture.getInputStream(), filePath);
 
-		    } catch (IOException e) {
-		        e.printStackTrace();
-		        response.sendRedirect("404NotFound");
-		        return;
-		    }
-			
-	    }
+			} catch (IOException e) {
+				e.printStackTrace();
+				response.sendRedirect("404NotFound");
+				return;
+			}
+
+		}
 
 		realEstateService.save(d);
-		
+
 		response.sendRedirect("adminPage");
-		
-		
+
 	}
-	
-	
-	@GetMapping(value="/hide")
+
+	@GetMapping(value = "/hide")
 	public String hideRealEstate(@RequestParam Long id, Model model) throws IOException {
 
-			RealEstate d = realEstateService.findOne(id);
-			if(d.getIsActive())
-				d.setIsActive(false);
-			else
-				d.setIsActive(true);
-			
-			realEstateService.update(d);
+		RealEstate d = realEstateService.findOne(id);
+		if (d.getIsActive())
+			d.setIsActive(false);
+		else
+			d.setIsActive(true);
 
-			return "redirect:adminPage";
-		
+		realEstateService.update(d);
+
+		return "redirect:adminPage";
 
 	}
-	
+
 	// user needs to buy realesestate so we can make reports from those purchases
-	@GetMapping(value="/buyRealEstate")
-	public String buyRealEstate(@RequestParam Long id, Model model, HttpSession session, RedirectAttributes redirectAttributes) throws IOException {
+	@GetMapping(value = "/buyRealEstate")
+	public String buyRealEstate(@RequestParam Long id, Model model, HttpSession session,
+			RedirectAttributes redirectAttributes) throws IOException {
 
-			RealEstate estate = realEstateService.findOne(id);
+		RealEstate estate = realEstateService.findOne(id);
 
-
-
-
-			User user = (User) session.getAttribute(LoginLogoutController.KORISNIK_KEY); // convert it to user because only user can see that button and make a purchase
-			if (user == null){
-				return "404NotFound"; // if session expired return not found
-			}
-			if(purchaseService.requestExists(estate, user)){
-				redirectAttributes.addFlashAttribute("message", "You already sent a request for this estate!");
-
-				return "redirect:/realestate";
-			}
-			
-			Date currentDateUtil = new Date();
-			// Convert java.util.Date to java.sql.Date
-			java.sql.Date currentDateSql = new java.sql.Date(currentDateUtil.getTime());
-			
-			Purchase purchase = new Purchase (user, estate, currentDateSql);
-			
-			purchaseService.saveRequest(purchase);
-			
-		    redirectAttributes.addFlashAttribute("message", "Your request for purchase has been sent!"); // display this message on index page when user make a purchase
+		User user = (User) session.getAttribute(LoginLogoutController.KORISNIK_KEY); // convert it to user because only
+																						// user can see that button and
+																						// make a purchase
+		if (user == null) {
+			return "404NotFound"; // if session expired return not found
+		}
+		if (purchaseService.requestExists(estate, user)) {
+			redirectAttributes.addFlashAttribute("message", "You already sent a request for this estate!");
 
 			return "redirect:/realestate";
-		
+		}
+
+		Date currentDateUtil = new Date();
+		// Convert java.util.Date to java.sql.Date
+		java.sql.Date currentDateSql = new java.sql.Date(currentDateUtil.getTime());
+
+		Purchase purchase = new Purchase(user, estate, currentDateSql);
+
+		purchaseService.saveRequest(purchase);
+
+		redirectAttributes.addFlashAttribute("message", "Your request for purchase has been sent!"); // display this
+																										// message on
+																										// index page
+																										// when user
+																										// make a
+																										// purchase
+
+		return "redirect:/realestate";
 
 	}
 
 	@PostMapping(value = "/rentRealEstate")
-	public String rent(@RequestParam Long id, @RequestParam String startDate, @RequestParam String endDate, HttpSession session, RedirectAttributes redirectAttributes){
+	public String rent(@RequestParam Long id, @RequestParam String startDate, @RequestParam String endDate,
+			HttpSession session, RedirectAttributes redirectAttributes) {
 		RealEstate estate = realEstateService.findOne(id);
 
-		User user = (User) session.getAttribute(LoginLogoutController.KORISNIK_KEY); // convert it to user because only user can see that button and make a purchase
-		if (user == null){
+		User user = (User) session.getAttribute(LoginLogoutController.KORISNIK_KEY); // convert it to user because only
+																						// user can see that button and
+																						// make a purchase
+		if (user == null) {
 			return "404NotFound"; // if session expired return not found
 		}
 
 		LocalDate start_date = LocalDate.parse(startDate);
 		LocalDate end_date = LocalDate.parse(endDate);
 
-		if (rentedService.rentedExists(estate, start_date, end_date) || rentedService.rentedRequestExists(estate, start_date, end_date) || (rentedService.rentedRequestExists(estate, start_date, end_date) && rentedService.rentedRequestExists(estate, user)) || (rentedService.rentedExists(estate, start_date, end_date) && rentedService.rentedRequestExists(estate, user))){
-			redirectAttributes.addFlashAttribute("message", "This estate is already rented for that date. Please try a different date.");
+		if (rentedService.rentedExists(estate, start_date, end_date)
+				|| rentedService.rentedRequestExists(estate, start_date, end_date)
+				|| (rentedService.rentedRequestExists(estate, start_date, end_date)
+						&& rentedService.rentedRequestExists(estate, user))
+				|| (rentedService.rentedExists(estate, start_date, end_date)
+						&& rentedService.rentedRequestExists(estate, user))) {
+			redirectAttributes.addFlashAttribute("message",
+					"This estate is already rented for that date. Please try a different date.");
 			return "redirect:/realestate/viewOne?id=" + id;
 		}
 
@@ -496,9 +476,9 @@ public class RealEstateController {
 	}
 
 	@GetMapping(value = "/requests")
-	public String showRequests(HttpSession session, Model model){
+	public String showRequests(HttpSession session, Model model) {
 		Object obj = session.getAttribute(LoginLogoutController.KORISNIK_KEY);
-		if (!(obj instanceof Agent)){
+		if (!(obj instanceof Agent)) {
 			return "404NotFound";
 		}
 		List<Rented> rentedList = rentedService.findAllRequests();
@@ -506,37 +486,34 @@ public class RealEstateController {
 		model.addAttribute("rentingRequests", rentedList);
 		model.addAttribute("buyingRequests", purchaseList);
 
-
 		return "request";
 
 	}
 
-
 	@PostMapping(value = "/acceptBuyingRequest")
-	public String acceptBuyingRequest(@RequestParam Long requestId){
+	public String acceptBuyingRequest(@RequestParam Long requestId) {
 		Purchase purchase = purchaseService.findOneRequest(requestId);
 		Purchase newPurchase = new Purchase(purchase.getUser(), purchase.getEstate(), purchase.getPurchaseTime());
 		purchaseService.save(newPurchase);
 		List<Purchase> allPurchaseRequests = purchaseService.findAllRequests();
-		for (Purchase onePurchase : allPurchaseRequests){
-			if (onePurchase.getId().equals(purchase.getId())){
+		for (Purchase onePurchase : allPurchaseRequests) {
+			if (onePurchase.getId().equals(purchase.getId())) {
 				purchaseService.deleteRequests(onePurchase.getEstate().getId());
 			}
 		}
-
 
 		return "redirect:/realestate";
 	}
 
 	@PostMapping(value = "/declineBuyingRequest")
-	public String declineBuyingRequest(@RequestParam Long requestId){
+	public String declineBuyingRequest(@RequestParam Long requestId) {
 		purchaseService.deleteRequest(requestId);
 
 		return "redirect:/realestate";
 	}
 
 	@PostMapping(value = "/acceptRentingRequest")
-	public String acceptRentingRequest(@RequestParam Long requestId){
+	public String acceptRentingRequest(@RequestParam Long requestId) {
 
 		Rented rented = rentedService.findOneRequest(requestId);
 		Rented newRented = new Rented(rented.getUser(), rented.getEstate(), rented.getStartDate(), rented.getEndDate());
@@ -544,8 +521,8 @@ public class RealEstateController {
 		rentedService.deleteRequest(requestId);
 
 		List<Rented> allRentedRequests = rentedService.findAllRequests();
-		for (Rented oneRented : allRentedRequests){
-			if(oneRented.getId().equals(rented.getId())){
+		for (Rented oneRented : allRentedRequests) {
+			if (oneRented.getId().equals(rented.getId())) {
 				rentedService.deleteRequests(oneRented.getEstate().getId());
 			}
 		}
@@ -554,15 +531,10 @@ public class RealEstateController {
 	}
 
 	@PostMapping(value = "/declineRentingRequest")
-	public String declineRentingRequest(@RequestParam Long requestId){
+	public String declineRentingRequest(@RequestParam Long requestId) {
 		rentedService.deleteRequest(requestId);
 
 		return "redirect:/realestate";
 	}
-
-
-
-
-
 
 }
