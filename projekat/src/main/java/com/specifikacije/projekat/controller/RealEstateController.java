@@ -384,7 +384,7 @@ public class RealEstateController {
 
 		realEstateService.save(d);
 
-		response.sendRedirect("adminPage");
+		response.sendRedirect("/realestate");
 
 	}
 

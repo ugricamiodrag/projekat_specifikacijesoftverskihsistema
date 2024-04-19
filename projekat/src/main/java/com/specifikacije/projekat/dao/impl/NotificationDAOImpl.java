@@ -77,7 +77,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 
     @Override
     public List<Notification> findAll() {
-        String sql = "select * from notifications order by is_read ";
+        String sql = "select * from notifications order by is_read, id desc";
         NotificationCallBackHandler handler = new NotificationCallBackHandler();
         jdbcTemplate.query(sql, handler);
         return handler.getNotifications();
@@ -124,7 +124,7 @@ public class NotificationDAOImpl implements NotificationDAO {
     public List<Notification> findByAgent(Long id) {
         String sql = "select * from notifications" +
                 " where agent_id = ?" +
-                " order by id desc";
+                " order by is_read, id desc";
         NotificationCallBackHandler handler = new NotificationCallBackHandler();
         jdbcTemplate.query(sql, handler, id);
         return handler.getNotifications();
