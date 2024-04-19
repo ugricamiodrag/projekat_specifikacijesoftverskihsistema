@@ -17,4 +17,5 @@ public interface AgentService {
 	public boolean emailExists(String email);
 	List<Agent> findAgents(Long id);
 	List<Agent> findAll(List<RealEstate> realEstates);
+	List<Agent> findAllByPopularity(Long agencyId);
 }

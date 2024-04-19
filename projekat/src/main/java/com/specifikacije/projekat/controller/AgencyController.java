@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -158,21 +159,16 @@ public class AgencyController {
 	 
 	 @GetMapping(value="/search")
 		@ResponseBody
-		public Map<String, Object>  search(HttpServletRequest request, Model model,
+		public Map<String, Object>  search(HttpSession session, Model model,
 										   @RequestParam(required=false) String popularity) throws ParseException {
 										   
 
 
 			Map<String, Object> response = new HashMap<>();
+			AgencyOwner owner = (AgencyOwner) session.getAttribute(LoginLogoutController.KORISNIK_KEY);
+			Agency agency = agencyService.findOwnersAgency(owner.getId());
 
-			List<RealEstate> realEstates = realEstateService.find(null,
-					parseInteger(null),
-					parseInteger(null),
-					parseDouble(null),
-					parseDouble(null),
-					null, null, popularity, null, null);
-
-			List<Agent> agents = agentService.findAll(realEstates);
+			List<Agent> agents = agentService.findAllByPopularity(agency.getId());
 			model.addAttribute("agents", agents);
 
 			response.put("agents", agents);
