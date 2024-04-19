@@ -168,6 +168,27 @@ public class AgentDAOimpl implements AgentDAO {
 	    return count != null && count > 0;
 	}
 
+	@Override
+	public List<Agent> findAllByPopularity(Long agencyId) {
+		String sql =
+				"SELECT agent.*, " +
+						"COALESCE(SUM(estate.viewNumber), 0) + COALESCE(SUM(rating.grade), 0) + COALESCE(COUNT(scheduled_tour.id), 0) AS popularity_score " +
+						"FROM agent " +
+						"LEFT JOIN estate ON agent.id = estate.agent_id " +
+						"LEFT JOIN rating ON agent.id = rating.agent_id " +
+						"LEFT JOIN scheduled_tour ON estate.id = scheduled_tour.estate_id " +
+						"WHERE agent.isActive = true " +
+						"AND agent.agency_id = ? " +  // Filter by agency ID
+						"GROUP BY agent.id " +
+						"ORDER BY popularity_score DESC";
+
+		AgentCallBackHandler agentCallBackHandler = new AgentCallBackHandler();
+
+		jdbcTemplate.query(sql, agentCallBackHandler, agencyId);
+
+		return agentCallBackHandler.getAgents();
+	}
+
 	public List<Agent> findAgents(Long agencyid) {
 		String sql = 
 				"SELECT * FROM agent "

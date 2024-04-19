@@ -45,6 +45,11 @@ public class AgentServiceImpl implements AgentService{
 	}
 
 	@Override
+	public List<Agent> findAllByPopularity(Long agencyId) {
+		return agentDAO.findAllByPopularity(agencyId);
+	}
+
+	@Override
 	public Agent save(Agent agent) {
 		agentDAO.save(agent);
 		return agent;
