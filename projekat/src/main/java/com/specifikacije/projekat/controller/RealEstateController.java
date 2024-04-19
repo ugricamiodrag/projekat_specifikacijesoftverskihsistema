@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -145,7 +146,7 @@ public class RealEstateController {
 				}
 			}
 			model.addAttribute("newMessageCount", count);
-			
+
 		} else if (obj instanceof Agent agent) {
 			List<Notification> notifications = notificationService.findByAgent(agent.getId());
 
@@ -219,8 +220,21 @@ public class RealEstateController {
 		if (obj instanceof User) {
 			Class<?> objClass = obj.getClass();
 			User user = (User) obj;
-			ScheduledTour tour = tourService.findByUserAndEstate(user.getId(), id);
-			model.addAttribute("tour", tour);
+			List<ScheduledTour> tours = tourService.findByUserAndEstate(user.getId(), id);
+			boolean finished = false;
+			ScheduledTour tour1 = null;
+			LocalDateTime now = LocalDateTime.now();
+			if (tours != null) {
+				for (ScheduledTour tour : tours) {
+					if (tour.getIsApproved() == true && tour.getEndTime().isBefore(now)) {
+						tour1 = tour;
+						finished = true;
+					}
+				}
+			}
+			
+			model.addAttribute("ended", finished);
+			model.addAttribute("tour", tour1);
 			model.addAttribute("user", objClass);
 			if (d.getRentOrBuy().equals(RentOrBuy.Buy)) {
 				model.addAttribute("toBuyEstate", RentOrBuy.Buy);

@@ -42,7 +42,7 @@ public class ScheduledTourServiceImpl implements ScheduledTourService {
 	}
 
 	@Override
-	public ScheduledTour findByUserAndEstate(Long id, Long id2) {
+	public List<ScheduledTour> findByUserAndEstate(Long id, Long id2) {
 		return scheduledTourDAO.findByUserAndEstate(id, id2);
 		
 	}

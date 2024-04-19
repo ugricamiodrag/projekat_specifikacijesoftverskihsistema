@@ -153,7 +153,7 @@ public class ScheduledTourDAOimpl implements ScheduledTourDAO {
 		jdbcTemplate.update(sql, id);
 	}
 
-	public ScheduledTour findByUserAndEstate(Long userid, Long estateid) {
+	public List<ScheduledTour> findByUserAndEstate(Long userid, Long estateid) {
 		String sql = 
 				"SELECT * FROM scheduled_tour ck " +
 				"WHERE ck.user_id = ? AND ck.estate_id = ?";
@@ -166,7 +166,7 @@ public class ScheduledTourDAOimpl implements ScheduledTourDAO {
 		    if (scheduledTours.isEmpty()) {
 		        return null; 
 		    } else {
-		        return scheduledTours.get(0); 
+		        return scheduledTours; 
 		    }
 		
 	}

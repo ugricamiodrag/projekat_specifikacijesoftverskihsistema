@@ -2,163 +2,175 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
 
-    <link rel="stylesheet" href="/css/index.css">
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <base th:href="@{/}">
-    <title>Pregled jedne nekretnine</title>
+	<link rel="stylesheet" href="/css/index.css">
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+	<base th:href="@{/}">
+	<title>Pregled jedne nekretnine</title>
 </head>
 
 <body>
-    <!--navbar-->
-    <nav class="navbar navbar-expand-lg black-bg">
-        <img class="img" src="/images/keyToTheCastleLogoOrangeWhiteWithTitle.png">
-        <!-- add above logo -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
-                <a class="nav-item nav-link white-font" th:if="${isLoggedIn == false}" href="registration">Register</a>
-                <a class="nav-item nav-link white-font" th:if="${isLoggedIn == false}" href="/registration">Register</a>
+	<!--navbar-->
+	<nav class="navbar navbar-expand-lg black-bg">
+		<img class="img" src="/images/keyToTheCastleLogoOrangeWhiteWithTitle.png">
+		<!-- add above logo -->
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+			aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			<div class="navbar-nav">
+				<a class="nav-item nav-link white-font" href="/realestate">Home<span class="sr-only"></span></a>
+				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == false}" href="registration">Register</a>
+				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == false}" href="/registration">Register</a>
 				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == false}" href="/login">Log in</a>
 				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="/login/logOut">Log out</a>
-				<a class="nav-item nav-link white-font"  th:if="${isLoggedIn == true}" href="/users/pastPurchases"><img class="small" src="/images/cart.png"></img></a>
+				<a class="nav-item nav-link white-font" th:if="${isLoggedIn == true}" href="/users/pastPurchases"><img
+						class="small" src="/images/cart.png"></img></a>
 
-                <a class="nav-item nav-link white-font" style="position: absolute; margin-left: 83%;"
-                   th:if="${isLoggedIn == true}" href="realestate/profile"><img class="small"
-                                                                                src="/images/user.png"></a>
-            </div>
-        </div>
-    </nav>
-
-
-
-
-    <!-- main content start here-->
-    <div class="main-content">
-        <div th:if="${message}"   role="alert">  <p th:text="${message}" class="small-margin alert alert-success"></p> </div>
-
-        <div class="row">
-            <div class="col-md-4">
-                <!--Slide show, add functionality to it later so that it can slide!!!-->
-                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
-                            class="active custom-indicator" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                            class="custom-indicator" aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                            class="custom-indicator" aria-label="Slide 3"></button>
-                    </div>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img th:src="@{/images/} + ${oneRealEstate.picture}" class="d-block w-100" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="/images/cart.png" class="d-block w-100" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="/images/heart.png" class="d-block w-100" alt="...">
-                        </div>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                        data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                        data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </button>
-                </div>
-
-
-            </div>
-            <div class="col-md-8">
-                <!--Information about real estate-->
-                <div class="card card_less">
-                    <h3 class="card-header"><span class="text-orange bolder" th:text="${oneRealEstate.location}"></span> <span class="small">Grade:</span><span class="bolder" th:text="${oneRealEstate.grade}"></span></h3>
-                   
-
-                    <div class="card-body">
-                        <h5 class="card-title">Tip:<span class="bolder" th:text="${oneRealEstate.estateType}"></span></h5>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title" >Cena:<span class="bolder" th:text="${oneRealEstate.price}"></span></h5>
-                    </div>
-                    
-                     <div class="card-body">
-                        <h5 class="card-title" >Rent/Buy: <span class="bolder" th:text="${oneRealEstate.rentOrBuy}"></span></h5>
-                    </div>
-                     <div class="card-body">
-                        <h5 class="card-title" >Surface: <span class="bolder" th:text="${oneRealEstate.surface}"></span></h5>
-                    </div>
-                     <div class="card-body">
-                        <h5 class="card-title" >Views: <span class="bolder" th:text="${oneRealEstate.viewNumber}"></span></h5>
-                    </div>
-                     
-                </div>
-            </div>
-
-
-            <!--Buttons for buyers-->
-            <div class="col-md-3" th:if="${user != null}">
-								
-									<a href="/scheduledTour"><button type="submit" class="btn btn-bigger">Schedule a Tour</button></a>
-								
+				<a class="nav-item nav-link white-font" style="position: absolute; margin-left: 83%;"
+					th:if="${isLoggedIn == true}" href="realestate/profile"><img class="small"
+						src="/images/user.png"></a>
 			</div>
-                <div class="col-md-3" th:if="${user != null}">
-
-                    <a  th:if="${oneRealEstate.rentOrBuy == toBuyEstate}" th:href="@{realestate/buyRealEstate(id=${oneRealEstate.id})}"><button type="submit" class="btn btn-bigger">Buy Real Estate</button></a>
-                    <a th:if="${oneRealEstate.rentOrBuy == toRentEstate}" class="btn btn-bigger rent-btn">Rent Real Estate</a>
-                </div>
+		</div>
+	</nav>
 
 
 
-            <div class="modal" id="rentModal">
-                <div class="modal-dialog">
-                    <div class="modal-content">
 
-                        <div class="modal-header">
-                            <h4 class="modal-title">Rent Real Estate</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
+	<!-- main content start here-->
+	<div class="main-content">
+		<div th:if="${message}" role="alert">
+			<p th:text="${message}" class="small-margin alert alert-success"></p>
+		</div>
 
-                        <div class="modal-body">
-                            <form id="rentForm" method="post" action="realestate/rentRealEstate">
-                                <input type="hidden" th:value="${oneRealEstate.id}" name="id" id="id">
-                                <label for="startDate">Start Date:</label>
-                                <input type="date" id="startDate" name="startDate" required><br><br>
-                                <label for="endDate">End Date:</label>
-                                <input type="date" id="endDate" name="endDate" required><br><br>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <script>
-                $(document).ready(function() {
+		<div class="row">
+			<div class="col-md-4">
+				<!--Slide show, add functionality to it later so that it can slide!!!-->
+				<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+					<div class="carousel-indicators">
+						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+							class="active custom-indicator" aria-current="true" aria-label="Slide 1"></button>
+						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+							class="custom-indicator" aria-label="Slide 2"></button>
+						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+							class="custom-indicator" aria-label="Slide 3"></button>
+					</div>
+					<div class="carousel-inner">
+						<div class="carousel-item active">
+							<img th:src="@{/images/} + ${oneRealEstate.picture}" class="d-block w-100" alt="...">
+						</div>
+						<div class="carousel-item">
+							<img src="/images/cart.png" class="d-block w-100" alt="...">
+						</div>
+						<div class="carousel-item">
+							<img src="/images/heart.png" class="d-block w-100" alt="...">
+						</div>
+					</div>
+					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+						data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+						data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					</button>
+				</div>
 
-                    $('.rent-btn').click(function() {
-                        $('#rentModal').modal('show');
-                    });
-                    $('.close').click(function (){
-                        $('#rentModal').modal('hide');
-                    });
+
+			</div>
+			<div class="col-md-8">
+				<!--Information about real estate-->
+				<div class="card card_less">
+					<h3 class="card-header"><span class="text-orange bolder" th:text="${oneRealEstate.location}"></span>
+						<span class="small">Grade:</span><span class="bolder" th:text="${oneRealEstate.grade}"></span>
+					</h3>
 
 
-                });
-            </script>
+					<div class="card-body">
+						<h5 class="card-title">Tip:<span class="bolder" th:text="${oneRealEstate.estateType}"></span>
+						</h5>
+					</div>
+					<div class="card-body">
+						<h5 class="card-title">Cena:<span class="bolder" th:text="${oneRealEstate.price}"></span></h5>
+					</div>
 
-            <!--   <div id="map"></div>
+					<div class="card-body">
+						<h5 class="card-title">Rent/Buy: <span class="bolder"
+								th:text="${oneRealEstate.rentOrBuy}"></span></h5>
+					</div>
+					<div class="card-body">
+						<h5 class="card-title">Surface: <span class="bolder" th:text="${oneRealEstate.surface}"></span>
+						</h5>
+					</div>
+					<div class="card-body">
+						<h5 class="card-title">Views: <span class="bolder" th:text="${oneRealEstate.viewNumber}"></span>
+						</h5>
+					</div>
+
+				</div>
+			</div>
+
+
+			<!--Buttons for buyers-->
+			<div class="col-md-3" th:if="${user != null}">
+
+				<a th:href="@{'/scheduledTour?realEstateId=' + ${oneRealEstate.id}}"><button type="submit" class="btn btn-bigger">Schedule a Tour</button></a>
+
+			</div>
+			<div class="col-md-3" th:if="${user != null}">
+
+				<a th:if="${oneRealEstate.rentOrBuy == toBuyEstate}"
+					th:href="@{realestate/buyRealEstate(id=${oneRealEstate.id})}"><button type="submit"
+						class="btn btn-bigger">Buy Real Estate</button></a>
+				<a th:if="${oneRealEstate.rentOrBuy == toRentEstate}" class="btn btn-bigger rent-btn">Rent Real
+					Estate</a>
+			</div>
+
+
+
+			<div class="modal" id="rentModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+
+						<div class="modal-header">
+							<h4 class="modal-title">Rent Real Estate</h4>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+
+						<div class="modal-body">
+							<form id="rentForm" method="post" action="realestate/rentRealEstate">
+								<input type="hidden" th:value="${oneRealEstate.id}" name="id" id="id">
+								<label for="startDate">Start Date:</label>
+								<input type="date" id="startDate" name="startDate" required><br><br>
+								<label for="endDate">End Date:</label>
+								<input type="date" id="endDate" name="endDate" required><br><br>
+								<button type="submit" class="btn btn-primary">Submit</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<script>
+				$(document).ready(function () {
+
+					$('.rent-btn').click(function () {
+						$('#rentModal').modal('show');
+					});
+					$('.close').click(function () {
+						$('#rentModal').modal('hide');
+					});
+
+
+				});
+			</script>
+
+			<!--   <div id="map"></div>
               <script>(g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })
                       ({ key: "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg", v: "weekly" });
 
@@ -199,96 +211,98 @@
 
               initMap();
               </script> -->
-            
-           <!--  <script src="/js/map_functionality.js"></script> -->
+
+			<!--  <script src="/js/map_functionality.js"></script> -->
 
 
-            <div class="container rating-container" th:if="${tour != null and tour.isApproved}">
-            <form id="rateAgentForm" method="get" action="/rateAgent">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="comment" class="form-label bolder">Leave a comment and rate agent:</label>
-                            <textarea class="form-control" name="comment" id="comment" rows="4"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="rating" class="form-label">Grade:</label>
-                            <select class="form-select" name="rating" id="rating">
-                                <option value="5">5 Stars</option>
-                                <option value="4">4 Stars</option>
-                                <option value="3">3 Stars</option>
-                                <option value="2">2 Stars</option>
-                                <option value="1">1 Star</option>
-                            </select>
-                        </div>
-                    </div>
+			<div class="container rating-container" id="ratingContainer" th:if="${tour != null and tour.isApproved and ended == true}">
+				<form id="rateAgentForm" method="get" action="/rateAgent">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="mb-3">
+								<label for="comment" class="form-label bolder">Leave a comment and rate agent:</label>
+								<textarea class="form-control" name="comment" id="comment" rows="4"></textarea>
+							</div>
+							<div class="mb-3">
+								<label for="rating" class="form-label">Grade:</label>
+								<select class="form-select" name="rating" id="rating">
+									<option value="5">5 Stars</option>
+									<option value="4">4 Stars</option>
+									<option value="3">3 Stars</option>
+									<option value="2">2 Stars</option>
+									<option value="1">1 Star</option>
+								</select>
+							</div>
+						</div>
 						<input class="hidden" name="agentId" id="agentId" th:value="${oneRealEstate.agent.id}"></input>
-                    <div class="col-md-8">
-                        <button type="button" id="saveButton" class="btn btn-bigger">Save</button>
-                    </div>  
-                </div>
-                </form>
-                
-            </div>
-			
-			
-			
+						<div class="col-md-8">
+							<button type="button" id="saveButton" class="btn btn-bigger">Save</button>
+						</div>
+					</div>
+				</form>
+
+			</div>
+
+
+
 			<div id="commentsContainer">
-			<h3>What other people think about agent:</h3>
-			<div class="card small-margin"  th:each="rating : ${ratings}">
-  				<div class="card-body">
-    				<p th:text="${rating.comment}"></p><span th:text="${rating.grade}"></span>
-  				</div>
+				<h3>What other people think about agent:</h3>
+				<div class="card small-margin" th:each="rating : ${ratings}">
+					<div class="card-body">
+						<p th:text="${rating.comment}"></p><span th:text="${rating.grade}"></span>
+					</div>
+				</div>
+
+
 			</div>
-			
-			
-			</div>
 
-        </div>
+		</div>
 
-</div>
+	</div>
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function () {
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$(document).ready(function () {
 
-    $("#saveButton").click(function () {
-        var formData = {
-            comment: $("#comment").val(),
-            rating: $("#rating").val(),
-            agentId: $("#agentId").val()
-        };
+			$("#saveButton").click(function () {
+				var formData = {
+					comment: $("#comment").val(),
+					rating: $("#rating").val(),
+					agentId: $("#agentId").val()
+				};
 
-        $.ajax({
-            type: "GET",
-            url: "/rateAgent",
-            data: formData,
-            success: function (response) {
-                alert("Your message has been saved, thank you for commenting!");
-                var newCommentHtml = "<div class='card small-margin'><div class='card-body'><p>" + response.comment + "</p><span>" + response.grade + "</span></div></div>";
-                $("#commentsContainer").append(newCommentHtml);
-                
-            },
-            error: function (xhr, status, error) {
-                alert("Error: " + xhr.responseText);
-            }
-        });
-    });
-});
-</script>
+				$.ajax({
+					type: "GET",
+					url: "/rateAgent",
+					data: formData,
+					success: function (response) {
+						alert("Your message has been saved, thank you for commenting!");
+						var newCommentHtml = "<div class='card small-margin'><div class='card-body'><p>" + response.comment + "</p><span>" + response.grade + "</span></div></div>";
+						$("#commentsContainer").append(newCommentHtml);
+
+					},
+					error: function (xhr, status, error) {
+						alert("Error: " + xhr.responseText);
+					}
+				});
+			});
+		});
 
 
-        <!--Footer -->
-        <div>
-            <nav class="navbar ">
-                <a class="navbar-brand" href="#">
-                    <form class="form-inline red">
-                        <p>some information about agency such as mail phone number..etc</p>
-                    </form>
-                </a>
-            </nav>
-        </div>
+	</script>
+
+
+	<!--Footer -->
+	<div>
+		<nav class="navbar ">
+			<a class="navbar-brand" href="#">
+				<form class="form-inline red">
+					<p>some information about agency such as mail phone number..etc</p>
+				</form>
+			</a>
+		</nav>
+	</div>
 
 
 

@@ -10,5 +10,5 @@ public interface ScheduledTourService {
 	ScheduledTour save(ScheduledTour scheduledTour);
 	void delete(Long id);
 	void update(ScheduledTour d);
-	ScheduledTour findByUserAndEstate(Long id, Long id2);
+	List<ScheduledTour> findByUserAndEstate(Long id, Long id2);
 }

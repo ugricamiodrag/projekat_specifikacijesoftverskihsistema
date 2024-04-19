@@ -90,5 +90,58 @@
     </div>
 
 </body>
+<style>
+    .error-message {
+        color: red;
+    }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("form").submit(function (event) {
+            // Remove any existing error messages
+            $(".error-message").remove();
+
+            var type = $("#type").val();
+            var location = $("input[name='location']").val();
+            var price = $("input[name='price']").val();
+            var rentOrBuy = $("input[name='rentOrBuy']:checked").val();
+            var picture = $("input[name='picture']").val();
+            var surface = $("input[name='surface']").val();
+
+            var hasError = false;
+
+            if (!type) {
+                $("#type").closest(".form-group").after("<div class='error-message'>Please select a type.</div>");
+                hasError = true;
+            }
+            if (!location) {
+                $("input[name='location']").closest(".form-group").after("<div class='error-message'>Please enter a location.</div>");
+                hasError = true;
+            }
+            if (!price) {
+                $("input[name='price']").closest(".form-group").after("<div class='error-message'>Please enter a price.</div>");
+                hasError = true;
+            }
+            if (!rentOrBuy) {
+                $("input[name='rentOrBuy']").closest(".form-group").after("<div class='error-message'>Please select Rent or Buy.</div>");
+                hasError = true;
+            }
+            if (!picture) {
+                $("input[name='picture']").closest(".form-group").after("<div class='error-message'>Please upload a picture.</div>");
+                hasError = true;
+            }
+            if (!surface) {
+                $("input[name='surface']").closest(".form-group").after("<div class='error-message'>Please enter a surface value.</div>");
+                hasError = true;
+            }
+
+            if (hasError) {
+                event.preventDefault(); // Prevent form submission
+            }
+        });
+    });
+</script>
+
 
 </html>
