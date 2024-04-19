@@ -62,6 +62,9 @@ public class NotificationsController implements ApplicationContextAware {
         if (obj instanceof Agent agent) {
             List<Notification> notifications = notificationService.findByAgent(agent.getId());
             return ResponseEntity.ok(notifications);
+        } else if (obj instanceof AgencyOwner agencyOwner) {
+        	 List<Notification> notifications = notificationService.findAll();             
+        			 return ResponseEntity.ok(notifications);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
     }

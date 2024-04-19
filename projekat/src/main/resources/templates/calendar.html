@@ -32,7 +32,8 @@
 				<a class="nav-item nav-link white-font" th:if="${agent != null}" href="/realestate/add">Add an
 					estate</a>
 
-				<a class="nav-item nav-link white-font"  href="/notifications/unread" style="position: absolute; margin-left: 78%;"><img class="small"
+				<a class="nav-item nav-link white-font" href="/notifications/unread"
+					style="position: absolute; margin-left: 78%;"><img class="small"
 						th:src="@{'/images/bell' + ${newMessageCount} + '.png'}"></img></a>
 
 				<a class="nav-item nav-link white-font" style="position: absolute; margin-left: 83%;"
@@ -73,7 +74,8 @@
 		</div>
 		<div class="calendar-footer">
 		</div>
-		<input type="hidden" id="agentIdValue" th:value="${agent.id}" />
+		<input type="hidden" id="owner" th:if="${owner != null}" th:value="${owner}" />
+		<input type="hidden" id="agentIdValue" th:if="${agent != null}" th:value="${agent.id}" />
 		<div class="toBlur" id="toBlur" style="display: none;">
 			<div class="month-list1" id="month-list1"></div>
 		</div>
@@ -191,8 +193,19 @@
 				let scheduledToursForDay = getScheduledTourForDay(i - first_day.getDay() + 1, month, year, scheduledTours);
 				scheduledToursForDay.forEach(function (scheduledTour) {
 					let agent = scheduledTour.realEstate.agent;
-					var agentIdValue = document.getElementById("agentIdValue").value;
+					var owner = null;
+					var ownerElement = document.getElementById("owner");
+					if (ownerElement !== null) {
+						owner = ownerElement.value;
+					}
+					var agentIdValue = null;
+					var agentIdElement = document.getElementById("agentIdValue");
+					if (agentIdElement !== null) {
+						agentIdValue = agentIdElement.value;
+					}
 					let isApproved = scheduledTour.isApproved;
+					console.log(agent.id)
+					console.log(agentIdValue)
 					if (agent.id == agentIdValue && isApproved) {
 						let notification = document.createElement('div');
 						notification.className = 'notification';
@@ -203,10 +216,25 @@
 						notification.innerHTML = `${startTime} - ${endTime}`;
 						notificationContainer.appendChild(notification);
 						notification.addEventListener('click', function () {
-							notifId = findNotif(agent, scheduledTour);
+							notifId = findNotif(agent, owner, scheduledTour);
 							console.log(notifId)
 							window.location.href = '/notifications/unread?id=' + notifId;
 						});
+					} else if (owner !== null && isApproved) {
+						let notification = document.createElement('div');
+						notification.className = 'notification';
+						let startdate = new Date(scheduledTour.startTime);
+						let startTime = formatTime(startdate);
+						let enddate = new Date(scheduledTour.endTime);
+						let endTime = formatTime(enddate);
+						notification.innerHTML = `${startTime} - ${endTime}`;
+						notificationContainer.appendChild(notification);
+						notification.addEventListener('click', function () {
+							notifId = findNotif(agent, owner, scheduledTour);
+							console.log(notifId)
+							window.location.href = '/notifications/unread?id=' + notifId;
+						});
+
 					}
 				});
 
@@ -228,17 +256,21 @@
 			calendar_days.appendChild(day);
 		}
 	};
-	
-	function findNotif(agent, scheduledTour) {
+
+	function findNotif(agent, owner, scheduledTour) {
 		console.log("agent je " + agent.id)
 		console.log("tour je " + scheduledTour.id)
 		let notifId;
-		notifications.forEach(function(notif) {
+		notifications.forEach(function (notif) {
 			console.log(notif.agent.id + " , " + notif.tour.id)
 			if (notif.agent.id === agent.id && notif.tour.id === scheduledTour.id) {
-				
+
 				notifId = notif.id;
-				
+
+			}
+			else if (owner !== null && notif.tour.id === scheduledTour.id) {
+				notifId = notif.id;
+
 			}
 		})
 		return notifId;
@@ -307,9 +339,6 @@
 	let currentMonth = {value: currentDate.getMonth()};
 	let currentYear = {value: currentDate.getFullYear()};
 	generateCalendar(currentMonth.value, currentYear.value);
-
-
-
 
 
 
